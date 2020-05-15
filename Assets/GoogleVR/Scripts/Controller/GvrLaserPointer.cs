@@ -19,6 +19,7 @@
 // The controller is not available for versions of Unity without the
 // GVR native integration.
 
+using System;
 using TextEntry;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -55,6 +56,9 @@ public class GvrLaserPointer : GvrBasePointer
     private const float RETICLE_VISUAL_RATIO = 0.1f;
 
     private bool isHittingTarget;
+
+    public GameObject reticle;
+
 
     /// <summary>Gets the visual object for the laser beam.</summary>
     /// <value>The visual object for the laser beam.</value>
@@ -96,6 +100,9 @@ public class GvrLaserPointer : GvrBasePointer
     public override void OnPointerHover(RaycastResult raycastResult, bool isInteractive)
     {
         LaserVisual.SetDistance(raycastResult.distance);
+        reticle.transform.position = raycastResult.worldPosition;
+
+
         isHittingTarget = true;
     }
 
@@ -159,6 +166,7 @@ public class GvrLaserPointer : GvrBasePointer
     private void Awake()
     {
         LaserVisual = GetComponent<GvrLaserVisual>();
+        reticle = GameObject.FindWithTag("KeyboardDot");
     }
 
     /// @endcond

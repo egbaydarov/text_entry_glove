@@ -12,7 +12,7 @@ namespace TextEntry
     public class SerialCommunication : MonoBehaviour
     {
 
-        public static int baudrate = 300000;
+        public static int baudrate = 250000;
         public static string port_name = "\\\\.\\COM11";
         public static SerialPort stream = new SerialPort(port_name, baudrate);
         public string ArduinoSerialData;

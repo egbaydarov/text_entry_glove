@@ -309,6 +309,7 @@ MonoBehaviour:
   hmd: {fileID: 7286269515707278875}
   camera_offset: {x: 0.25, y: -0.31, z: 0.6}
   mode: 0
+  local_zero: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &7286269515735912224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,3 +323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ArduinoSerialData: 
+  vx: 0
+  vy: 0
+  vz: 0
+  mov_sense: 0.009
