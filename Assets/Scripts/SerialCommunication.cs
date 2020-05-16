@@ -15,31 +15,23 @@ namespace TextEntry
         public static int baudrate = 250000;
         public static string port_name = "\\\\.\\COM11";
         public static SerialPort stream = new SerialPort(port_name, baudrate);
-        public string ArduinoSerialData;
+
+        string ArduinoSerialData;
 
         public static Quaternion cRotation = Quaternion.identity;
-        public static Quaternion prev_cRotation = Quaternion.identity;
-        public static Vector3 cPosition = Vector3.zero;
-        public static float[] r_changes = new float[4];
 
         private static bool _button;
-        public static bool buttonState
+        public static bool buttonState { get; set; }
+
+        private void OnDisable()
         {
-            get
-            {
-                return _button;
-            }
-            set
-            {
-                _button = value;
-            }
+            TryClose();
         }
 
-        public float vx;
-        public float vy;
-        public float vz;
-
-        public float mov_sense = 0.009f;
+        private void OnApplicationQuit()
+        {
+            TryClose();
+        }
 
         void Update()
         {
@@ -77,25 +69,16 @@ namespace TextEntry
 
                 cRotation = new Quaternion(qy, qz, qx, qw);
                  
-
-                cPosition = new Vector3(ya, pi, ro);
-
                 buttonState = int.Parse(SplitData[7]) == 0;
             }
             catch (IOException)
             {
                 TryClose();
             }
-        }
-
-        private void OnDisable()
-        {
-            TryClose();
-        }
-
-        private void OnApplicationQuit()
-        {
-            TryClose();
+            catch(InvalidOperationException)
+            {
+                Debug.Log("Glove not Connected");
+            }
         }
 
         void TryClose()
@@ -126,20 +109,6 @@ namespace TextEntry
             {
                 return false;
             }
-        }
-        public void up()
-        {
-            Debug.Log("Up");
-        }
-
-        public void down()
-        {
-            Debug.Log("Down");
-        }
-
-        public void click()
-        {
-            Debug.Log("Click");
         }
     }
 }

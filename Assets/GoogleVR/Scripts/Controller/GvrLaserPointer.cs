@@ -102,17 +102,12 @@ public class GvrLaserPointer : GvrBasePointer
         LaserVisual.SetDistance(raycastResult.distance);
         reticle.transform.position = raycastResult.worldPosition;
 
-
         isHittingTarget = true;
     }
 
     /// <inheritdoc/>
     public override void OnPointerExit(GameObject previousObject)
     {
-        // Don't set the distance immediately.
-        // If we exit/enter an object on the same frame, then SetDistance
-        // will be called twice which could cause an issue with lerping the reticle.
-        // If we don't re-enter a new object, the distance will be set in Update.
         isHittingTarget = false;
     }
 
@@ -133,14 +128,8 @@ public class GvrLaserPointer : GvrBasePointer
         {
             float reticleScale = LaserVisual.reticle.transform.localScale.x;
 
-            // Fixed size for enter radius to avoid flickering.
-            // This will cause some slight variability based on the distance of the object
-            // from the camera, and is optimized for the average case.
             enterRadius = LaserVisual.reticle.sizeMeters * 0.5f * RETICLE_VISUAL_RATIO;
 
-            // Dynamic size for exit radius.
-            // Always correct because we know the intersection point of the object and can
-            // therefore use the correct radius based on the object's distance from the camera.
             exitRadius =
                 reticleScale * LaserVisual.reticle.ReticleMeshSizeMeters * RETICLE_VISUAL_RATIO;
         }
@@ -151,9 +140,6 @@ public class GvrLaserPointer : GvrBasePointer
         }
     }
 
-    /// @endcond
-    /// @cond
-    /// <inheritdoc/>
     protected override void Start()
     {
         base.Start();
@@ -161,16 +147,12 @@ public class GvrLaserPointer : GvrBasePointer
         LaserVisual.SetDistance(defaultReticleDistance, true);
     }
 
-    /// @cond
-    /// <summary>This MonoBehavior's Awake method.</summary>
     private void Awake()
     {
         LaserVisual = GetComponent<GvrLaserVisual>();
         reticle = GameObject.FindWithTag("KeyboardDot");
     }
 
-    /// @endcond
-    /// <summary>This MonoBehavior's Update method.</summary>
     private void Update()
     {
         if (isHittingTarget)
