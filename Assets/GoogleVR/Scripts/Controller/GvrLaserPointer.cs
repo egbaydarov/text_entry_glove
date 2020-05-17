@@ -163,7 +163,10 @@ public class GvrLaserPointer : GvrBasePointer
         LaserVisual.SetDistance(defaultReticleDistance);
     }
 
-    public override bool TriggerUp => !SerialCommunication.buttonState;
-    public override bool Triggering => SerialCommunication.buttonState;
-    public override bool TriggerDown => SerialCommunication.buttonState;
+    //public override bool TriggerUp => !SerialCommunication.buttonState;
+    //public override bool Triggering => SerialCommunication.buttonState;
+    //public override bool TriggerDown => SerialCommunication.buttonState;
+    public override bool TriggerUp => !Input.GetKeyDown("space");
+    public override bool Triggering => Input.GetKey("space");
+    public override bool TriggerDown => Input.GetKeyDown("space");
 }
