@@ -72,7 +72,7 @@ public class Server : MonoBehaviour
 		try {
 			tcpRecieveListener = new TcpListener(IPAddress.Parse("0.0.0.0"), 8080); 			
 			tcpRecieveListener.Start();              
-			Debug.Log("Server is listening");              
+			Debug.Log("Server is listening"+ tcpListenerSend.LocalEndpoint);              
 			Byte[] bytes = new Byte[1024];  			
 			while (true) { 				
 				using (recieveClient = tcpRecieveListener.AcceptTcpClient()) {
