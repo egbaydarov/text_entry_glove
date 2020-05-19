@@ -11,7 +11,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Server : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IPointerUpHandler, IPointerDownHandler
+public class Server : MonoBehaviour
 {
 
 	public string mytext;
@@ -20,7 +20,7 @@ public class Server : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
 	private Thread sendThread;
 
-	private TcpClient sendClient;
+	public static TcpClient sendClient;
 
 	private TcpListener tcpRecieveListener;
 
@@ -28,48 +28,36 @@ public class Server : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
 	private TcpClient recieveClient;
 
-	private PointerEventData data;
+	public static float x;
+	public static float y;
 
-	private float x;
-	private float y;
+	public static bool isDown = false;
 
-	public bool isDown = false;
+	static string data = "";
 
 
 
 	void Start()
 	{
 
-
 		sendThread = new Thread(new ThreadStart(CreateSendListener));
 		sendThread.IsBackground = true;
 		sendThread.Start();
 
-
 		recieveThread = new Thread(new ThreadStart(CreateRecieveListener));
 		recieveThread.IsBackground = true;
 		recieveThread.Start();
+
 
 	}
 
 
 	void Update()
 	{
-		try
+		if (isDown)
 		{
-			OnPointerEnter(data);
+			data += ((x + 540) + " ; " + (-y + 1950) + " ;").ToString();
 		}
-		catch (Exception ex)
-		{
-
-		}
-
-		//if (isDown)
-		{
-			Debug.Log((111 * x + 540) + " ; " + (-111 * y + 1820) + " ; ");
-			Send((111 * x + 540) + " ; " + (-111 * y + 1820) + " ;");
-		}
-
 	}
 
 
@@ -77,7 +65,7 @@ public class Server : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 	{
 		try
 		{
-			tcpRecieveListener = new TcpListener(IPAddress.Parse("192.168.0.17"), 8080);
+			tcpRecieveListener = new TcpListener(IPAddress.Parse("0.0.0.0"), 8080);
 			tcpRecieveListener.Start();
 			Debug.Log("Server is listening");
 			Byte[] bytes = new Byte[1024];
@@ -111,11 +99,10 @@ public class Server : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 		try
 		{
 			// Create listener on localhost port 8080. 			
-			tcpListenerSend = new TcpListener(IPAddress.Parse("192.168.0.17"), 8000);
+			tcpListenerSend = new TcpListener(IPAddress.Parse("0.0.0.0"), 8000);
 			tcpListenerSend.Start();
 			sendClient = tcpListenerSend.AcceptTcpClient();
 			NetworkStream stream = sendClient.GetStream();
-			Debug.Log("Server is listening");
 
 		}
 		catch (SocketException socketException)
@@ -125,7 +112,7 @@ public class Server : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 	}
 
 
-	public void Send(string message)
+	public static void Send(string message)
 	{
 		if (sendClient == null)
 		{
@@ -148,34 +135,20 @@ public class Server : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 		}
 	}
 
-	public void OnPointerEnter(PointerEventData eventData)
+	private void OnApplicationQuit()
 	{
-		data = eventData;
-		x = eventData.pointerCurrentRaycast.worldPosition.x;
-		y = eventData.pointerCurrentRaycast.worldPosition.y;
+		tcpRecieveListener.Stop();
+		tcpListenerSend.Stop();
 	}
-
-	public void OnPointerExit(PointerEventData eventData)
+	public static void OnPointerUp()
 	{
-
-	}
-
-	public void OnPointerClick(PointerEventData eventData)
-	{
-
-
-	}
-
-	public void OnPointerUp(PointerEventData eventData)
-	{
-		Debug.Log("Up");
 		isDown = false;
-		Send("\r\n");
+		Send(data + "\r\n");
+		data = "";
 	}
 
-	public void OnPointerDown(PointerEventData eventData)
+	public static void OnPointerDown()
 	{
-		Debug.Log("Down");
 		isDown = true;
 	}
 }

@@ -7,19 +7,24 @@ using UnityEngine.UI;
 public class TextHelper: MonoBehaviour
 {
     public Text intext;
-    private GameObject go;
+    public GameObject go;
     private Server server;
-   
+
+
+    private void Awake()
+    {
+        server = go.GetComponent<Server>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         go = GameObject.Find("keyboard");
-        server = go.GetComponent<Server>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        intext.text = server.mytext;
+        intext.text = server.mytext.Split('#')[0];
     }
 }

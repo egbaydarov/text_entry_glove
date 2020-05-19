@@ -102,6 +102,9 @@ public class GvrLaserPointer : GvrBasePointer
         LaserVisual.SetDistance(raycastResult.distance);
         reticle.transform.position = raycastResult.worldPosition;
 
+        Server.x = raycastResult.worldPosition.x;
+        Server.y = raycastResult.worldPosition.y;
+
         isHittingTarget = true;
     }
 
@@ -114,11 +117,13 @@ public class GvrLaserPointer : GvrBasePointer
     /// <inheritdoc/>
     public override void OnPointerClickDown()
     {
+        Server.OnPointerDown();
     }
 
     /// <inheritdoc/>
     public override void OnPointerClickUp()
     {
+        Server.OnPointerUp();
     }
 
     /// <inheritdoc/>
@@ -163,10 +168,7 @@ public class GvrLaserPointer : GvrBasePointer
         LaserVisual.SetDistance(defaultReticleDistance);
     }
 
-    //public override bool TriggerUp => !SerialCommunication.buttonState;
-    //public override bool Triggering => SerialCommunication.buttonState;
-    //public override bool TriggerDown => SerialCommunication.buttonState;
-    public override bool TriggerUp => !Input.GetKeyDown("space");
-    public override bool Triggering => Input.GetKey("space");
-    public override bool TriggerDown => Input.GetKeyDown("space");
+    public override bool TriggerUp => !SerialCommunication.buttonState;
+    public override bool Triggering => SerialCommunication.buttonState;
+    public override bool TriggerDown => SerialCommunication.buttonState;
 }
