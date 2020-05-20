@@ -13,7 +13,7 @@ public class Trigerring : MonoBehaviour
     void Update()
     {
         if (SerialCommunication.buttonState)
-            mr.material.SetColor("_Color", Color.blue);
+            mr.material.SetColor("_Color", Color.magenta);
         else
             mr.material.SetColor("_Color", Color.white);
     }

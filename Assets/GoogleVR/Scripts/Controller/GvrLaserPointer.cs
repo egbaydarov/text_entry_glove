@@ -19,10 +19,13 @@
 // The controller is not available for versions of Unity without the
 // GVR native integration.
 
+using Boo.Lang;
 using System;
 using TextEntry;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
+using Valve.VR.InteractionSystem;
 
 /// <summary>Implementation of GvrBasePointer for a laser pointer visual.</summary>
 /// <remarks>
@@ -59,6 +62,9 @@ public class GvrLaserPointer : GvrBasePointer
 
     public GameObject reticle;
 
+    List<GameObject> trailPoints = new List<GameObject>();
+
+    private LineRenderer line = new LineRenderer();
 
     /// <summary>Gets the visual object for the laser beam.</summary>
     /// <value>The visual object for the laser beam.</value>
@@ -104,6 +110,19 @@ public class GvrLaserPointer : GvrBasePointer
 
         Server.x = raycastResult.worldPosition.x;
         Server.y = raycastResult.worldPosition.y;
+        if (SerialCommunication.buttonState)
+        {
+            GameObject trailPoint = new GameObject();
+            trailPoint.transform.position = raycastResult.worldPosition + new Vector3(0, 0, -50);
+
+            trailPoints.Add(trailPoint);
+
+
+            line.positionCount = trailPoints.Count;
+            for (int i = 0; i < trailPoints.Count; ++i)
+                line.SetPosition(i, trailPoints[i].transform.position);
+        }
+
 
         isHittingTarget = true;
     }
@@ -117,13 +136,18 @@ public class GvrLaserPointer : GvrBasePointer
     /// <inheritdoc/>
     public override void OnPointerClickDown()
     {
+        line.startWidth = 10f;
+        line.endWidth = 20f;
         Server.OnPointerDown();
     }
 
     /// <inheritdoc/>
     public override void OnPointerClickUp()
     {
+        trailPoints.ForEach((x) => Destroy(x));
+        trailPoints.Clear();
         Server.OnPointerUp();
+
     }
 
     /// <inheritdoc/>
@@ -156,6 +180,7 @@ public class GvrLaserPointer : GvrBasePointer
     {
         LaserVisual = GetComponent<GvrLaserVisual>();
         reticle = GameObject.FindWithTag("KeyboardDot");
+        line = GetComponent<LineRenderer>();
     }
 
     private void Update()
