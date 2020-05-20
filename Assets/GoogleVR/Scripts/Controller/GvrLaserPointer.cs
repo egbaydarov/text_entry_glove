@@ -121,6 +121,8 @@ public class GvrLaserPointer : GvrBasePointer
             line.positionCount = trailPoints.Count;
             for (int i = 0; i < trailPoints.Count; ++i)
                 line.SetPosition(i, trailPoints[i].transform.position);
+
+
         }
 
 
@@ -139,6 +141,11 @@ public class GvrLaserPointer : GvrBasePointer
         line.startWidth = 10f;
         line.endWidth = 20f;
         Server.OnPointerDown();
+
+        if(!(Server.x > -530 && Server.y < -100 && Server.x < -450 && Server.y > -220))
+        {
+            Server.shiftReset();
+        }
     }
 
     /// <inheritdoc/>

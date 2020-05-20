@@ -35,7 +35,11 @@ public class Server : MonoBehaviour
 
 	static string data = "";
 
+	static private Shift shift;
 
+	static private Image im;
+
+	static private GameObject go;
 
 	void Start()
 	{
@@ -48,6 +52,10 @@ public class Server : MonoBehaviour
 		recieveThread.IsBackground = true;
 		recieveThread.Start();
 
+		go = GameObject.Find("keyboard");
+		shift = go.GetComponent<Shift>();
+		im = GetComponent<Image>();
+
 
 	}
 
@@ -56,6 +64,7 @@ public class Server : MonoBehaviour
 	{
 		if (isDown)
 		{
+			Debug.Log(x + " " + y + " ");
 			data += ((x + 540) + " ; " + (-y + 1950) + " ;").ToString();
 		}
 	}
@@ -103,6 +112,7 @@ public class Server : MonoBehaviour
 			tcpListenerSend.Start();
 			sendClient = tcpListenerSend.AcceptTcpClient();
 			NetworkStream stream = sendClient.GetStream();
+			Debug.Log("Server is listening");
 
 		}
 		catch (SocketException socketException)
@@ -150,5 +160,14 @@ public class Server : MonoBehaviour
 	public static void OnPointerDown()
 	{
 		isDown = true;
+		
+	}
+	public static void shiftReset()
+	{
+		if (shift.i == 1)
+		{
+			im.sprite = shift.small;
+			shift.i = 0;
+		}
 	}
 }
