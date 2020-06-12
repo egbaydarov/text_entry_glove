@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -14,160 +15,191 @@ using UnityEngine.UI;
 public class Server : MonoBehaviour
 {
 
-	public string mytext;
+    public string mytext;
 
-	private TcpListener tcpListenerSend;
+    Socket udpClient;
 
-	private Thread sendThread;
+    private TcpListener Listener = null;
 
-	public static TcpClient sendClient;
+    private static Socket Client = null;
 
-	private TcpListener tcpRecieveListener;
+    public static float x;
+    public static float y;
 
-	private Thread recieveThread;
+    public static bool isDown = false;
 
-	private TcpClient recieveClient;
+    static string data = "";
 
-	public static float x;
-	public static float y;
+    static private Shift shift;
 
-	public static bool isDown = false;
+    static private Image im;
 
-	static string data = "";
+    static private GameObject go;
 
-	static private Shift shift;
+    int BROADCAST_PORT = 9876;
+    int DATA_PORT = 1488;
 
-	static private Image im;
+    void Start()
+    {
 
-	static private GameObject go;
+        NetworkSetup();
 
-	void Start()
-	{
+        Debug.Log($"Server: {Listener.LocalEndpoint}");
 
-		sendThread = new Thread(new ThreadStart(CreateSendListener));
-		sendThread.IsBackground = true;
-		sendThread.Start();
+        var addr = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
+        Debug.Log($"local ip: {addr[addr.Length - 1].MapToIPv4()}");
 
-		recieveThread = new Thread(new ThreadStart(CreateRecieveListener));
-		recieveThread.IsBackground = true;
-		recieveThread.Start();
+        FindClient();
 
-		go = GameObject.Find("keyboard");
-		shift = go.GetComponent<Shift>();
-		im = GetComponent<Image>();
+        Thread textUpdate = new Thread(new ThreadStart(ReadFromClient));
+        textUpdate.IsBackground = true;
+        textUpdate.Start();
 
 
-	}
+        go = GameObject.Find("keyboard");
+        shift = go.GetComponent<Shift>();
+        im = GetComponent<Image>();
+
+    }
+
+    void FindClient()
+    {
+        new Thread(() =>
+        {
+            Debug.Log("Waiting for client . . .");
+
+            Task<Socket> connection = Listener.AcceptSocketAsync();
+
+            while (!connection.IsCompleted)
+                BroadcastIP();
+
+            Client = connection.Result;
+            Debug.Log("Socket connected");
+        }).Start();
+    }
 
 
-	void Update()
-	{
-		if (isDown)
-		{
-			Debug.Log(x + " " + y + " ");
-			data += ((x + 540) + " ; " + (-y + 1950) + " ;").ToString();
-		}
-	}
+    void Update()
+    {
+        if (isDown)
+        {
+            Debug.Log(x + " " + y + " ");
+            data += ((x + 540) + ";" + (-y + 1950) + ";").ToString();
+        }
+    }
+
+    bool SocketConnected(Socket s)
+    {
+        bool part1 = s.Poll(1000, SelectMode.SelectRead);
+        bool part2 = (s.Available == 0);
+        if (part1 && part2)
+            return false;
+        else
+            return true;
+    }
+
+    public void ReadFromClient()
+    {
+        new Thread(() =>
+        {
+            byte[] bytes = new byte[1024];
+
+            while (true)
+            {
+                try
+                {
+
+                    if (Client == null)
+                        continue;
+
+                    if (!SocketConnected(Client))
+                    {
+                        Client = null;
+                        FindClient();
+                        continue;
+                    }
 
 
-	private void CreateRecieveListener()
-	{
-		try
-		{
-			tcpRecieveListener = new TcpListener(IPAddress.Parse("0.0.0.0"), 8080);
-			tcpRecieveListener.Start();
-			Debug.Log("Server is listening");
-			Byte[] bytes = new Byte[1024];
-			while (true)
-			{
-				using (recieveClient = tcpRecieveListener.AcceptTcpClient())
-				{
-					using (NetworkStream stream = recieveClient.GetStream())
-					{
-						int length;
-						while ((length = stream.Read(bytes, 0, bytes.Length)) != 0)
-						{
-							var incommingData = new byte[length];
-							Array.Copy(bytes, 0, incommingData, 0, length);
-							string clientMessage = Encoding.UTF8.GetString(incommingData);
-							Debug.Log("Recieved text: " + clientMessage);
-							mytext = clientMessage;
-						}
-					}
-				}
-			}
-		}
-		catch (SocketException socketException)
-		{
-			Debug.Log("SocketException " + socketException.ToString());
-		}
-	}
+                    Debug.Log("Waiting for data from socket . . .");
 
-	private void CreateSendListener()
-	{
-		try
-		{
-			// Create listener on localhost port 8080. 			
-			tcpListenerSend = new TcpListener(IPAddress.Parse("0.0.0.0"), 8000);
-			tcpListenerSend.Start();
-			sendClient = tcpListenerSend.AcceptTcpClient();
-			NetworkStream stream = sendClient.GetStream();
-			Debug.Log("Server is listening");
+                    int length = Client.Receive(bytes);
 
-		}
-		catch (SocketException socketException)
-		{
-			Debug.Log("SocketException " + socketException.ToString());
-		}
-	}
+                    if (length != 0)
+                    {
+                        string clientMessage = Encoding.UTF8.GetString(bytes, 0, length).Split('\0')[0];
+                        Debug.Log("Recieved text: " + clientMessage);
+                        mytext = clientMessage;
+                    }
+                }
+                catch (SocketException socketException)
+                {
+                    Debug.Log("ReadFromClient: " + socketException.ToString());
+                }
+            }
+        }).Start();
+    }
 
 
-	public static void Send(string message)
-	{
-		if (sendClient == null)
-		{
-			return;
-		}
-		Vector3 mousePos = Input.mousePosition;
-		try
-		{
-			NetworkStream stream = sendClient.GetStream();
-			if (stream.CanWrite)
-			{
+    public static void SendToClient(string message)
+    {
+        try
+        {
+            Client.Send(Encoding.ASCII.GetBytes(message));
+        }
+        catch (SocketException socketException)
+        {
+            Debug.Log("SendToClient: " + socketException);
+        }
+    }
 
-				byte[] byteArrayMessage = Encoding.ASCII.GetBytes(message);
-				stream.Write(byteArrayMessage, 0, byteArrayMessage.Length);
-			}
-		}
-		catch (SocketException socketException)
-		{
-			Debug.Log("Socket exception: " + socketException);
-		}
-	}
+    private void NetworkSetup()
+    {
+        Listener = new TcpListener(IPAddress.Parse("0.0.0.0"), DATA_PORT);
+        Listener.Start();
 
-	private void OnApplicationQuit()
-	{
-		tcpRecieveListener.Stop();
-		tcpListenerSend.Stop();
-	}
-	public static void OnPointerUp()
-	{
-		isDown = false;
-		Send(data + "\r\n");
-		data = "";
-	}
+        udpClient = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        
 
-	public static void OnPointerDown()
-	{
-		isDown = true;
-		
-	}
-	public static void shiftReset()
-	{
-		if (shift.i == 1)
-		{
-			im.sprite = shift.small;
-			shift.i = 0;
-		}
-	}
+    }
+
+    private void BroadcastIP()
+    {
+        var addr = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
+        IPAddress broadcast = IPAddress.Parse("192.168.1.255");
+        IPEndPoint ep = new IPEndPoint(broadcast, BROADCAST_PORT);
+
+
+        var data = Encoding.UTF8.GetBytes(addr[addr.Length - 1].ToString());
+        udpClient.SendTo(data, ep);
+    }
+
+
+    private void OnApplicationQuit()
+    {
+        Listener.Stop();
+    }
+
+    public static void OnPointerUp()
+    {
+        isDown = false;
+
+        if (Client != null && Client.Connected)
+            SendToClient(data + "\r\n");
+
+        data = "";
+    }
+
+    public static void OnPointerDown()
+    {
+        isDown = true;
+
+    }
+    public static void shiftReset()
+    {
+        if (shift.i == 1)
+        {
+            im.sprite = shift.small;
+            shift.i = 0;
+        }
+    }
 }

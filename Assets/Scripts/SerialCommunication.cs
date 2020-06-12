@@ -13,7 +13,7 @@ namespace TextEntry
     {
 
         public static int baudrate = 250000;
-        public static string port_name = "\\\\.\\COM11";
+        public static string port_name = "\\\\.\\COM13";
         public static SerialPort stream = new SerialPort(port_name, baudrate);
 
         string ArduinoSerialData;
@@ -68,16 +68,16 @@ namespace TextEntry
                 float ro = float.Parse(SplitData[6]);
 
                 cRotation = new Quaternion(qy, qz, qx, qw);
-                 
+
                 buttonState = int.Parse(SplitData[7]) == 0;
             }
             catch (IOException)
             {
                 TryClose();
             }
-            catch(InvalidOperationException)
+            catch (InvalidOperationException)
             {
-                Debug.Log("Glove not Connected");
+                //Debug.Log("Glove not Connected");
             }
         }
 
@@ -105,8 +105,9 @@ namespace TextEntry
                 StartCoroutine(StartDelay(10000));
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.Log(ex.Message);
                 return false;
             }
         }
