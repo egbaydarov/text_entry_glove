@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 public class Server : MonoBehaviour
@@ -17,7 +19,7 @@ public class Server : MonoBehaviour
 
     public string mytext;
 
-    Socket udpClient;
+    Socket udpSocket;
 
     private TcpListener Listener = null;
 
@@ -36,18 +38,25 @@ public class Server : MonoBehaviour
 
     static private GameObject go;
 
-    int BROADCAST_PORT = 9876;
-    int DATA_PORT = 1488;
+    static int BROADCAST_PORT = 9876;
+    static int DATA_PORT = 1488;
+
+    static IPAddress broadcast = null;
+    IPEndPoint ep = null;
+
+    int keyboard_x;
+    int keyboard_y;
 
     void Start()
     {
 
         NetworkSetup();
 
-        Debug.Log($"Server: {Listener.LocalEndpoint}");
+        broadcast = FindBroadcastAdress();
+        ep = new IPEndPoint(broadcast, BROADCAST_PORT);
 
-        var addr = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
-        Debug.Log($"local ip: {addr[addr.Length - 1].MapToIPv4()}");
+        Debug.Log($"broadcast ip: {broadcast}");
+
 
         FindClient();
 
@@ -62,19 +71,77 @@ public class Server : MonoBehaviour
 
     }
 
+    IPAddress FindBroadcastAdress()
+    {
+        IPAddress broadcast = null;
+        IPAddress hostIP = null;
+
+        foreach (var netInterface in NetworkInterface.GetAllNetworkInterfaces())
+        {
+            if (netInterface.NetworkInterfaceType == NetworkInterfaceType.Wireless80211
+                || netInterface.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
+            {
+                var address = netInterface.GetIPProperties().UnicastAddresses[netInterface.GetIPProperties().UnicastAddresses.Count - 1];
+
+                hostIP = address.Address;
+
+                var addressInt = BitConverter.ToInt32(address.Address.GetAddressBytes(), 0);
+
+                var maskInt = BitConverter.ToInt32(address.IPv4Mask.GetAddressBytes(), 0);
+                var broadcastInt = addressInt | ~maskInt;
+                broadcast = new IPAddress(BitConverter.GetBytes(broadcastInt));
+                ep = new IPEndPoint(broadcast, BROADCAST_PORT);
+            }
+        }
+
+        IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
+        bool isLocal = false;
+
+        foreach (IPAddress localIP in localIPs)
+        {
+            if (hostIP.Equals(localIP))
+            {
+                isLocal = true;
+                break;
+            }
+        }
+
+        if (broadcast == null || !isLocal)
+            throw new ApplicationException("Broadcast IP NOT FOUND.");
+
+        return broadcast;
+    }
+
     void FindClient()
     {
         new Thread(() =>
         {
-            Debug.Log("Waiting for client . . .");
+            while (true)//TODO можно и красиво написать на самом деле, но потом
+                try
+                {
+                    Debug.Log("Waiting for client . . .");
 
-            Task<Socket> connection = Listener.AcceptSocketAsync();
+                    Task<Socket> connection = Listener.AcceptSocketAsync();
 
-            while (!connection.IsCompleted)
-                BroadcastIP();
+                    while (!connection.IsCompleted)
+                        BroadcastIP();
 
-            Client = connection.Result;
-            Debug.Log("Socket connected");
+                    Client = connection.Result;
+
+                    byte[] bytes = new byte[1024];
+                    int length = Client.Receive(bytes);
+                    var client_xy = Encoding.UTF8.GetString(bytes, 0, length).Split(' ');
+                    keyboard_y = int.Parse(client_xy[0]);
+                    keyboard_x = int.Parse(client_xy[1]);
+                    Debug.Log($"Height - {keyboard_y}, Width - {keyboard_x}");
+
+                    Debug.Log("Socket connected");
+                    break;
+                }
+                catch
+                {
+                    
+                }
         }).Start();
     }
 
@@ -157,27 +224,21 @@ public class Server : MonoBehaviour
         Listener = new TcpListener(IPAddress.Parse("0.0.0.0"), DATA_PORT);
         Listener.Start();
 
-        udpClient = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        
+        udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        udpSocket.DontFragment = true;
+        udpSocket.EnableBroadcast = true;
+        udpSocket.MulticastLoopback = false;
 
     }
 
     private void BroadcastIP()
     {
         var addr = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
-        IPAddress broadcast = IPAddress.Parse("192.168.1.255");
-        IPEndPoint ep = new IPEndPoint(broadcast, BROADCAST_PORT);
-
 
         var data = Encoding.UTF8.GetBytes(addr[addr.Length - 1].ToString());
-        udpClient.SendTo(data, ep);
+        udpSocket.SendTo(data, ep);
     }
 
-
-    private void OnApplicationQuit()
-    {
-        Listener.Stop();
-    }
 
     public static void OnPointerUp()
     {
