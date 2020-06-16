@@ -13,7 +13,7 @@ namespace TextEntry
     {
 
         public static int baudrate = 250000;
-        public static string port_name = "\\\\.\\COM13";
+        public static string port_name = "\\\\.\\COM3";
         public static SerialPort stream = new SerialPort(port_name, baudrate);
 
         string ArduinoSerialData;
