@@ -464,8 +464,8 @@ namespace GoogleVR.Demos
                 return;
             }
 
-            GvrLaserPointer pointer =
-                controllerPointers[activeControllerPointer].GetComponentInChildren<GvrLaserPointer>(
+            GlovePointer pointer =
+                controllerPointers[activeControllerPointer].GetComponentInChildren<GlovePointer>(
                     true);
             if (pointer != null)
             {

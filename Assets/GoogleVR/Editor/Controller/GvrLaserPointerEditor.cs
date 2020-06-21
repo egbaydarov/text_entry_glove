@@ -24,7 +24,7 @@ using UnityEngine;
 /// Adds buttons that allows user's to set the recommended default values for the different
 /// raycast modes.
 /// </remarks>
-[CustomEditor(typeof(GvrLaserPointer)), CanEditMultipleObjects]
+[CustomEditor(typeof(GlovePointer)), CanEditMultipleObjects]
 public class GvrLaserPointerEditor : Editor
 {
     /// <summary>The name of the **raycast mode** property.</summary>

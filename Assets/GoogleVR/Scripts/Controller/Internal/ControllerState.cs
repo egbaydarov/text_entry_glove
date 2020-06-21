@@ -88,3 +88,5 @@ namespace Gvr.Internal
         }
     }
 }
+
+/// @endcond

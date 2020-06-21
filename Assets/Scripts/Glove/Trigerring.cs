@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Trigerring : MonoBehaviour
 {
-    public MeshRenderer mr;    
+    private MeshRenderer mr;    
     private void Awake()
     {
         mr = GetComponent<MeshRenderer>();
