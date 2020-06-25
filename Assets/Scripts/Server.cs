@@ -150,7 +150,6 @@ public class Server : MonoBehaviour
     {
         if (isDown)
         {
-            Debug.Log(x + " " + y + " ");
             data += ((x + 540) + ";" + (-y + 1950) + ";").ToString();
         }
     }
@@ -212,6 +211,7 @@ public class Server : MonoBehaviour
         try
         {
             Client.Send(Encoding.ASCII.GetBytes(message));
+            Debug.Log($"Sent: {message}");
         }
         catch (SocketException socketException)
         {

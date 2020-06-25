@@ -603,7 +603,6 @@ public class GvrPointerInputModuleImpl
                 EventExecutor.Execute(t.gameObject,
                                       currentPointerData,
                                       ExecuteEvents.pointerEnterHandler);
-
                 currentPointerData.hovered.Add(t.gameObject);
                 t = t.parent;
             }

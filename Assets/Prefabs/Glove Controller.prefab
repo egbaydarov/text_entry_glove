@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6800737335939210735}
   m_Layer: 0
-  m_Name: Controller 1
+  m_Name: Glove Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121,8 +121,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4113274628596779317}
   - component: {fileID: 4113274628596779465}
-  - component: {fileID: 4113274628596779470}
-  - component: {fileID: 4113274628596779471}
+  - component: {fileID: 5619867723290646881}
+  - component: {fileID: 1516230815752274742}
   m_Layer: 0
   m_Name: Pointer
   m_TagString: Untagged
@@ -240,7 +240,7 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &4113274628596779470
+--- !u!114 &5619867723290646881
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -249,39 +249,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 4113274628596779468}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4ee199cdc1304b2090f019e4f488674, type: 3}
+  m_Script: {fileID: 11500000, guid: 96043de3d3a44f74596f3b84e054704d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reticle: {fileID: 0}
-  controller: {fileID: 0}
-  laserColor: {r: 0.2264151, g: 0.4036375, b: 1, a: 0.25}
-  laserColorEnd: {r: 0.3962264, g: 0.5043637, b: 1, a: 0}
-  maxLaserDistance: 20
-  lerpSpeed: 20
-  lerpThreshold: 1
-  shrinkLaser: 0
-  shrunkScale: 0.2
-  beginShrinkAngleDegrees: 0
-  endShrinkAngleDegrees: 2
---- !u!114 &4113274628596779471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4113274628596779468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51b65678ccdd949e9a58874d2880c0ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  raycastMode: 1
+  raycastMode: 2
   overridePointerCamera: {fileID: 0}
   drawDebugRays: 0
-  maxPointerDistance: 20
-  defaultReticleDistance: 20
+  maxPointerDistance: 1000
+  defaultReticleDistance: 1000
   overrideCameraRayIntersectionDistance: 0
-  reticle: {fileID: 0}
+  pointer_dot: {fileID: 0}
+--- !u!114 &1516230815752274742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4113274628596779468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a7fe97f073039643a944fbc3b6c80d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4113274628896073250
 GameObject:
   m_ObjectHideFlags: 0

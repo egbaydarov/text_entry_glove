@@ -19,13 +19,8 @@
 // The controller is not available for versions of Unity without the
 // GVR native integration.
 
-using Boo.Lang;
-using System;
-using TextEntry;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
-using Valve.VR.InteractionSystem;
 
 /// <summary>Implementation of GvrBasePointer for a laser pointer visual.</summary>
 /// <remarks>
@@ -59,12 +54,6 @@ public class GvrLaserPointer : GvrBasePointer
     private const float RETICLE_VISUAL_RATIO = 0.1f;
 
     private bool isHittingTarget;
-
-    public GameObject reticle;
-
-    List<GameObject> trailPoints = new List<GameObject>();
-
-    private LineRenderer line = new LineRenderer();
 
     /// <summary>Gets the visual object for the laser beam.</summary>
     /// <value>The visual object for the laser beam.</value>
@@ -106,55 +95,27 @@ public class GvrLaserPointer : GvrBasePointer
     public override void OnPointerHover(RaycastResult raycastResult, bool isInteractive)
     {
         LaserVisual.SetDistance(raycastResult.distance);
-        reticle.transform.position = raycastResult.worldPosition;
-
-        Server.x = raycastResult.worldPosition.x;
-        Server.y = raycastResult.worldPosition.y;
-        if (SerialCommunication.buttonState)
-        {
-            GameObject trailPoint = new GameObject();
-            trailPoint.transform.position = raycastResult.worldPosition + new Vector3(0, 0, -50);
-
-            trailPoints.Add(trailPoint);
-
-
-            line.positionCount = trailPoints.Count;
-            for (int i = 0; i < trailPoints.Count; ++i)
-                line.SetPosition(i, trailPoints[i].transform.position);
-
-
-        }
-
-
         isHittingTarget = true;
     }
 
     /// <inheritdoc/>
     public override void OnPointerExit(GameObject previousObject)
     {
+        // Don't set the distance immediately.
+        // If we exit/enter an object on the same frame, then SetDistance
+        // will be called twice which could cause an issue with lerping the reticle.
+        // If we don't re-enter a new object, the distance will be set in Update.
         isHittingTarget = false;
     }
 
     /// <inheritdoc/>
     public override void OnPointerClickDown()
     {
-        line.startWidth = 10f;
-        line.endWidth = 20f;
-        Server.OnPointerDown();
-
-        if(!(Server.x > -530 && Server.y < -100 && Server.x < -450 && Server.y > -220))
-        {
-            Server.shiftReset();
-        }
     }
 
     /// <inheritdoc/>
     public override void OnPointerClickUp()
     {
-        trailPoints.ForEach((x) => Destroy(x));
-        trailPoints.Clear();
-        Server.OnPointerUp();
-
     }
 
     /// <inheritdoc/>
@@ -164,8 +125,14 @@ public class GvrLaserPointer : GvrBasePointer
         {
             float reticleScale = LaserVisual.reticle.transform.localScale.x;
 
+            // Fixed size for enter radius to avoid flickering.
+            // This will cause some slight variability based on the distance of the object
+            // from the camera, and is optimized for the average case.
             enterRadius = LaserVisual.reticle.sizeMeters * 0.5f * RETICLE_VISUAL_RATIO;
 
+            // Dynamic size for exit radius.
+            // Always correct because we know the intersection point of the object and can
+            // therefore use the correct radius based on the object's distance from the camera.
             exitRadius =
                 reticleScale * LaserVisual.reticle.ReticleMeshSizeMeters * RETICLE_VISUAL_RATIO;
         }
@@ -176,6 +143,9 @@ public class GvrLaserPointer : GvrBasePointer
         }
     }
 
+    /// @endcond
+    /// @cond
+    /// <inheritdoc/>
     protected override void Start()
     {
         base.Start();
@@ -183,13 +153,15 @@ public class GvrLaserPointer : GvrBasePointer
         LaserVisual.SetDistance(defaultReticleDistance, true);
     }
 
+    /// @cond
+    /// <summary>This MonoBehavior's Awake method.</summary>
     private void Awake()
     {
         LaserVisual = GetComponent<GvrLaserVisual>();
-        reticle = GameObject.FindWithTag("KeyboardDot");
-        line = GetComponent<LineRenderer>();
     }
 
+    /// @endcond
+    /// <summary>This MonoBehavior's Update method.</summary>
     private void Update()
     {
         if (isHittingTarget)
@@ -199,8 +171,4 @@ public class GvrLaserPointer : GvrBasePointer
 
         LaserVisual.SetDistance(defaultReticleDistance);
     }
-
-    public override bool TriggerUp => !SerialCommunication.buttonState;
-    public override bool Triggering => SerialCommunication.buttonState;
-    public override bool TriggerDown => SerialCommunication.buttonState;
 }

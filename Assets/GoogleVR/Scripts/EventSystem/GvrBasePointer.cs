@@ -16,7 +16,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using TextEntry;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -782,7 +781,6 @@ public abstract class GvrBasePointer : MonoBehaviour, IGvrControllerInputDeviceR
                     pointerRay = CalculateRay(this, RaycastMode.Direct);
                     Gizmos.DrawLine(pointerRay.ray.origin,
                                     pointerRay.ray.GetPoint(pointerRay.distance));
-                    
                     break;
                 case RaycastMode.Hybrid:
                     // Direct line.
