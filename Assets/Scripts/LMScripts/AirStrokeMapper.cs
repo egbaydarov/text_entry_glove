@@ -22,7 +22,7 @@ namespace LeapMotionGesture
         private string reminder = "The Z axis of the GameObject, which holds this component, serves as a normal of a plane to which Followee's movements are projected";
 #pragma warning restore 414
 
-        private bool pinchIsOn;
+        public static bool pinchIsOn;
         private Vector2 prevProjectedPoint;
 
 

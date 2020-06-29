@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - KeyboardDot
+  - KeyboardCanvas
+  - ReticlePointer
+  - LMPointer
   layers:
   - Default
   - TransparentFX

@@ -124,7 +124,10 @@ public class Server : MonoBehaviour
                     Task<Socket> connection = Listener.AcceptSocketAsync();
 
                     while (!connection.IsCompleted)
+                    {
+                        Thread.Sleep(1000);
                         BroadcastIP();
+                    }
 
                     Client = connection.Result;
 
