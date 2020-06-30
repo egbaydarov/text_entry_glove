@@ -76,6 +76,13 @@ public class Server : MonoBehaviour
         IPAddress broadcast = null;
         IPAddress hostIP = null;
 
+        IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
+
+        IPAddress localIP = localIPs[localIPs.Length - 1];
+
+        bool success = false;
+
+
         foreach (var netInterface in NetworkInterface.GetAllNetworkInterfaces())
         {
             if (netInterface.NetworkInterfaceType == NetworkInterfaceType.Wireless80211
@@ -83,30 +90,24 @@ public class Server : MonoBehaviour
             {
                 var address = netInterface.GetIPProperties().UnicastAddresses[netInterface.GetIPProperties().UnicastAddresses.Count - 1];
 
+
                 hostIP = address.Address;
+                if (hostIP.Equals(localIP))
+                {
 
-                var addressInt = BitConverter.ToInt32(address.Address.GetAddressBytes(), 0);
+                    var addressInt = BitConverter.ToInt32(address.Address.GetAddressBytes(), 0);
 
-                var maskInt = BitConverter.ToInt32(address.IPv4Mask.GetAddressBytes(), 0);
-                var broadcastInt = addressInt | ~maskInt;
-                broadcast = new IPAddress(BitConverter.GetBytes(broadcastInt));
-                ep = new IPEndPoint(broadcast, BROADCAST_PORT);
+                    var maskInt = BitConverter.ToInt32(address.IPv4Mask.GetAddressBytes(), 0);
+                    var broadcastInt = addressInt | ~maskInt;
+                    broadcast = new IPAddress(BitConverter.GetBytes(broadcastInt));
+                    ep = new IPEndPoint(broadcast, BROADCAST_PORT);
+                    success = true;
+                    break;
+                }
             }
         }
 
-        IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
-        bool isLocal = false;
-
-        foreach (IPAddress localIP in localIPs)
-        {
-            if (hostIP.Equals(localIP))
-            {
-                isLocal = true;
-                break;
-            }
-        }
-
-        if (broadcast == null || !isLocal)
+        if (broadcast == null || !success)
             throw new ApplicationException("Broadcast IP NOT FOUND.");
 
         return broadcast;
@@ -143,7 +144,7 @@ public class Server : MonoBehaviour
                 }
                 catch
                 {
-                    
+
                 }
         }).Start();
     }
