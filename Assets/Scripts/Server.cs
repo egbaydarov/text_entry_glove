@@ -46,6 +46,7 @@ public class Server : MonoBehaviour
 
     int keyboard_x;
     int keyboard_y;
+    int screen_y;
 
     void Start()
     {
@@ -137,7 +138,8 @@ public class Server : MonoBehaviour
                     var client_xy = Encoding.UTF8.GetString(bytes, 0, length).Split(' ');
                     keyboard_y = int.Parse(client_xy[0]);
                     keyboard_x = int.Parse(client_xy[1]);
-                    Debug.Log($"Height - {keyboard_y}, Width - {keyboard_x}");
+                    screen_y = int.Parse(client_xy[2]);
+                    Debug.Log($"Height - {keyboard_y}, Width - {keyboard_x}, Screen Height - {keyboard_x}");
 
                     Debug.Log("Socket connected");
                     break;
