@@ -139,7 +139,12 @@ public class ReticlePointer : GvrBasePointer
 
         Server.OnPointerDown();
 
-        if (!(Server.x > -530 && Server.y < -100 && Server.x < -450 && Server.y > -220))
+        float x_min = -Server.keyboard_x/2 +10;
+        float x_max = -Server.keyboard_x/2 +10 + (Server.keyboard_x-120)/11;
+        float y_min = -Server.keyboard_y/2+(float)(0.835*Server.keyboard_y-45)/4 + 20;
+        float y_max = -Server.keyboard_y/2+(float)(0.835*Server.keyboard_y-45)/2 + 20;
+        Debug.Log(x_min + " " + x_max + " " + " "+ y_min+ y_max);
+        if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min))
         {
             Server.shiftReset();
         }
