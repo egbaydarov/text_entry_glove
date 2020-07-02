@@ -7,25 +7,29 @@ using UnityEngine.UI;
 
 public class TextHelper: MonoBehaviour
 {
-    public TMP_InputField intext;
-    public GameObject go;
+    [SerializeField]
+    private TMP_InputField intext;
+    private GameObject go;
     private Server server;
-
+    // Prediction buttons 
 
     private void Awake()
     {
-        server = go.GetComponent<Server>();
+        //server = go.GetComponent<Server>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         go = GameObject.Find("keyboard");
+        server = go.GetComponent<Server>();
     }
 
     // Update is called once per frame
     void Update()
-    {
+    { 
+        // parse mytext in array, middle word goes to intext 
         intext.text = server.mytext.Split('#')[0];
+        
     }
 }
