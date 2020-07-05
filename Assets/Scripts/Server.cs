@@ -44,9 +44,10 @@ public class Server : MonoBehaviour
     static IPAddress broadcast = null;
     IPEndPoint ep = null;
 
-    int keyboard_x;
-    int keyboard_y;
+    public static int keyboard_x;
+    public static int keyboard_y;
     int screen_y;
+    public static bool isSizeSet;
 
     void Start()
     {
@@ -76,42 +77,47 @@ public class Server : MonoBehaviour
     {
         IPAddress broadcast = null;
         IPAddress hostIP = null;
-
         IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
 
-        IPAddress localIP = localIPs[localIPs.Length - 1];
 
         bool success = false;
+        int i = 1;
 
-
-        foreach (var netInterface in NetworkInterface.GetAllNetworkInterfaces())
+        while (i <= localIPs.Length && !success)
         {
-            if (netInterface.NetworkInterfaceType == NetworkInterfaceType.Wireless80211
-                || netInterface.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
+            IPAddress localIP = localIPs[localIPs.Length - i++];
+
+
+            foreach (var netInterface in NetworkInterface.GetAllNetworkInterfaces())
             {
-                var address = netInterface.GetIPProperties().UnicastAddresses[netInterface.GetIPProperties().UnicastAddresses.Count - 1];
-
-
-                hostIP = address.Address;
-                if (hostIP.Equals(localIP))
+                if (netInterface.NetworkInterfaceType == NetworkInterfaceType.Wireless80211
+                    || netInterface.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
                 {
+                    var address = netInterface.GetIPProperties().UnicastAddresses[netInterface.GetIPProperties().UnicastAddresses.Count - 1];
 
-                    var addressInt = BitConverter.ToInt32(address.Address.GetAddressBytes(), 0);
 
-                    var maskInt = BitConverter.ToInt32(address.IPv4Mask.GetAddressBytes(), 0);
-                    var broadcastInt = addressInt | ~maskInt;
-                    broadcast = new IPAddress(BitConverter.GetBytes(broadcastInt));
-                    ep = new IPEndPoint(broadcast, BROADCAST_PORT);
-                    success = true;
-                    break;
+                    hostIP = address.Address;
+
+                    Debug.Log(hostIP);
+                    if (hostIP.Equals(localIP))
+                    {
+
+                        var addressInt = BitConverter.ToInt32(address.Address.GetAddressBytes(), 0);
+
+                        var maskInt = BitConverter.ToInt32(address.IPv4Mask.GetAddressBytes(), 0);
+                        var broadcastInt = addressInt | ~maskInt;
+                        broadcast = new IPAddress(BitConverter.GetBytes(broadcastInt));
+                        ep = new IPEndPoint(broadcast, BROADCAST_PORT);
+                        success = true;
+                        break;
+                    }
                 }
+
             }
+
         }
-
-        if (broadcast == null || !success)
-            throw new ApplicationException("Broadcast IP NOT FOUND.");
-
         return broadcast;
+
     }
 
     void FindClient()
@@ -136,10 +142,11 @@ public class Server : MonoBehaviour
                     byte[] bytes = new byte[1024];
                     int length = Client.Receive(bytes);
                     var client_xy = Encoding.UTF8.GetString(bytes, 0, length).Split(' ');
-                    keyboard_y = int.Parse(client_xy[0]);
+                    screen_y = int.Parse(client_xy[0]);
                     keyboard_x = int.Parse(client_xy[1]);
-                    screen_y = int.Parse(client_xy[2]);
-                    Debug.Log($"Height - {keyboard_y}, Width - {keyboard_x}, Screen Height - {keyboard_x}");
+                    keyboard_y = int.Parse(client_xy[2]);
+
+                    Debug.Log($"Height - {keyboard_y}, Width - {keyboard_x}, Screen Height - {screen_y}");
 
                     Debug.Log("Socket connected");
                     break;
@@ -156,7 +163,16 @@ public class Server : MonoBehaviour
     {
         if (isDown)
         {
-            data += ((x + 540) + ";" + (-y + 1950) + ";").ToString();
+            //data += ((x + 540) + ";" + (-y + 1950) + ";").ToString();
+            Debug.Log("x: " + x + " ; y: " + y);
+            float data_x = (float)(x + keyboard_x / 2.0);
+            float data_y = (float)(-y + screen_y - (keyboard_y / 2.0));
+            data += (data_x + ";" + data_y + ";").ToString();
+        }
+
+        if (keyboard_y > 0 && keyboard_x > 0 && isSizeSet == false)
+        {
+            isSizeSet = true;
         }
     }
 

@@ -10,14 +10,13 @@ public class TrailRender : MonoBehaviour
 
     private LineRenderer line;
 
-    // Start is called before the first frame update
+    public float LINE_WIDTH;
+
     void Start()
     {
-        line.startWidth = 10f;
-        line.endWidth = 20f;
+        
     }
 
-    // Update is called once per frame
     void Update()
     {
         line.positionCount = trailPoints.Count;
@@ -28,6 +27,8 @@ public class TrailRender : MonoBehaviour
     private void Awake()
     {
         line = GetComponent<LineRenderer>();
+        line.endWidth = LINE_WIDTH;
+        line.startWidth = LINE_WIDTH;
     }
 
 
