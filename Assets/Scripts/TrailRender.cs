@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Leap;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,11 +11,13 @@ public class TrailRender : MonoBehaviour
 
     private LineRenderer line;
 
-    public float LINE_WIDTH;
+    public float LINE_WIDTH = 0.01f;
+
+    public Vector3 Drawing_Surface = new Vector3(0, 0, -0.01f);
 
     void Start()
     {
-        
+
     }
 
     void Update()
@@ -34,7 +37,7 @@ public class TrailRender : MonoBehaviour
 
     public void AddPoint(GameObject trailPoint)
     {
-        trailPoints.Add(trailPoint);    
+        trailPoints.Add(trailPoint);
     }
 
     public void RemoveTrail()

@@ -10,12 +10,12 @@ public class Shift : MonoBehaviour
     public Sprite capital;
     public Sprite constCapital;
 
-    public int i = 0;
+    public int i = 1;
     private Image im;
     void Start()
     {
         im = GetComponent<Image>();
-        im.sprite = small;
+        im.sprite = capital;
     }
 
 

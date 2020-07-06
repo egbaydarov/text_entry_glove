@@ -16,6 +16,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using LeapMotionGesture;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -26,7 +27,11 @@ using UnityEngine.EventSystems;
 [HelpURL("https://developers.google.com/vr/unity/reference/class/GvrReticlePointer")]
 public class ReticlePointer : GvrBasePointer
 {
+    private Transform trLocal;
+    private GameObject canvas;
     TrailRender trRander;
+
+    public KeyCode Gesture_KeyCode = KeyCode.F;
 
     /// <summary>
     /// The constants below are expsed for testing. Minimum inner angle of the reticle (in degrees).
@@ -114,12 +119,12 @@ public class ReticlePointer : GvrBasePointer
         SetPointerTarget(raycastResult.worldPosition, isInteractive);
 
 
-        Server.x = raycastResult.worldPosition.x;
-        Server.y = raycastResult.worldPosition.y;
-        if (Input.GetKey(KeyCode.F))
+        Server.x = trLocal.InverseTransformPoint(raycastResult.worldPosition).x;
+        Server.y = trLocal.InverseTransformPoint(raycastResult.worldPosition).y;
+        if (Triggering)
         {
             GameObject trailPoint = new GameObject();
-            trailPoint.transform.position = raycastResult.worldPosition + new Vector3(0, 0, -50);
+            trailPoint.transform.position = raycastResult.worldPosition + trRander.Drawing_Surface;
 
             trRander.AddPoint(trailPoint);
         }
@@ -139,7 +144,12 @@ public class ReticlePointer : GvrBasePointer
 
         Server.OnPointerDown();
 
-        if (!(Server.x > -530 && Server.y < -100 && Server.x < -450 && Server.y > -220))
+        float x_min = -1080/2 +10;
+        float x_max = -1080/2 +10 + (1080-120)/11;
+        float y_min = -660/2+(float)(0.835*660-45)/4 + 20;
+        float y_max = -660/2+(float)(0.835*660-45)/2 + 20;
+        Debug.Log(x_min + " " + x_max + " " + " "+ y_min+ y_max);
+        if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min))
         {
             Server.shiftReset();
         }
@@ -202,6 +212,8 @@ public class ReticlePointer : GvrBasePointer
     {
         base.Start();
 
+        canvas = GameObject.Find("CanvasKeyboard");
+        trLocal = canvas.transform;
         Renderer rendererComponent = GetComponent<Renderer>();
         rendererComponent.sortingOrder = reticleSortingOrder;
 
@@ -313,7 +325,7 @@ public class ReticlePointer : GvrBasePointer
 
     }
 
-    public override bool TriggerUp => !Input.GetKey(KeyCode.F);
-    public override bool Triggering => Input.GetKey(KeyCode.F);
-    public override bool TriggerDown => Input.GetKey(KeyCode.F);
+    public override bool TriggerUp => !(Input.GetKey(Gesture_KeyCode) || AirStrokeMapper.pinchIsOn);
+    public override bool Triggering => Input.GetKey(Gesture_KeyCode) || AirStrokeMapper.pinchIsOn;
+    public override bool TriggerDown => Input.GetKey(Gesture_KeyCode) || AirStrokeMapper.pinchIsOn;
 }

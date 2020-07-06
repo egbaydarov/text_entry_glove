@@ -44,20 +44,24 @@ public class Server : MonoBehaviour
     static IPAddress broadcast = null;
     IPEndPoint ep = null;
 
+    private static int unity_keyboard_x = 1080;
+    private static int unity_keyboard_y = 660;
+    private static int unity_screen_y = 2214;
     public static int keyboard_x;
     public static int keyboard_y;
     int screen_y;
+    private float coef_x;
+    private float coef_y;
     public static bool isSizeSet;
 
     void Start()
     {
+        go = GameObject.Find("keyboard");
+        shift = go.GetComponent<Shift>();
+        im = GetComponent<Image>();
+
 
         NetworkSetup();
-
-        broadcast = FindBroadcastAdress();
-        ep = new IPEndPoint(broadcast, BROADCAST_PORT);
-
-        Debug.Log($"broadcast ip: {broadcast}");
 
 
         FindClient();
@@ -65,59 +69,51 @@ public class Server : MonoBehaviour
         Thread textUpdate = new Thread(new ThreadStart(ReadFromClient));
         textUpdate.IsBackground = true;
         textUpdate.Start();
-
-
-        go = GameObject.Find("keyboard");
-        shift = go.GetComponent<Shift>();
-        im = GetComponent<Image>();
-
     }
 
     IPAddress FindBroadcastAdress()
     {
         IPAddress broadcast = null;
-        IPAddress hostIP = null;
         IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
 
-
         bool success = false;
-        int i = 1;
 
-        while (i <= localIPs.Length && !success)
+        for (int i = localIPs.Length - 1; i > -1; --i)
         {
-            IPAddress localIP = localIPs[localIPs.Length - i++];
-
+            var localIP = localIPs[i];
 
             foreach (var netInterface in NetworkInterface.GetAllNetworkInterfaces())
             {
                 if (netInterface.NetworkInterfaceType == NetworkInterfaceType.Wireless80211
                     || netInterface.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
                 {
-                    var address = netInterface.GetIPProperties().UnicastAddresses[netInterface.GetIPProperties().UnicastAddresses.Count - 1];
-
-
-                    hostIP = address.Address;
-
-                    Debug.Log(hostIP);
-                    if (hostIP.Equals(localIP))
+                    foreach (var address in netInterface.GetIPProperties().UnicastAddresses)
                     {
+                        IPAddress hostIP = address.Address;
+                        if (hostIP.Equals(localIP))
+                        {
+                            var addressInt = BitConverter.ToInt32(address.Address.GetAddressBytes(), 0);
 
-                        var addressInt = BitConverter.ToInt32(address.Address.GetAddressBytes(), 0);
-
-                        var maskInt = BitConverter.ToInt32(address.IPv4Mask.GetAddressBytes(), 0);
-                        var broadcastInt = addressInt | ~maskInt;
-                        broadcast = new IPAddress(BitConverter.GetBytes(broadcastInt));
-                        ep = new IPEndPoint(broadcast, BROADCAST_PORT);
-                        success = true;
-                        break;
+                            var maskInt = BitConverter.ToInt32(address.IPv4Mask.GetAddressBytes(), 0);
+                            var broadcastInt = addressInt | ~maskInt;
+                            broadcast = new IPAddress(BitConverter.GetBytes(broadcastInt));
+                            ep = new IPEndPoint(broadcast, BROADCAST_PORT);
+                            success = true;
+                            BroadcastIP("HI");
+                        }
                     }
                 }
-
             }
-
         }
-        return broadcast;
 
+
+        if (broadcast == null || !success)
+        {
+            enabled = false;
+            throw new ApplicationException("Broadcast IP NOT FOUND.");
+        }
+
+        return broadcast;
     }
 
     void FindClient()
@@ -133,8 +129,8 @@ public class Server : MonoBehaviour
 
                     while (!connection.IsCompleted)
                     {
-                        Thread.Sleep(1000);
-                        BroadcastIP();
+                        Thread.Sleep(2000);
+                        FindBroadcastAdress();
                     }
 
                     Client = connection.Result;
@@ -145,15 +141,15 @@ public class Server : MonoBehaviour
                     screen_y = int.Parse(client_xy[0]);
                     keyboard_x = int.Parse(client_xy[1]);
                     keyboard_y = int.Parse(client_xy[2]);
-
+                    coef_x = (float)(keyboard_x / (unity_keyboard_x * 1.0));
+                    coef_y = (float)(keyboard_y / (unity_keyboard_y * 1.0));
                     Debug.Log($"Height - {keyboard_y}, Width - {keyboard_x}, Screen Height - {screen_y}");
-
+                    Debug.Log(coef_x + " " + coef_y);
                     Debug.Log("Socket connected");
                     break;
                 }
-                catch
+                catch (Exception ex)
                 {
-
                 }
         }).Start();
     }
@@ -165,15 +161,11 @@ public class Server : MonoBehaviour
         {
             //data += ((x + 540) + ";" + (-y + 1950) + ";").ToString();
             Debug.Log("x: " + x + " ; y: " + y);
-            float data_x = (float)(x + keyboard_x / 2.0);
-            float data_y = (float)(-y + screen_y - (keyboard_y / 2.0));
+            float data_x = (float)(x * coef_x + keyboard_x / 2.0);
+            float data_y = (float)(-y * coef_y + screen_y - (keyboard_y / 2.0));
             data += (data_x + ";" + data_y + ";").ToString();
         }
 
-        if (keyboard_y > 0 && keyboard_x > 0 && isSizeSet == false)
-        {
-            isSizeSet = true;
-        }
     }
 
     bool SocketConnected(Socket s)
@@ -253,11 +245,9 @@ public class Server : MonoBehaviour
 
     }
 
-    private void BroadcastIP()
+    private void BroadcastIP(String text)
     {
-        var addr = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
-
-        var data = Encoding.UTF8.GetBytes(addr[addr.Length - 1].ToString());
+        var data = Encoding.UTF8.GetBytes(text);
         udpSocket.SendTo(data, ep);
     }
 

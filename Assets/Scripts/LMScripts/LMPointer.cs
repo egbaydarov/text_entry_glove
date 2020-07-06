@@ -10,6 +10,8 @@ using Valve.VR.InteractionSystem;
 [HelpURL("https://developers.google.com/vr/unity/reference/class/GvrReticlePointer")]
 public class LMPointer : GvrBasePointer
 {
+    private Transform trLocal;
+    private GameObject canvas;
     TrailRender trRander;
 
     /// <summary>
@@ -91,7 +93,6 @@ public class LMPointer : GvrBasePointer
     /// <inheritdoc/>
     public override void OnPointerEnter(RaycastResult raycastResultResult, bool isInteractive)
     {
-
         SetPointerTarget(raycastResultResult.worldPosition, isInteractive);
     }
 
@@ -103,12 +104,12 @@ public class LMPointer : GvrBasePointer
         LastPointerHoveredResult = raycastResult;
 
 
-        Server.x = raycastResult.worldPosition.x;
-        Server.y = raycastResult.worldPosition.y;
-        if (AirStrokeMapper.pinchIsOn)
+        Server.x = trLocal.InverseTransformPoint(raycastResult.worldPosition).x;
+        Server.y = trLocal.InverseTransformPoint(raycastResult.worldPosition).y;
+        if (Triggering)
         {
             GameObject trailPoint = new GameObject();
-            trailPoint.transform.position = raycastResult.worldPosition + new Vector3(0, 0, -50);
+            trailPoint.transform.position = raycastResult.worldPosition + trRander.Drawing_Surface;
 
             trRander.AddPoint(trailPoint);
         }
@@ -129,9 +130,14 @@ public class LMPointer : GvrBasePointer
 
         Server.OnPointerDown();
 
-        FakePointer.transform.position = LastPointerHoveredResult.worldPosition + new Vector3(0, 0, -50);
+        FakePointer.transform.position = LastPointerHoveredResult.worldPosition + new Vector3(0, 0, -2f);
 
-        if (!(Server.x > -530 && Server.y < -100 && Server.x < -450 && Server.y > -220))
+        float x_min = -1080 / 2 + 10;
+        float x_max = -1080 / 2 + 10 + (1080 - 120) / 11;
+        float y_min = -660 / 2 + (float)(0.835 * 660 - 45) / 4 + 20;
+        float y_max = -660 / 2 + (float)(0.835 * 660 - 45) / 2 + 20;
+        Debug.Log(x_min + " " + x_max + " " + " " + y_min + y_max);
+        if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min))
         {
             Server.shiftReset();
         }
@@ -193,6 +199,9 @@ public class LMPointer : GvrBasePointer
     protected override void Start()
     {
         base.Start();
+
+        canvas = GameObject.Find("CanvasKeyboard");
+        trLocal = canvas.transform;
 
         Renderer rendererComponent = GetComponent<Renderer>();
         rendererComponent.sortingOrder = reticleSortingOrder;
