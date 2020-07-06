@@ -27,8 +27,12 @@ public class GlovePointer : GvrBasePointer
     "Set this field to a non-zero value to override it.")]
     public float overrideCameraRayIntersectionDistance;
 
+    private Transform transform;
+    
+    private GameObject canvas;
+    
     public GameObject pointer_dot;
-
+    
     TrailRender trRander;
     /// <inheritdoc/>
     public override float MaxPointerDistance
@@ -64,8 +68,8 @@ public class GlovePointer : GvrBasePointer
     {
         pointer_dot.transform.position = raycastResult.worldPosition;
 
-        Server.x = raycastResult.worldPosition.x;
-        Server.y = raycastResult.worldPosition.y;
+        Server.x = transform.InverseTransformPoint(raycastResult.worldPosition).x;
+        Server.y = transform.InverseTransformPoint(raycastResult.worldPosition).y;
         if (SerialCommunication.buttonState)
         {
             GameObject trailPoint = new GameObject();
@@ -88,7 +92,12 @@ public class GlovePointer : GvrBasePointer
         
         Server.OnPointerDown();
 
-        if(!(Server.x > -530 && Server.y < -100 && Server.x < -450 && Server.y > -220))
+        float x_min = -1080/2 +10;
+        float x_max = -1080/2 +10 + (1080-120)/11;
+        float y_min = -660/2+(float)(0.835*660-45)/4 + 20;
+        float y_max = -660/2+(float)(0.835*660-45)/2 + 20;
+        Debug.Log(x_min + " " + x_max + " " + " "+ y_min+ y_max);
+        if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min))
         {
             Server.shiftReset();
         }
@@ -111,6 +120,8 @@ public class GlovePointer : GvrBasePointer
     protected override void Start()
     {
         base.Start();
+        canvas = GameObject.Find("CanvasKeyboard");
+        transform = canvas.transform;
     }
 
     private void Awake()

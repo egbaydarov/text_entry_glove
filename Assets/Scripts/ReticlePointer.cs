@@ -26,6 +26,8 @@ using UnityEngine.EventSystems;
 [HelpURL("https://developers.google.com/vr/unity/reference/class/GvrReticlePointer")]
 public class ReticlePointer : GvrBasePointer
 {
+    private Transform transform;
+    private GameObject canvas;
     TrailRender trRander;
 
     /// <summary>
@@ -114,8 +116,8 @@ public class ReticlePointer : GvrBasePointer
         SetPointerTarget(raycastResult.worldPosition, isInteractive);
 
 
-        Server.x = raycastResult.worldPosition.x;
-        Server.y = raycastResult.worldPosition.y;
+        Server.x = transform.InverseTransformPoint(raycastResult.worldPosition).x;
+        Server.y = transform.InverseTransformPoint(raycastResult.worldPosition).y;
         if (Input.GetKey(KeyCode.F))
         {
             GameObject trailPoint = new GameObject();
@@ -139,10 +141,10 @@ public class ReticlePointer : GvrBasePointer
 
         Server.OnPointerDown();
 
-        float x_min = -Server.keyboard_x/2 +10;
-        float x_max = -Server.keyboard_x/2 +10 + (Server.keyboard_x-120)/11;
-        float y_min = -Server.keyboard_y/2+(float)(0.835*Server.keyboard_y-45)/4 + 20;
-        float y_max = -Server.keyboard_y/2+(float)(0.835*Server.keyboard_y-45)/2 + 20;
+        float x_min = -1080/2 +10;
+        float x_max = -1080/2 +10 + (1080-120)/11;
+        float y_min = -660/2+(float)(0.835*660-45)/4 + 20;
+        float y_max = -660/2+(float)(0.835*660-45)/2 + 20;
         Debug.Log(x_min + " " + x_max + " " + " "+ y_min+ y_max);
         if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min))
         {
@@ -207,6 +209,8 @@ public class ReticlePointer : GvrBasePointer
     {
         base.Start();
 
+        canvas = GameObject.Find("CanvasKeyboard");
+        transform = canvas.transform;
         Renderer rendererComponent = GetComponent<Renderer>();
         rendererComponent.sortingOrder = reticleSortingOrder;
 

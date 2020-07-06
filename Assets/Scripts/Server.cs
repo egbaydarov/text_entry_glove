@@ -44,9 +44,14 @@ public class Server : MonoBehaviour
     static IPAddress broadcast = null;
     IPEndPoint ep = null;
 
+    private static int unity_keyboard_x = 1080;
+    private static int unity_keyboard_y = 660;
+    private static int unity_screen_y = 2214;
     public static int keyboard_x;
     public static int keyboard_y;
     int screen_y;
+    private float coef_x;
+    private float coef_y;
     public static bool isSizeSet;
 
     void Start()
@@ -140,9 +145,10 @@ public class Server : MonoBehaviour
                     screen_y = int.Parse(client_xy[0]);
                     keyboard_x = int.Parse(client_xy[1]);
                     keyboard_y = int.Parse(client_xy[2]);
-
+                    coef_x = (float) (keyboard_x / (unity_keyboard_x*1.0));
+                    coef_y = (float) (keyboard_y / (unity_keyboard_y*1.0));
                     Debug.Log($"Height - {keyboard_y}, Width - {keyboard_x}, Screen Height - {screen_y}");
-
+                    Debug.Log(coef_x+" "+coef_y);
                     Debug.Log("Socket connected");
                     break;
                 }
@@ -160,15 +166,11 @@ public class Server : MonoBehaviour
         {
             //data += ((x + 540) + ";" + (-y + 1950) + ";").ToString();
             Debug.Log("x: "+x+" ; y: "+y);
-            float data_x = (float) (x+keyboard_x/2.0);
-            float data_y = (float) (-y+screen_y-(keyboard_y/2.0));
+            float data_x = (float) (x*coef_x+keyboard_x/2.0);
+            float data_y = (float) (-y*coef_y+screen_y-(keyboard_y/2.0));
             data += (data_x + ";" + data_y + ";").ToString();
         }
-
-        if (keyboard_y > 0 && keyboard_x > 0 && isSizeSet == false)
-        {
-            isSizeSet = true;
-        }
+        
     }
 
     bool SocketConnected(Socket s)
