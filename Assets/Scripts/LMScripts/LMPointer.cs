@@ -14,6 +14,8 @@ public class LMPointer : GvrBasePointer
     private GameObject canvas;
     TrailRender trRander;
 
+    public bool DynamicReticleCircle;
+
     /// <summary>
     /// The constants below are expsed for testing. Minimum inner angle of the reticle (in degrees).
     /// </summary>
@@ -165,6 +167,7 @@ public class LMPointer : GvrBasePointer
     /// <summary>Updates the material based on the reticle properties.</summary>
     public void UpdateDiameters()
     {
+
         ReticleDistanceInMeters =
       Mathf.Clamp(ReticleDistanceInMeters, RETICLE_DISTANCE_MIN, maxReticleDistance);
 
@@ -189,8 +192,16 @@ public class LMPointer : GvrBasePointer
         ReticleOuterDiameter =
       Mathf.Lerp(ReticleOuterDiameter, outer_diameter, Time.unscaledDeltaTime * reticleGrowthSpeed);
 
-        MaterialComp.SetFloat("_InnerDiameter", ReticleInnerDiameter * ReticleDistanceInMeters);
-        MaterialComp.SetFloat("_OuterDiameter", ReticleOuterDiameter * ReticleDistanceInMeters);
+        if (DynamicReticleCircle)
+        {
+            MaterialComp.SetFloat("_InnerDiameter", ReticleInnerDiameter * ReticleDistanceInMeters);
+            MaterialComp.SetFloat("_OuterDiameter", ReticleOuterDiameter * ReticleDistanceInMeters);
+        }
+        else
+        {
+            MaterialComp.SetFloat("_InnerDiameter", 0);
+            MaterialComp.SetFloat("_OuterDiameter", 0.01f);
+        }
         MaterialComp.SetFloat("_DistanceInMeters", ReticleDistanceInMeters);
     }
 
@@ -207,8 +218,10 @@ public class LMPointer : GvrBasePointer
         rendererComponent.sortingOrder = reticleSortingOrder;
 
         MaterialComp = rendererComponent.material;
+        UpdateDiameters();
 
         CreateReticleVertices();
+
     }
 
     /// @endcond

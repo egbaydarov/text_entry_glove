@@ -2278,6 +2278,7 @@ MonoBehaviour:
   raycastMode: 1
   overridePointerCamera: {fileID: 0}
   drawDebugRays: 0
+  DynamicReticleCircle: 0
   maxReticleDistance: 1000
   reticleSegments: 1000
   reticleGrowthSpeed: 8
@@ -5500,6 +5501,7 @@ MonoBehaviour:
   raycastMode: 1
   overridePointerCamera: {fileID: 0}
   drawDebugRays: 0
+  DynamicReticleCircle: 0
   maxReticleDistance: 1000
   reticleSegments: 1000
   reticleGrowthSpeed: 8
@@ -6246,7 +6248,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1452358531
 Transform:
   m_ObjectHideFlags: 0
