@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Leap;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,14 +11,15 @@ public class TrailRender : MonoBehaviour
 
     private LineRenderer line;
 
-    // Start is called before the first frame update
+    public float LINE_WIDTH = 0.01f;
+
+    public Vector3 Drawing_Surface = new Vector3(0, 0, -0.01f);
+
     void Start()
     {
-        line.startWidth = 10f;
-        line.endWidth = 20f;
+
     }
 
-    // Update is called once per frame
     void Update()
     {
         line.positionCount = trailPoints.Count;
@@ -28,12 +30,14 @@ public class TrailRender : MonoBehaviour
     private void Awake()
     {
         line = GetComponent<LineRenderer>();
+        line.endWidth = LINE_WIDTH;
+        line.startWidth = LINE_WIDTH;
     }
 
 
     public void AddPoint(GameObject trailPoint)
     {
-        trailPoints.Add(trailPoint);    
+        trailPoints.Add(trailPoint);
     }
 
     public void RemoveTrail()

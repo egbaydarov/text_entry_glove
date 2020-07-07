@@ -53,7 +53,7 @@ public class GvrLaserVisual : MonoBehaviour, IGvrArmModelReceiver
 
     /// <summary>Maximum distance of the laser (meters).</summary>
     [Tooltip("Maximum distance of the laser(meters).")]
-    [Range(0.0f, 20.0f)]
+    [Range(0.0f, 10000.0f)]
     public float maxLaserDistance = 1.0f;
 
     /// <summary>The rate that the current position moves towards the target position.</summary>

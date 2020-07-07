@@ -1,37 +1,18 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="GvrReticlePointer.cs" company="Google Inc.">
-// Copyright 2017 Google Inc. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-// </copyright>
-//-----------------------------------------------------------------------
-
+﻿using Boo.Lang;
 using LeapMotionGesture;
+using TextEntry;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
+using Valve.VR.InteractionSystem;
 
-/// <summary>Draws a circular reticle in front of any object that the user points at.</summary>
-/// <remarks>The circle dilates if the object is clickable.</remarks>
-/// 
 [RequireComponent(typeof(TrailRender))]
 [HelpURL("https://developers.google.com/vr/unity/reference/class/GvrReticlePointer")]
-public class ReticlePointer : GvrBasePointer
+public class LMPointer : GvrBasePointer
 {
     private Transform trLocal;
     private GameObject canvas;
     TrailRender trRander;
-
-    public KeyCode Gesture_KeyCode = KeyCode.F;
 
     /// <summary>
     /// The constants below are expsed for testing. Minimum inner angle of the reticle (in degrees).
@@ -99,6 +80,10 @@ public class ReticlePointer : GvrBasePointer
     /// <value>The current outer diameter of the reticle (in meters).</value>
     public float ReticleOuterDiameter { get; private set; }
 
+    public GameObject FakePointer;
+    RaycastResult LastPointerHoveredResult;
+
+
     /// <inheritdoc/>
     public override float MaxPointerDistance
     {
@@ -108,7 +93,6 @@ public class ReticlePointer : GvrBasePointer
     /// <inheritdoc/>
     public override void OnPointerEnter(RaycastResult raycastResultResult, bool isInteractive)
     {
-
         SetPointerTarget(raycastResultResult.worldPosition, isInteractive);
     }
 
@@ -117,6 +101,7 @@ public class ReticlePointer : GvrBasePointer
     {
 
         SetPointerTarget(raycastResult.worldPosition, isInteractive);
+        LastPointerHoveredResult = raycastResult;
 
 
         Server.x = trLocal.InverseTransformPoint(raycastResult.worldPosition).x;
@@ -128,6 +113,7 @@ public class ReticlePointer : GvrBasePointer
 
             trRander.AddPoint(trailPoint);
         }
+
     }
 
     /// <inheritdoc/>
@@ -144,11 +130,13 @@ public class ReticlePointer : GvrBasePointer
 
         Server.OnPointerDown();
 
-        float x_min = -1080/2 +10;
-        float x_max = -1080/2 +10 + (1080-120)/11;
-        float y_min = -660/2+(float)(0.835*660-45)/4 + 20;
-        float y_max = -660/2+(float)(0.835*660-45)/2 + 20;
-        Debug.Log(x_min + " " + x_max + " " + " "+ y_min+ y_max);
+        FakePointer.transform.position = LastPointerHoveredResult.worldPosition + new Vector3(0, 0, -2f);
+
+        float x_min = -1080 / 2 + 10;
+        float x_max = -1080 / 2 + 10 + (1080 - 120) / 11;
+        float y_min = -660 / 2 + (float)(0.835 * 660 - 45) / 4 + 20;
+        float y_max = -660 / 2 + (float)(0.835 * 660 - 45) / 2 + 20;
+        Debug.Log(x_min + " " + x_max + " " + " " + y_min + y_max);
         if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min))
         {
             Server.shiftReset();
@@ -214,6 +202,7 @@ public class ReticlePointer : GvrBasePointer
 
         canvas = GameObject.Find("CanvasKeyboard");
         trLocal = canvas.transform;
+
         Renderer rendererComponent = GetComponent<Renderer>();
         rendererComponent.sortingOrder = reticleSortingOrder;
 
@@ -325,7 +314,7 @@ public class ReticlePointer : GvrBasePointer
 
     }
 
-    public override bool TriggerUp => !(Input.GetKey(Gesture_KeyCode) || AirStrokeMapper.pinchIsOn);
-    public override bool Triggering => Input.GetKey(Gesture_KeyCode) || AirStrokeMapper.pinchIsOn;
-    public override bool TriggerDown => Input.GetKey(Gesture_KeyCode) || AirStrokeMapper.pinchIsOn;
+    public override bool TriggerUp => !AirStrokeMapper.pinchIsOn;
+    public override bool Triggering => AirStrokeMapper.pinchIsOn;
+    public override bool TriggerDown => AirStrokeMapper.pinchIsOn;
 }
