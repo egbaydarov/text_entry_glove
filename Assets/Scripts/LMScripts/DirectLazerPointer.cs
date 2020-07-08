@@ -11,6 +11,10 @@ using UnityEngine.EventSystems;
 public class DirectLazerPointer : GvrBasePointer
 {
     public TrailRender trRander;
+    private Transform trLocal;
+    private GameObject canvas;
+
+
 
     /// <summary>Maximum distance from the pointer that raycast hits will be detected.</summary>
     [Tooltip("Distance from the pointer that raycast hits will be detected.")]
@@ -71,18 +75,6 @@ public class DirectLazerPointer : GvrBasePointer
     public override void OnPointerEnter(RaycastResult raycastResult, bool isInteractive)
     {
         LaserVisual.SetDistance(raycastResult.distance);
-        cursor.transform.position = raycastResult.worldPosition;
-
-        Server.x = raycastResult.worldPosition.x;
-        Server.y = raycastResult.worldPosition.y;
-        if (AirStrokeMapper.pinchIsOn)
-        {
-            GameObject trailPoint = new GameObject();
-            trailPoint.transform.position = raycastResult.worldPosition + new Vector3(0, 0, -50);
-
-            trRander.AddPoint(trailPoint);
-        }
-
         isHittingTarget = true;
     }
 
@@ -91,6 +83,17 @@ public class DirectLazerPointer : GvrBasePointer
     {
         LaserVisual.SetDistance(raycastResult.distance);
         isHittingTarget = true;
+
+
+        Server.x = trLocal.InverseTransformPoint(raycastResult.worldPosition).x;
+        Server.y = trLocal.InverseTransformPoint(raycastResult.worldPosition).y;
+        if (Triggering)
+        {
+            GameObject trailPoint = new GameObject();
+            trailPoint.transform.position = raycastResult.worldPosition + trRander.Drawing_Surface;
+
+            trRander.AddPoint(trailPoint);
+        }
     }
 
     /// <inheritdoc/>
@@ -106,13 +109,25 @@ public class DirectLazerPointer : GvrBasePointer
     /// <inheritdoc/>
     public override void OnPointerClickDown()
     {
+        Server.OnPointerDown();
+
+
+        float x_min = -1080 / 2 + 10;
+        float x_max = -1080 / 2 + 10 + (1080 - 120) / 11;
+        float y_min = -660 / 2 + (float)(0.835 * 660 - 45) / 4 + 20;
+        float y_max = -660 / 2 + (float)(0.835 * 660 - 45) / 2 + 20;
+        Debug.Log(x_min + " " + x_max + " " + " " + y_min + y_max);
+        if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min))
+        {
+            Server.shiftReset();
+        }
     }
 
     /// <inheritdoc/>
     public override void OnPointerClickUp()
     {
+        Server.OnPointerUp();
         trRander.RemoveTrail();
-
     }
 
     /// <inheritdoc/>
@@ -148,6 +163,9 @@ public class DirectLazerPointer : GvrBasePointer
         base.Start();
         LaserVisual.GetPointForDistanceFunction = GetPointAlongPointer;
         LaserVisual.SetDistance(defaultReticleDistance, true);
+
+        canvas = GameObject.Find("CanvasKeyboard");
+        trLocal = canvas.transform;
     }
 
     /// @cond
