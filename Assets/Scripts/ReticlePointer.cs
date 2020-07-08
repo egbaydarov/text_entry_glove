@@ -31,6 +31,8 @@ public class ReticlePointer : GvrBasePointer
     private GameObject canvas;
     TrailRender trRander;
 
+    public ReticleMode mReticleMode = ReticleMode.Reticle;
+
     public KeyCode Gesture_KeyCode = KeyCode.F;
 
     /// <summary>
@@ -40,6 +42,9 @@ public class ReticlePointer : GvrBasePointer
 
     /// <summary>Minimum outer angle of the reticle (in degrees).</summary>
     public const float RETICLE_MIN_OUTER_ANGLE = 0.5f;
+
+    /// <summary>Minimum outer diameter of reticle when Dynamic Reticle Circle is false the reticle.</summary>
+    public float StaticReticleOuterDiameter = 0.015f;
 
     /// <summary>
     /// Angle at which to expand the reticle when intersecting with an object (in degrees).
@@ -201,8 +206,27 @@ public class ReticlePointer : GvrBasePointer
         ReticleOuterDiameter =
       Mathf.Lerp(ReticleOuterDiameter, outer_diameter, Time.unscaledDeltaTime * reticleGrowthSpeed);
 
-        MaterialComp.SetFloat("_InnerDiameter", ReticleInnerDiameter * ReticleDistanceInMeters);
-        MaterialComp.SetFloat("_OuterDiameter", ReticleOuterDiameter * ReticleDistanceInMeters);
+        if (mReticleMode == ReticleMode.Reticle)
+        {
+            MaterialComp.SetFloat("_InnerDiameter", ReticleInnerDiameter * ReticleDistanceInMeters);
+            MaterialComp.SetFloat("_OuterDiameter", ReticleOuterDiameter * ReticleDistanceInMeters);
+        }
+        else if (mReticleMode == ReticleMode.StaticDot)
+        {
+            MaterialComp.SetFloat("_InnerDiameter", 0);
+            MaterialComp.SetFloat("_OuterDiameter", StaticReticleOuterDiameter);
+        }
+        else
+        {
+            MaterialComp.SetFloat("_InnerDiameter", 0);
+
+            outer_half_angle_radians = Mathf.Deg2Rad * ReticleOuterAngle * 0.5f;
+            outer_diameter = 2.0f * Mathf.Tan(outer_half_angle_radians);
+            ReticleOuterDiameter =
+      Mathf.Lerp(ReticleOuterDiameter, outer_diameter, Time.unscaledDeltaTime * reticleGrowthSpeed);
+
+            MaterialComp.SetFloat("_OuterDiameter", ReticleOuterDiameter);
+        }
         MaterialComp.SetFloat("_DistanceInMeters", ReticleDistanceInMeters);
     }
 
@@ -328,4 +352,11 @@ public class ReticlePointer : GvrBasePointer
     public override bool TriggerUp => !(Input.GetKey(Gesture_KeyCode) || AirStrokeMapper.pinchIsOn);
     public override bool Triggering => Input.GetKey(Gesture_KeyCode) || AirStrokeMapper.pinchIsOn;
     public override bool TriggerDown => Input.GetKey(Gesture_KeyCode) || AirStrokeMapper.pinchIsOn;
+
+    public enum ReticleMode
+    {
+        Reticle,
+        StaticDot,
+        DynamicDot
+    }
 }

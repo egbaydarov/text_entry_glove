@@ -1,4 +1,5 @@
 ﻿using Boo.Lang;
+using Leap.Unity;
 using LeapMotionGesture;
 using TextEntry;
 using UnityEngine;
@@ -14,8 +15,6 @@ public class LMPointer : GvrBasePointer
     private GameObject canvas;
     TrailRender trRander;
 
-    public bool DynamicReticleCircle;
-
     /// <summary>
     /// The constants below are expsed for testing. Minimum inner angle of the reticle (in degrees).
     /// </summary>
@@ -23,6 +22,9 @@ public class LMPointer : GvrBasePointer
 
     /// <summary>Minimum outer angle of the reticle (in degrees).</summary>
     public const float RETICLE_MIN_OUTER_ANGLE = 0.5f;
+
+    /// <summary>Minimum outer diameter of reticle when Dynamic Reticle Circle is false the reticle.</summary>
+    public float StaticReticleOuterDiameter = 0.015f;
 
     /// <summary>
     /// Angle at which to expand the reticle when intersecting with an object (in degrees).
@@ -84,6 +86,7 @@ public class LMPointer : GvrBasePointer
 
     public GameObject FakePointer;
     RaycastResult LastPointerHoveredResult;
+    public ReticleMode mReticleMode = ReticleMode.StaticDot;
 
 
     /// <inheritdoc/>
@@ -104,6 +107,7 @@ public class LMPointer : GvrBasePointer
 
         SetPointerTarget(raycastResult.worldPosition, isInteractive);
         LastPointerHoveredResult = raycastResult;
+        
 
 
         Server.x = trLocal.InverseTransformPoint(raycastResult.worldPosition).x;
@@ -132,7 +136,9 @@ public class LMPointer : GvrBasePointer
 
         Server.OnPointerDown();
 
-        FakePointer.transform.position = LastPointerHoveredResult.worldPosition + new Vector3(0, 0, -2f);
+        //Set gesture start point
+        Vector3 local = FakePointer.transform.parent.InverseTransformPoint(LastPointerHoveredResult.worldPosition);
+        FakePointer.transform.localPosition = new Vector3(local.x, local.y, 0);
 
         float x_min = -1080 / 2 + 10;
         float x_max = -1080 / 2 + 10 + (1080 - 120) / 11;
@@ -192,15 +198,26 @@ public class LMPointer : GvrBasePointer
         ReticleOuterDiameter =
       Mathf.Lerp(ReticleOuterDiameter, outer_diameter, Time.unscaledDeltaTime * reticleGrowthSpeed);
 
-        if (DynamicReticleCircle)
+        if (mReticleMode == ReticleMode.Reticle)
         {
             MaterialComp.SetFloat("_InnerDiameter", ReticleInnerDiameter * ReticleDistanceInMeters);
             MaterialComp.SetFloat("_OuterDiameter", ReticleOuterDiameter * ReticleDistanceInMeters);
         }
+        else if (mReticleMode == ReticleMode.StaticDot)
+        {
+            MaterialComp.SetFloat("_InnerDiameter", 0);
+            MaterialComp.SetFloat("_OuterDiameter", StaticReticleOuterDiameter);
+        }
         else
         {
             MaterialComp.SetFloat("_InnerDiameter", 0);
-            MaterialComp.SetFloat("_OuterDiameter", 0.01f);
+
+            outer_half_angle_radians = Mathf.Deg2Rad * ReticleOuterAngle * 0.5f;
+            outer_diameter = 2.0f * Mathf.Tan(outer_half_angle_radians);
+            ReticleOuterDiameter =
+      Mathf.Lerp(ReticleOuterDiameter, outer_diameter, Time.unscaledDeltaTime * reticleGrowthSpeed);
+
+            MaterialComp.SetFloat("_OuterDiameter", ReticleOuterDiameter);
         }
         MaterialComp.SetFloat("_DistanceInMeters", ReticleDistanceInMeters);
     }
@@ -324,10 +341,18 @@ public class LMPointer : GvrBasePointer
         mesh.vertices = vertices;
         mesh.triangles = indices;
         mesh.RecalculateBounds();
-
     }
+
+
 
     public override bool TriggerUp => !AirStrokeMapper.pinchIsOn;
     public override bool Triggering => AirStrokeMapper.pinchIsOn;
     public override bool TriggerDown => AirStrokeMapper.pinchIsOn;
+
+    public enum ReticleMode
+    {
+        Reticle,
+        StaticDot,
+        DynamicDot
+    }
 }
