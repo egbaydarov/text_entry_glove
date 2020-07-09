@@ -91,6 +91,7 @@ public class DirectLazerPointer : GvrBasePointer
         {
             GameObject trailPoint = new GameObject();
             trailPoint.transform.position = raycastResult.worldPosition + trRander.Drawing_Surface;
+            trailPoint.transform.SetParent(canvas.transform);
 
             trRander.AddPoint(trailPoint);
         }
