@@ -64,8 +64,8 @@ namespace LeapMotionGesture
 
         public void OnPinchBegan()
         {
-            pinchIsOn = true;
             prevProjectedPoint = GetProjectionOnPlane();
+            pinchIsOn = true;
         }
 
         public void OnPinchEnded()
