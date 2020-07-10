@@ -7005,7 +7005,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   _handModel: {fileID: 2454246265945576475}
-  ControlsTransform: 1
+  ControlsTransform: 0
   ShowGizmos: 1
   ActivateDistance: 0.03
   DeactivateDistance: 0.03
@@ -7086,7 +7086,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   _handModel: {fileID: 2450375156599273991}
-  ControlsTransform: 1
+  ControlsTransform: 0
   ShowGizmos: 1
   ActivateDistance: 0.03
   DeactivateDistance: 0.03
