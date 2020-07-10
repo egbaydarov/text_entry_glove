@@ -7060,6 +7060,7 @@ MonoBehaviour:
   keyCanvas: {fileID: 0}
   reticlePointer: {fileID: 0}
   LMPointer: {fileID: 0}
+  HideReticleWhileGesturing: 0
 --- !u!1 &2081702836
 GameObject:
   m_ObjectHideFlags: 0
@@ -7562,7 +7563,7 @@ PrefabInstance:
     - target: {fileID: 5727461873571377420, guid: 56d7649a53fd0ef4f92fbf39e23bd0b3,
         type: 3}
       propertyPath: multiplicationFactor
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7474950737991005225, guid: 56d7649a53fd0ef4f92fbf39e23bd0b3,
         type: 3}

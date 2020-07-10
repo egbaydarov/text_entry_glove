@@ -10,6 +10,8 @@ public class PinchWithReticle : MonoBehaviour
     public Canvas keyCanvas;
     public GameObject reticlePointer;
     public GameObject LMPointer;
+
+    public bool HideReticleWhileGesturing = true;
     void Start()
     {
         
@@ -24,13 +26,15 @@ public class PinchWithReticle : MonoBehaviour
         {
             keyCanvas.worldCamera = LMPointer.GetComponent<Camera>();
             LMPointer.SetActive(true);
-            reticlePointer.GetComponent<MeshRenderer>().enabled  = false;
+            if (HideReticleWhileGesturing)
+                reticlePointer.GetComponent<MeshRenderer>().enabled  = false;
         }
         else
         {
             keyCanvas.worldCamera = reticlePointer.GetComponent<Camera>();
             LMPointer.SetActive(false);
-            reticlePointer.GetComponent<MeshRenderer>().enabled  = true;
+            if (HideReticleWhileGesturing)
+                reticlePointer.GetComponent<MeshRenderer>().enabled  = true;
         }
 
     }
