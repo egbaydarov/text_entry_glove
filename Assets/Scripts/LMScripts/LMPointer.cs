@@ -2,6 +2,7 @@
 using Leap.Unity;
 using LeapMotionGesture;
 using TextEntry;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
@@ -228,6 +229,12 @@ public class LMPointer : GvrBasePointer
     protected override void Start()
     {
         base.Start();
+
+        if(FakePointer == null)
+        {
+            enabled = false;
+            Debug.LogError("FakePointer doesn't set");
+        }
 
         canvas = GameObject.Find("CanvasKeyboard");
         trLocal = canvas.transform;

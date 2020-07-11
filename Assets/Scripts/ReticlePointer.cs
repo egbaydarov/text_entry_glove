@@ -150,11 +150,11 @@ public class ReticlePointer : GvrBasePointer
 
         Server.OnPointerDown();
 
-        float x_min = -1080/2 +10;
-        float x_max = -1080/2 +10 + (1080-120)/11;
-        float y_min = -660/2+(float)(0.835*660-45)/4 + 20;
-        float y_max = -660/2+(float)(0.835*660-45)/2 + 20;
-        Debug.Log(x_min + " " + x_max + " " + " "+ y_min+ y_max);
+        float x_min = -1080 / 2 + 10;
+        float x_max = -1080 / 2 + 10 + (1080 - 120) / 11;
+        float y_min = -660 / 2 + (float)(0.835 * 660 - 45) / 4 + 20;
+        float y_max = -660 / 2 + (float)(0.835 * 660 - 45) / 2 + 20;
+        Debug.Log(x_min + " " + x_max + " " + " " + y_min + y_max);
         if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min))
         {
             Server.shiftReset();
@@ -184,7 +184,7 @@ public class ReticlePointer : GvrBasePointer
     public void UpdateDiameters()
     {
         ReticleDistanceInMeters =
-      Mathf.Clamp(ReticleDistanceInMeters, RETICLE_DISTANCE_MIN, maxReticleDistance);
+            Mathf.Clamp(ReticleDistanceInMeters, RETICLE_DISTANCE_MIN, maxReticleDistance);
 
         if (ReticleInnerAngle < RETICLE_MIN_INNER_ANGLE)
         {
@@ -203,9 +203,9 @@ public class ReticlePointer : GvrBasePointer
         float outer_diameter = 2.0f * Mathf.Tan(outer_half_angle_radians);
 
         ReticleInnerDiameter =
-      Mathf.Lerp(ReticleInnerDiameter, inner_diameter, Time.unscaledDeltaTime * reticleGrowthSpeed);
+            Mathf.Lerp(ReticleInnerDiameter, inner_diameter, Time.unscaledDeltaTime * reticleGrowthSpeed);
         ReticleOuterDiameter =
-      Mathf.Lerp(ReticleOuterDiameter, outer_diameter, Time.unscaledDeltaTime * reticleGrowthSpeed);
+            Mathf.Lerp(ReticleOuterDiameter, outer_diameter, Time.unscaledDeltaTime * reticleGrowthSpeed);
 
         if (mReticleMode == ReticleMode.Reticle)
         {
@@ -224,7 +224,7 @@ public class ReticlePointer : GvrBasePointer
             outer_half_angle_radians = Mathf.Deg2Rad * ReticleOuterAngle * 0.5f;
             outer_diameter = 2.0f * Mathf.Tan(outer_half_angle_radians);
             ReticleOuterDiameter =
-      Mathf.Lerp(ReticleOuterDiameter, outer_diameter, Time.unscaledDeltaTime * reticleGrowthSpeed);
+                Mathf.Lerp(ReticleOuterDiameter, outer_diameter, Time.unscaledDeltaTime * reticleGrowthSpeed);
 
             MaterialComp.SetFloat("_OuterDiameter", ReticleOuterDiameter);
         }
