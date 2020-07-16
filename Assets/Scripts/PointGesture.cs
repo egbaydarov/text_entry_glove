@@ -20,21 +20,6 @@ public class PointGesture : MonoBehaviour
     bool isActive = false;
 
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
-    public void SampleMethod()
-    {
-        Debug.Log("HEllo");
-    }
-
-    public void SampleMethod1()
-    {
-        Debug.Log("BB");
-    }
-
     public void lActivate()
     {
         leftIndex = true;

@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShowTrainWords : MonoBehaviour
+public class EntryProcessing : MonoBehaviour
 {
     List<string> words;
 

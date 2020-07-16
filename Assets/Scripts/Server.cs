@@ -54,6 +54,10 @@ public class Server : MonoBehaviour
     private float coef_y;
     public static bool isSizeSet;
 
+
+    bool IsConnected;
+    bool IsBroadcasting = true;
+
     void Start()
     {
         go = GameObject.Find("keyboard");
@@ -63,12 +67,7 @@ public class Server : MonoBehaviour
 
         NetworkSetup();
 
-
         FindClient();
-
-        Thread textUpdate = new Thread(new ThreadStart(ReadFromClient));
-        textUpdate.IsBackground = true;
-        textUpdate.Start();
     }
 
     IPAddress FindBroadcastAdress()
@@ -100,6 +99,7 @@ public class Server : MonoBehaviour
                             ep = new IPEndPoint(broadcast, BROADCAST_PORT);
                             success = true;
                             BroadcastIP("HI");
+                            //Debug.Log($"Broadcasted - {broadcast}");
                         }
                     }
                 }
@@ -120,20 +120,25 @@ public class Server : MonoBehaviour
     {
         new Thread(() =>
         {
-            while (true)//TODO можно и красиво написать на самом деле, но потом
+            while (true)
                 try
                 {
                     Debug.Log("Waiting for client . . .");
 
-                    Task<Socket> connection = Listener.AcceptSocketAsync();
 
-                    while (!connection.IsCompleted)
+                    Task<Socket> connectionTask = Listener.AcceptSocketAsync();
+
+                    while (IsBroadcasting && !connectionTask.IsCompleted)
                     {
                         Thread.Sleep(2000);
                         FindBroadcastAdress();
                     }
 
-                    Client = connection.Result;
+                    Client = connectionTask.Result;
+
+                    Debug.Log("Client connected!");
+
+
 
                     byte[] bytes = new byte[1024];
                     int length = Client.Receive(bytes);
@@ -146,10 +151,18 @@ public class Server : MonoBehaviour
                     Debug.Log($"Height - {keyboard_y}, Width - {keyboard_x}, Screen Height - {screen_y}");
                     Debug.Log(coef_x + " " + coef_y);
                     Debug.Log("Socket connected");
+                    IsConnected = true;
+                    IsBroadcasting = false;
+
+                    Thread textUpdate = new Thread(new ThreadStart(ReadFromClient));
+                    textUpdate.IsBackground = true;
+                    textUpdate.Start();
                     break;
                 }
                 catch (Exception ex)
                 {
+                    Debug.LogError(ex.Message);
+                    Debug.LogError("Retry  . . .");
                 }
         }).Start();
     }
@@ -159,8 +172,7 @@ public class Server : MonoBehaviour
     {
         if (isDown)
         {
-            //data += ((x + 540) + ";" + (-y + 1950) + ";").ToString();
-            Debug.Log("x: " + x + " ; y: " + y);
+            //Debug.Log("x: " + x + " ; y: " + y);
             float data_x = (float)(x * coef_x + keyboard_x / 2.0);
             float data_y = (float)(-y * coef_y + screen_y - (keyboard_y / 2.0));
             data += (data_x + ";" + data_y + ";").ToString();
@@ -180,43 +192,40 @@ public class Server : MonoBehaviour
 
     public void ReadFromClient()
     {
-        new Thread(() =>
+        byte[] bytes = new byte[1024];
+
+        while (IsConnected)
         {
-            byte[] bytes = new byte[1024];
-
-            while (true)
+            try
             {
-                try
+
+                if (Client == null)
+                    continue;
+
+                if (!SocketConnected(Client))
                 {
-
-                    if (Client == null)
-                        continue;
-
-                    if (!SocketConnected(Client))
-                    {
-                        Client = null;
-                        FindClient();
-                        continue;
-                    }
-
-
-                    Debug.Log("Waiting for data from socket . . .");
-
-                    int length = Client.Receive(bytes);
-
-                    if (length != 0)
-                    {
-                        string clientMessage = Encoding.UTF8.GetString(bytes, 0, length).Split('\0')[0];
-                        Debug.Log("Recieved text: " + clientMessage);
-                        mytext = clientMessage;
-                    }
+                    Client = null;
+                    FindClient();
+                    continue;
                 }
-                catch (SocketException socketException)
+
+
+                Debug.Log("Waiting for data from socket . . .");
+
+                int length = Client.Receive(bytes);
+
+                if (length != 0)
                 {
-                    Debug.Log("ReadFromClient: " + socketException.ToString());
+                    string clientMessage = Encoding.UTF8.GetString(bytes, 0, length).Split('\0')[0];
+                    Debug.Log("Recieved text: " + clientMessage);
+                    mytext = clientMessage;
                 }
             }
-        }).Start();
+            catch (SocketException socketException)
+            {
+                Debug.Log("ReadFromClient - " + socketException.ToString());
+            }
+        }
     }
 
 
@@ -274,5 +283,13 @@ public class Server : MonoBehaviour
             im.sprite = shift.small;
             shift.i = 0;
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        if (Client != null && Client.Connected)
+            Client.Close();
+        IsConnected = false;
+        IsBroadcasting = false;
     }
 }

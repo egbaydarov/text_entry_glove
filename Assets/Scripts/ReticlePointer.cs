@@ -236,13 +236,15 @@ public class ReticlePointer : GvrBasePointer
     protected override void Start()
     {
         base.Start();
-
-        canvas = GameObject.Find("CanvasKeyboard");
-        trLocal = canvas.transform;
         Renderer rendererComponent = GetComponent<Renderer>();
         rendererComponent.sortingOrder = reticleSortingOrder;
 
         MaterialComp = rendererComponent.material;
+
+        canvas = GameObject.Find("CanvasKeyboard");
+
+        trLocal = canvas.transform;
+
 
         CreateReticleVertices();
     }

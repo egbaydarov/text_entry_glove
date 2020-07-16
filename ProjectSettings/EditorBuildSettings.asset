@@ -4,5 +4,26 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Setup.unity
+    guid: 05ff284f4819141468a02521f24de5ff
+  - enabled: 0
+    path: Assets/Scenes/LMwithReticle.unity
+    guid: a1c4deaa8b0522448af576289c252169
+  - enabled: 0
+    path: Assets/Scenes/DirectHandRay.unity
+    guid: 11c2b86117394cb4c974742683e85f8b
+  - enabled: 0
+    path: Assets/Scenes/GestureType.unity
+    guid: 1c8e6df9450894b42b48990dbc3dfa77
+  - enabled: 1
+    path: Assets/Scenes/TrainScene.unity
+    guid: cf95c514a8ef55e4d9a81077d4114b00
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: f1cc321e161def448a2810b1f063d4d1
+  - enabled: 1
+    path: Assets/Scenes/MainScene.unity
+    guid: 6e19208e1c4c5234894ef4322a89d337
   m_configObjects: {}
