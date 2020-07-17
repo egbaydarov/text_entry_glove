@@ -11,9 +11,14 @@ namespace LeapMotionGesture
         private Transform follower;
 #pragma warning restore 649
 
-        [Min(1f)]
+        [Header("Multiplication Factor")]
         [SerializeField]
-        private float multiplicationFactor = 1f;
+        private bool calculateDynamically = false;
+
+        [Min(1f)]
+        [Tooltip("Used when the 'Calculate Dynamically' checkbox is not set")]
+        [SerializeField]
+        private float fixedValue = 1f;
 
 #pragma warning disable 414
         [Space]
@@ -24,6 +29,8 @@ namespace LeapMotionGesture
 
         public static bool pinchIsOn;
         private Vector2 prevProjectedPoint;
+        private float distanceToObj;
+        private Transform mainCamera;
 
 
         private void Start()
@@ -42,6 +49,18 @@ namespace LeapMotionGesture
                 return;
             }
 
+            if (calculateDynamically)
+            {
+                if (Camera.main == null)
+                {
+                    Debug.LogError("AirStrokeMapper: Couldn't find the main camera in this scence. Disabling the script");
+                    enabled = false;
+                    return;
+                }
+                mainCamera = Camera.main.transform;
+                distanceToObj = Vector3.Distance(follower.root.position, mainCamera.position);
+            }
+
             // Hiding all child GOs
             int i = transform.childCount;
             while (--i >= 0)
@@ -56,7 +75,7 @@ namespace LeapMotionGesture
                 Vector2 projectedPoint = GetProjectionOnPlane();
 
                 Vector2 delta = projectedPoint - prevProjectedPoint;
-                follower.Translate(delta.x * multiplicationFactor, delta.y * multiplicationFactor, 0, follower.parent);
+                follower.Translate(delta.x * GetMultiplicationFactor(), delta.y * GetMultiplicationFactor(), 0, follower.parent);
 
                 prevProjectedPoint = projectedPoint;
             }
@@ -81,6 +100,11 @@ namespace LeapMotionGesture
             // Transforming a position of the projected point to local space of our GO, which makes its Z component equal to 0
             p += transform.position;
             return transform.InverseTransformPoint(p);
+        }
+
+        private float GetMultiplicationFactor()
+        {
+            return calculateDynamically ? distanceToObj / Vector3.Distance(followee.position, mainCamera.position) : fixedValue;
         }
     }
 }
