@@ -9,8 +9,6 @@ public class TextHelper: MonoBehaviour
 {
     [SerializeField]
     private TMP_InputField intext;
-    private GameObject go;
-    private Server server;
     // Prediction buttons 
 
     private void Awake()
@@ -21,15 +19,17 @@ public class TextHelper: MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        go = GameObject.Find("keyboard");
-        server = go.GetComponent<Server>();
     }
 
     // Update is called once per frame
     void Update()
-    { 
+    {
         // parse mytext in array, middle word goes to intext 
-        intext.text = server.mytext.Split('#')[0];
+        if (!string.IsNullOrEmpty(Server.mytext))
+        {
+            intext.text = Server.mytext;
+            Server.mytext = "";
+        }
         
     }
 }

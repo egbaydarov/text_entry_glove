@@ -18,7 +18,7 @@ using UnityEngine.UI;
 public class Server : MonoBehaviour
 {
 
-    public string mytext;
+    public static string mytext;
 
     Socket udpSocket;
 

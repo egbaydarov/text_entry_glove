@@ -2600,9 +2600,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tm: {fileID: 1102577289}
+  blockNumber: {fileID: 866900199}
+  senNumber: {fileID: 641337994}
   TMP_if: {fileID: 705152568}
   confirmButton: {fileID: 340348761}
   sentenceField: {fileID: 1102577287}
+  OnSentenceInputEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBlockInputEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInputEnd:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &728724464
 MonoBehaviour:
   m_ObjectHideFlags: 0
