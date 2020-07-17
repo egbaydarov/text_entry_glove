@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -216,7 +217,8 @@ public class Server : MonoBehaviour
 
                 if (length != 0)
                 {
-                    string clientMessage = Encoding.UTF8.GetString(bytes, 0, length).Split('\0')[0];
+                    string[] data = Encoding.UTF8.GetString(bytes, 0, length).Split('#');
+                    string clientMessage = data.Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
                     Debug.Log("Recieved text: " + clientMessage);
                     mytext = clientMessage;
                 }
