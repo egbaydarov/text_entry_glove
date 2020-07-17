@@ -6296,18 +6296,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1518833808}
   m_CullTransparentMesh: 0
---- !u!114 &1701609080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1339458966154381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b382aaab6bedff448a409f23bccb821d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1730957978
 GameObject:
   m_ObjectHideFlags: 0
@@ -7400,10 +7388,9 @@ GameObject:
   - component: {fileID: 81344774734628901}
   - component: {fileID: 20862103488938487}
   - component: {fileID: 114292755168022457}
-  - component: {fileID: 1701609080}
   m_Layer: 0
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7564,6 +7551,16 @@ PrefabInstance:
         type: 3}
       propertyPath: multiplicationFactor
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727461873571377420, guid: 56d7649a53fd0ef4f92fbf39e23bd0b3,
+        type: 3}
+      propertyPath: fixedValue
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727461873571377420, guid: 56d7649a53fd0ef4f92fbf39e23bd0b3,
+        type: 3}
+      propertyPath: calculateDynamically
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7474950737991005225, guid: 56d7649a53fd0ef4f92fbf39e23bd0b3,
         type: 3}
