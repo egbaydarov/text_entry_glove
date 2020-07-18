@@ -9,39 +9,16 @@ public class ReturnToDefaultPlace : MonoBehaviour
     Vector3 defaultPos;
     InteractionBehaviour ib;
     Rigidbody rb;
-    Text text;
-
-    float timer = 0.0f;
-
-
-    void Start()
-    {
-
-    }
-
 
     void Update()
     {
-        if (!ib.isGrasped)
+        if (transform.position.y < -5)
         {
-            timer += Time.deltaTime;
-        }
-        else
-        {
-            timer = 0;
-            text.enabled = false;
-        }
-
-        if (timer % 60 >= 3)
-        {
-            timer = 0f;
-
             transform.localPosition = defaultPos;
             transform.localRotation = Quaternion.identity;
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
 
-            text.enabled = true;
         }
     }
 
@@ -49,7 +26,6 @@ public class ReturnToDefaultPlace : MonoBehaviour
     {
         ib = GetComponent<InteractionBehaviour>();
         rb = GetComponent<Rigidbody>();
-        text = GetComponentInChildren(typeof(Text)) as Text;
         defaultPos = transform.localPosition;
     }
 }

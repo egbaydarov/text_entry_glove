@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagment : MonoBehaviour
 {
+    [SerializeField]
+    Scenes currentScene = Scenes.OurMethod;
+   
     public void Exit()
     {
         Application.Quit();
@@ -12,34 +15,58 @@ public class SceneManagment : MonoBehaviour
 
     public void Train()
     {
-        SceneManager.LoadSceneAsync("TrainScene");
-        SceneManager.UnloadSceneAsync("MainMenu");
+        switch (currentScene)
+        {
+            case Scenes.OurMethod:
+                SceneManager.LoadSceneAsync("OurMethodTrain");
+                break;
+            case Scenes.GestureType:
+                SceneManager.LoadSceneAsync("GestureTypeTrain");
+                break;
+        }
+
     }
 
     public void StartExperiment()
     {
-        SceneManager.LoadSceneAsync("MainScene");
-        SceneManager.UnloadSceneAsync("MainMenu");
+        switch (currentScene)
+        {
+            case Scenes.OurMethod:
+                SceneManager.LoadSceneAsync("OurMethodMain");
+                break;
+            case Scenes.GestureType:
+                SceneManager.LoadSceneAsync("GestureTypeMain");
+                break;
+        }
     }
 
     public void ContinueExperiment()
     {
-        SceneManager.LoadSceneAsync("MainScene");
-        SceneManager.UnloadSceneAsync("MainMenu");
+        Scene current = SceneManager.GetActiveScene();
+        switch (currentScene)
+        {
+            case Scenes.OurMethod:
+                SceneManager.LoadSceneAsync("OurMethodMain");
+                break;
+            case Scenes.GestureType:
+                SceneManager.LoadSceneAsync("GestureTypeMain");
+                break;
+        }
     }
 
     public void LoadMenu()
     {
-        Scene current = SceneManager.GetActiveScene();
         SceneManager.LoadSceneAsync("MainMenu");
-        SceneManager.UnloadSceneAsync(current);
     }
 
     public void Setup()
     {
-        Scene current = SceneManager.GetActiveScene();
         SceneManager.LoadSceneAsync("Setup");
-        SceneManager.UnloadSceneAsync(current);
-        
+    }
+
+    public enum Scenes
+    {
+        GestureType,
+        OurMethod
     }
 }

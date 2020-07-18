@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Random = System.Random;
 
@@ -20,11 +21,14 @@ public class TrainTextEntryProcessing : MonoBehaviour
 
     int currentSentence;
 
-    int SENTENCE_COUNT = 10;
+    [SerializeField]
+    int SENTENCE_COUNT = 8;
+
+    bool isFirstTap = true;
 
     void Start()
     {
-        for(int i = 0; i < data.Length; ++i)
+        for (int i = 0; i < data.Length; ++i)
         {
             if (rnd.Next(data.Length - i) < SENTENCE_COUNT)
                 words.Add(data[i]);
@@ -274,33 +278,37 @@ public class TrainTextEntryProcessing : MonoBehaviour
     void Update()
     {
         sentenceField.GetComponent<Text>().text = words[currentSentence];
+    }
 
-        if (string.IsNullOrEmpty(TMP_if.text))
+    public void OnNextClicked(GameObject obj, PointerEventData pointerData)
+    {
+
+        if (obj != null && obj.name.Equals("NextSentence"))
         {
+            if (currentSentence + 1 < SENTENCE_COUNT)
+            {
+                ++currentSentence;
+            }
+            else
+            {
+                OnTrainEnd.Invoke();
+            }
+
             sentenceField.SetActive(true);
             confirmButton.SetActive(false);
+            isFirstTap = true;
         }
-        else
+        else if (obj != null && isFirstTap && obj.tag == "Key")
         {
+            Server.SendToClient("clear\r\n");
+            isFirstTap = false;
+
             sentenceField.SetActive(false);
+
+            if (currentSentence == SENTENCE_COUNT - 1)
+                confirmButton.GetComponentInChildren<TextMeshProUGUI>().text = "В главное меню";
+
             confirmButton.SetActive(true);
         }
     }
-
-    public void OnNextClicked()
-    {
-        if(currentSentence + 1 < SENTENCE_COUNT)
-        {
-            ++currentSentence;
-
-            if (currentSentence == SENTENCE_COUNT - 1)
-                confirmButton.GetComponentInChildren<TextMeshProUGUI>().text = "В главное меню. ";
-        }
-        else
-        {
-            OnTrainEnd.Invoke();
-        }
-        //TEMP
-        TMP_if.text = "";
-    }   
 }

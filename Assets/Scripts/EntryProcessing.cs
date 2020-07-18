@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class EntryProcessing : MonoBehaviour
@@ -104,11 +105,14 @@ public class EntryProcessing : MonoBehaviour
 "Не отстают от медиа и скандальные политики "};
     #endregion sentences
 
-    int BLOCKS_COUNT = 8;
-    int SENTENCE_COUNT = 10;
+
+    int BLOCKS_COUNT = 10;
+    int SENTENCE_COUNT = 8;
 
     int currentBlock;
     int currentSentence;
+
+    bool isFirstTap = true;
 
     void Start()
     {
@@ -121,38 +125,44 @@ public class EntryProcessing : MonoBehaviour
         tm.text = words[SENTENCE_COUNT * currentBlock + currentSentence];
         blockNumber.text = $"Блок\n{currentBlock + 1}\\{BLOCKS_COUNT}";
         senNumber.text = $"Предложение\n{currentSentence + 1}\\{SENTENCE_COUNT}";
-
-        if (String.IsNullOrEmpty(TMP_if.text))
-        {
-            confirmButton.SetActive(false);
-            sentenceField.SetActive(true);
-        }
-        else
-        {
-            confirmButton.SetActive(true);
-            sentenceField.SetActive(false);
-        }
     }
 
-    public void inc_current()
+    public void OnNextClicked(GameObject obj, PointerEventData pointerData)
     {
-        if (currentSentence + 1 < SENTENCE_COUNT)
+        if (obj != null && obj.name.Equals("NextSentence"))
         {
-            ++currentSentence;
-            OnSentenceInputEnd.Invoke();
+            if (currentSentence + 1 < SENTENCE_COUNT)
+            {
+                ++currentSentence;
+                OnSentenceInputEnd.Invoke();
+            }
+            else if (currentBlock + 1 < BLOCKS_COUNT)
+            {
+                ++currentBlock;
+                currentSentence = 0;
+                OnBlockInputEnd.Invoke();
+            }
+            else
+            {
+                OnInputEnd.Invoke();
+            }
+
+            confirmButton.SetActive(false);
+            sentenceField.SetActive(true);
+            isFirstTap = true;
         }
-        else if (currentBlock + 1 < BLOCKS_COUNT)
+        else if (isFirstTap && obj != null && obj.tag.Equals("Key"))
         {
-            ++currentBlock;
-            currentSentence = 0;
-            OnBlockInputEnd.Invoke();
+            Server.SendToClient("clear\r\n");
+            isFirstTap = false;
+
+            sentenceField.SetActive(false);
+            if (currentSentence == SENTENCE_COUNT - 1 && currentBlock == BLOCKS_COUNT - 1)
+                confirmButton.GetComponentInChildren<TextMeshProUGUI>().text = "В главное меню";
+
+            confirmButton.SetActive(true);
+
         }
-        else
-        {
-            OnInputEnd.Invoke();
-        }
-        //TEMP
-        TMP_if.text = "";
     }
 
 }

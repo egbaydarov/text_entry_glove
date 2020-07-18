@@ -25,10 +25,10 @@ public class TextHelper: MonoBehaviour
     void Update()
     {
         // parse mytext in array, middle word goes to intext 
-        if (!string.IsNullOrEmpty(Server.mytext))
+        if (Server.isTextUpdated)
         {
             intext.text = Server.mytext;
-            Server.mytext = "";
+            Server.isTextUpdated = false;
         }
         
     }

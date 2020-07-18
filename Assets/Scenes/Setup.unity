@@ -618,7 +618,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Period: 0.9
+  Period: 1.5
   HandModel: {fileID: 1529862506}
   Thumb: 2
   Index: 0
@@ -709,7 +709,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Period: 0.9
+  Period: 1.5
   HandModel: {fileID: 1529862508}
   Thumb: 2
   Index: 0

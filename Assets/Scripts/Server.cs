@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ public class Server : MonoBehaviour
 {
 
     public static string mytext;
+    public static bool isTextUpdated = false;
 
     Socket udpSocket;
 
@@ -56,17 +58,19 @@ public class Server : MonoBehaviour
     public static bool isSizeSet;
 
 
-    bool IsConnected;
+    public static bool IsConnected;
     bool IsBroadcasting = true;
+    bool isProcessing;
 
     void Start()
     {
         go = GameObject.Find("keyboard");
         shift = go.GetComponent<Shift>();
         im = GetComponent<Image>();
-
+        
 
         NetworkSetup();
+        isProcessing = true;
 
         FindClient();
     }
@@ -121,11 +125,11 @@ public class Server : MonoBehaviour
     {
         new Thread(() =>
         {
-            while (true)
+            while (isProcessing)
                 try
                 {
+                    IsConnected = false;
                     Debug.Log("Waiting for client . . .");
-
 
                     Task<Socket> connectionTask = Listener.AcceptSocketAsync();
 
@@ -163,7 +167,6 @@ public class Server : MonoBehaviour
                 catch (Exception ex)
                 {
                     Debug.LogError(ex.Message);
-                    Debug.LogError("Retry  . . .");
                 }
         }).Start();
     }
@@ -195,38 +198,42 @@ public class Server : MonoBehaviour
     {
         byte[] bytes = new byte[1024];
 
-        while (IsConnected)
+        while (isProcessing)
         {
-            try
-            {
-
-                if (Client == null)
-                    continue;
-
-                if (!SocketConnected(Client))
+            if (IsConnected)
+                try
                 {
-                    Client = null;
-                    FindClient();
-                    continue;
+
+                    if (Client == null)
+                        continue;
+
+                    if (!SocketConnected(Client))
+                    {
+                        Client = null;
+                        FindClient();
+                        continue;
+                    }
+
+
+                    Debug.Log("Waiting for data from socket . . .");
+
+                    int length = Client.Receive(bytes);
+
+                    if (length != 0)
+                    {
+                        string[] data = Encoding.UTF8.GetString(bytes, 0, length).Split('\n');
+                        string clientMessage = data.Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
+                        Debug.Log("Recieved text: " + clientMessage);
+                        if (clientMessage[0] == '\r')
+                            clientMessage = "";
+                        mytext = clientMessage;
+                        isTextUpdated = true;
+                    }
                 }
-
-
-                Debug.Log("Waiting for data from socket . . .");
-
-                int length = Client.Receive(bytes);
-
-                if (length != 0)
+                catch (SocketException socketException)
                 {
-                    string[] data = Encoding.UTF8.GetString(bytes, 0, length).Split('#');
-                    string clientMessage = data.Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
-                    Debug.Log("Recieved text: " + clientMessage);
-                    mytext = clientMessage;
+                    Debug.Log("ReadFromClient - " + socketException.ToString());
                 }
-            }
-            catch (SocketException socketException)
-            {
-                Debug.Log("ReadFromClient - " + socketException.ToString());
-            }
         }
     }
 
@@ -253,7 +260,6 @@ public class Server : MonoBehaviour
         udpSocket.DontFragment = true;
         udpSocket.EnableBroadcast = true;
         udpSocket.MulticastLoopback = false;
-
     }
 
     private void BroadcastIP(String text)
@@ -289,9 +295,13 @@ public class Server : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+        isProcessing = false;
+
         if (Client != null && Client.Connected)
             Client.Close();
         IsConnected = false;
         IsBroadcasting = false;
+        Listener.Stop();
+        udpSocket.Close();
     }
 }

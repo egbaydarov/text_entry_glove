@@ -19,6 +19,10 @@ public class PointGesture : MonoBehaviour
 
     bool isActive = false;
 
+    public void message(string str)
+    {
+        Debug.Log(str);
+    }
 
     public void lActivate()
     {
