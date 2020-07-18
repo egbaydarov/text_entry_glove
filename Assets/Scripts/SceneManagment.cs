@@ -30,8 +30,9 @@ public class SceneManagment : MonoBehaviour
 
     public void LoadMenu()
     {
+        Scene current = SceneManager.GetActiveScene();
         SceneManager.LoadSceneAsync("MainMenu");
-        SceneManager.UnloadSceneAsync("Setup");
+        SceneManager.UnloadSceneAsync(current);
     }
 
     public void Setup()

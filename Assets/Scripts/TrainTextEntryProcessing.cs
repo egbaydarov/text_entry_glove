@@ -292,6 +292,9 @@ public class TrainTextEntryProcessing : MonoBehaviour
         if(currentSentence + 1 < SENTENCE_COUNT)
         {
             ++currentSentence;
+
+            if (currentSentence == SENTENCE_COUNT - 1)
+                confirmButton.GetComponentInChildren<TextMeshProUGUI>().text = "В главное меню. ";
         }
         else
         {
@@ -299,5 +302,5 @@ public class TrainTextEntryProcessing : MonoBehaviour
         }
         //TEMP
         TMP_if.text = "";
-    }
+    }   
 }
