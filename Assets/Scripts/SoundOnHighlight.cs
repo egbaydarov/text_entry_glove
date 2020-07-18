@@ -4,10 +4,12 @@ using UnityEngine.EventSystems;
 
 public class SoundOnHighlight : MonoBehaviour, IPointerEnterHandler
 {
+#pragma warning disable 649
     [SerializeField]
     private new AudioSource audio;
     [SerializeField]
     private AudioClip soundToPlay;
+#pragma warning restore 649
 
     private void Start()
     {
