@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class TextHelper: MonoBehaviour
 {
     [SerializeField]
-    private TMP_InputField intext;
+    private InputField intext;
     // Prediction buttons 
 
     private void Awake()

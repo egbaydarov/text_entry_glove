@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,7 +15,7 @@ public class EntryProcessing : MonoBehaviour
     public Text tm;
     public Text blockNumber;
     public Text senNumber;
-    public TMP_InputField TMP_if;
+    public InputField TMP_if;
     public GameObject confirmButton;
     public GameObject sentenceField;
 
@@ -109,8 +110,12 @@ public class EntryProcessing : MonoBehaviour
     int BLOCKS_COUNT = 10;
     int SENTENCE_COUNT = 8;
 
-    int currentBlock;
-    int currentSentence;
+    public static int currentBlock;
+    public static int currentSentence;
+    public static string currentSentenceText;
+
+    public static Stopwatch full_time = new Stopwatch();
+    
 
     bool isFirstTap = true;
 
@@ -125,6 +130,7 @@ public class EntryProcessing : MonoBehaviour
         tm.text = words[SENTENCE_COUNT * currentBlock + currentSentence];
         blockNumber.text = $"Блок\n{currentBlock + 1}\\{BLOCKS_COUNT}";
         senNumber.text = $"Предложение\n{currentSentence + 1}\\{SENTENCE_COUNT}";
+        currentSentenceText = words[SENTENCE_COUNT * currentBlock + currentSentence];
     }
 
     public void OnNextClicked(GameObject obj, PointerEventData pointerData)
@@ -135,12 +141,16 @@ public class EntryProcessing : MonoBehaviour
             {
                 ++currentSentence;
                 OnSentenceInputEnd.Invoke();
+                
+                full_time.Stop();
+                Server.gest_time.Reset();
             }
             else if (currentBlock + 1 < BLOCKS_COUNT)
             {
                 ++currentBlock;
                 currentSentence = 0;
                 OnBlockInputEnd.Invoke();
+                //SceneManagment.LoadMenu();
             }
             else
             {
@@ -150,6 +160,8 @@ public class EntryProcessing : MonoBehaviour
             confirmButton.SetActive(false);
             sentenceField.SetActive(true);
             isFirstTap = true;
+            
+            
         }
         else if (isFirstTap && obj != null && obj.tag.Equals("Key"))
         {
@@ -161,6 +173,9 @@ public class EntryProcessing : MonoBehaviour
                 confirmButton.GetComponentInChildren<TextMeshProUGUI>().text = "В главное меню";
 
             confirmButton.SetActive(true);
+            
+            full_time.Restart();
+            
 
         }
     }
