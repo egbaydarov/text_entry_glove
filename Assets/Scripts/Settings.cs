@@ -7,11 +7,11 @@ public class Settings : MonoBehaviour
 {
     Text text;
 
-    uint id;
+    public static uint id;
 
     void Start()
     {
-        
+        id = 0;
     }
 
     // Update is called once per frame

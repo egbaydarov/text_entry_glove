@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -15,6 +16,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 public class Server : MonoBehaviour
 {
@@ -61,6 +63,8 @@ public class Server : MonoBehaviour
     public static bool IsConnected;
     bool IsBroadcasting = true;
     bool isProcessing;
+    
+    public static Stopwatch gest_time = new Stopwatch();
 
     void Start()
     {
@@ -272,7 +276,7 @@ public class Server : MonoBehaviour
     public static void OnPointerUp()
     {
         isDown = false;
-
+        gest_time.Stop();
         if (Client != null && Client.Connected)
             SendToClient(data + "\r\n");
 
@@ -282,6 +286,7 @@ public class Server : MonoBehaviour
     public static void OnPointerDown()
     {
         isDown = true;
+        gest_time.Start();
 
     }
     public static void shiftReset()
