@@ -18,6 +18,15 @@ public class Shift : MonoBehaviour
         im.sprite = capital;
     }
 
+    public void ToCapital()
+    {
+        //Swap();
+    }
+
+    public void ToSmall()
+    {
+        //Server.shiftReset();
+    }
 
     public void Swap()
     {
