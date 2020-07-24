@@ -15,7 +15,7 @@ public class EntryProcessing : MonoBehaviour
     public Text tm;
     public Text blockNumber;
     public Text senNumber;
-    public TMP_InputField TMP_if;
+    public InputField TMP_if;
     public GameObject confirmButton;
     public GameObject sentenceField;
 
@@ -143,12 +143,14 @@ public class EntryProcessing : MonoBehaviour
                 OnSentenceInputEnd.Invoke();
                 
                 full_time.Stop();
+                Server.gest_time.Reset();
             }
             else if (currentBlock + 1 < BLOCKS_COUNT)
             {
                 ++currentBlock;
                 currentSentence = 0;
                 OnBlockInputEnd.Invoke();
+                //SceneManagment.LoadMenu();
             }
             else
             {
@@ -172,7 +174,7 @@ public class EntryProcessing : MonoBehaviour
 
             confirmButton.SetActive(true);
             
-            full_time.Start();
+            full_time.Restart();
             
 
         }

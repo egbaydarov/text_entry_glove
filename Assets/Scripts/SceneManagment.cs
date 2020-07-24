@@ -13,7 +13,7 @@ public class SceneManagment : MonoBehaviour
 
     public void Start()
     {
-        method_id = currentScene.ToString();
+        //method_id = "test";
     }
 
     public void Exit()
@@ -42,9 +42,11 @@ public class SceneManagment : MonoBehaviour
         {
             case Scenes.OurMethod:
                 SceneManager.LoadSceneAsync("OurMethodMain");
+                method_id = "OurMethod";
                 break;
             case Scenes.GestureType:
                 SceneManager.LoadSceneAsync("GestureTypeMain");
+                method_id = "GestureType";
                 break;
         }
     }
@@ -66,7 +68,7 @@ public class SceneManagment : MonoBehaviour
         }
     }
 
-    public void LoadMenu()
+    public static void LoadMenu()
     {
         SceneManager.LoadSceneAsync("MainMenu");
     }

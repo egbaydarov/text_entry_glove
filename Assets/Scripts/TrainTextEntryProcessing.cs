@@ -15,7 +15,7 @@ public class TrainTextEntryProcessing : MonoBehaviour
 
     public GameObject sentenceField;
     public GameObject confirmButton;
-    public TMP_InputField TMP_if;
+    public InputField TMP_if;
 
     public UnityEvent OnTrainEnd;
 

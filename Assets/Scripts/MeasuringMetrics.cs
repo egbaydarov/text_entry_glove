@@ -61,13 +61,14 @@ public class MeasuringMetrics : MonoBehaviour
         form.AddField("entry.452347986","Время перемещения курсора"); // Суммарное время перемещения курсора
         form.AddField("entry.945161006",(((float)Server.gest_time.ElapsedMilliseconds)/1000).ToString()); // Суммарное время вычерчивания росчерка
         form.AddField("entry.2055613067","Время выбора слов"); // Суммарное время выбора слов из списка подсказок
-        form.AddField("entry.1730946643",LevenshteinDistance(EntryProcessing.currentSentenceText, Server.mytext)); // Количество неисправленных опечаток   LevenshDistance(EntryProcessing.currentSentenceText, EntryProcessing.currentSentenceText.Length,Server.mytext,Server.mytext.Length).ToString()
+        form.AddField("entry.1730946643",LevenshteinDistance(EntryProcessing.currentSentenceText, Server.mytext.Remove(Server.mytext.Length-1))); // Количество неисправленных опечаток   LevenshDistance(EntryProcessing.currentSentenceText, EntryProcessing.currentSentenceText.Length,Server.mytext,Server.mytext.Length).ToString()
         form.AddField("entry.1907294220",(((float)Server.mytext.Length-1)*12.0/EntryProcessing.full_time.Elapsed.Seconds).ToString()); // Скорость набора текста
         
       
         byte[] rawData = form.data;
         WWW www = new WWW(FORM_URL,rawData);
         yield return www;
+        Debug.Log("Send");
     }
 
     public void WriteMetricsData()
