@@ -70,7 +70,7 @@ public class Server : MonoBehaviour
     {
         go = GameObject.Find("keyboard");
         shift = go.GetComponent<Shift>();
-        im = GetComponent<Image>();
+        im = go.GetComponent<Image>();
         
 
         NetworkSetup();
@@ -308,5 +308,17 @@ public class Server : MonoBehaviour
         IsBroadcasting = false;
         Listener.Stop();
         udpSocket.Close();
+    }
+
+    private void Awake()
+    {
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Server");
+
+        if (objs.Length > 1)
+        {
+            Destroy(this.gameObject);
+        }
+
+        DontDestroyOnLoad(this.gameObject);
     }
 }
