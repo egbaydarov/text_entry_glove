@@ -601,7 +601,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sentenceField: {fileID: 1667760146}
   confirmButton: {fileID: 1906086803}
-  TMP_if: {fileID: 1818859321}
+  TMP_if: {fileID: 0}
   OnTrainEnd:
     m_PersistentCalls:
       m_Calls:
@@ -2207,7 +2207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5429f934b888f4775bedaa5d6f648fbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intext: {fileID: 1818859321}
+  intext: {fileID: 0}
 --- !u!114 &530826119
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -72,7 +72,7 @@ public class SceneManagment : MonoBehaviour
         }
     }
 
-    public static void LoadMenu()
+    public void LoadMenu()
     {
         SceneManager.LoadSceneAsync("MainMenu");
     }

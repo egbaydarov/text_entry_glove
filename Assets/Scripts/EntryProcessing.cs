@@ -17,11 +17,13 @@ public class EntryProcessing : MonoBehaviour
     public Text senNumber;
     public InputField TMP_if;
     public GameObject confirmButton;
+    public GameObject menuButton;
     public GameObject sentenceField;
 
     public UnityEvent OnSentenceInputEnd;
     public UnityEvent OnBlockInputEnd;
     public UnityEvent OnInputEnd;
+    public UnityEvent OnMenuClicked;
 
     #region sentences
     string[] data = {"И это уже дает видимые результаты",
@@ -107,7 +109,7 @@ public class EntryProcessing : MonoBehaviour
     #endregion sentences
 
 
-    int BLOCKS_COUNT = 10;
+    int BLOCKS_COUNT = 8;
     int SENTENCE_COUNT = 8;
 
     public static int currentBlock;
@@ -137,6 +139,10 @@ public class EntryProcessing : MonoBehaviour
     {
         if (obj != null && obj.name.Equals("NextSentence"))
         {
+
+            confirmButton.SetActive(false);
+            sentenceField.SetActive(true);
+
             if (currentSentence + 1 < SENTENCE_COUNT)
             {
                 ++currentSentence;
@@ -150,18 +156,17 @@ public class EntryProcessing : MonoBehaviour
                 ++currentBlock;
                 currentSentence = 0;
                 OnBlockInputEnd.Invoke();
-                //SceneManagment.LoadMenu();
+
+                sentenceField.SetActive(false);
+                confirmButton.SetActive(false);
+                menuButton.SetActive(true);
             }
             else
             {
                 OnInputEnd.Invoke();
             }
 
-            confirmButton.SetActive(false);
-            sentenceField.SetActive(true);
             isFirstTap = true;
-            
-            
         }
         else if (isFirstTap && obj != null && obj.tag.Equals("Key"))
         {
@@ -169,14 +174,13 @@ public class EntryProcessing : MonoBehaviour
             isFirstTap = false;
 
             sentenceField.SetActive(false);
-            if (currentSentence == SENTENCE_COUNT - 1 && currentBlock == BLOCKS_COUNT - 1)
-                confirmButton.GetComponentInChildren<TextMeshProUGUI>().text = "В главное меню";
-
             confirmButton.SetActive(true);
             
             full_time.Restart();
-            
-
+        }
+        else if (obj != null && obj.name.Equals("ToMenu"))
+        {
+            OnMenuClicked.Invoke();
         }
     }
 
