@@ -20,12 +20,17 @@ public class Shift : MonoBehaviour
 
     public void ToCapital()
     {
-        //Swap();
+        i = 1;
+        im.sprite = capital;
+        Debug.Log("CAPITAl");
     }
 
     public void ToSmall()
     {
-        //Server.shiftReset();
+        i = 0;
+        im.sprite = small;
+        Debug.Log("small");
+
     }
 
     public void Swap()
