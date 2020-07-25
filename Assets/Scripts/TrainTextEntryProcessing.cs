@@ -15,9 +15,16 @@ public class TrainTextEntryProcessing : MonoBehaviour
 
     public GameObject sentenceField;
     public GameObject confirmButton;
+    public GameObject startButton;
     public InputField TMP_if;
 
+    public Text sentenceNumber;
+
     public UnityEvent OnTrainEnd;
+    public UnityEvent OnTrainStart;
+
+    GameObject go;
+    Shift shift;
 
     int currentSentence;
 
@@ -28,6 +35,9 @@ public class TrainTextEntryProcessing : MonoBehaviour
 
     void Start()
     {
+        go = GameObject.Find("keyboard");
+        shift = go.GetComponent<Shift>();
+
         for (int i = 0; i < data.Length; ++i)
         {
             if (rnd.Next(data.Length - i) < SENTENCE_COUNT)
@@ -278,12 +288,24 @@ public class TrainTextEntryProcessing : MonoBehaviour
     void Update()
     {
         sentenceField.GetComponent<Text>().text = words[currentSentence];
+
+        if (startButton.activeSelf)
+            sentenceNumber.text = $"Нажмите\nначать";
+        else
+            sentenceNumber.text = $"Предложение\n{currentSentence + 1}";
     }
 
     public void OnNextClicked(GameObject obj, PointerEventData pointerData)
     {
-
-        if (obj != null && obj.name.Equals("NextSentence"))
+        if ((obj != null && obj.name.Equals("StartTrain")))
+        {
+            Server.SendToClient("clear\r\n");
+            sentenceField.SetActive(true);
+            confirmButton.SetActive(false);
+            startButton.SetActive(false);
+            OnTrainStart.Invoke();
+        }
+        if (obj != null && obj.name.Equals("NextSentence") && !startButton.activeSelf)
         {
             if (currentSentence + 1 < SENTENCE_COUNT)
             {
@@ -296,11 +318,13 @@ public class TrainTextEntryProcessing : MonoBehaviour
 
             sentenceField.SetActive(true);
             confirmButton.SetActive(false);
+            shift.ToCapital();
             isFirstTap = true;
         }
-        else if (obj != null && isFirstTap && obj.tag == "Key")
+        else if (obj != null && isFirstTap && obj.tag == "Key" && !startButton.activeSelf)
         {
             Server.SendToClient("clear\r\n");
+            Server.shiftReset();
             isFirstTap = false;
 
             sentenceField.SetActive(false);

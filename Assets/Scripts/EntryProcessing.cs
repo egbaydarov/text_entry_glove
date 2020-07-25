@@ -20,6 +20,9 @@ public class EntryProcessing : MonoBehaviour
     public GameObject menuButton;
     public GameObject sentenceField;
 
+    GameObject go;
+    Shift shift;
+
     public UnityEvent OnSentenceInputEnd;
     public UnityEvent OnBlockInputEnd;
     public UnityEvent OnInputEnd;
@@ -123,6 +126,8 @@ public class EntryProcessing : MonoBehaviour
 
     void Start()
     {
+        go = GameObject.Find("keyboard");
+        shift = go.GetComponent<Shift>();
         words = new List<string>(data);
     }
 
@@ -147,8 +152,13 @@ public class EntryProcessing : MonoBehaviour
             {
                 
                 OnSentenceInputEnd.Invoke();
+
                 ++currentSentence;
                 MeasuringMetrics.SavePrefs();
+                
+
+                shift.ToCapital();
+
                 
                 full_time.Stop();
                 Server.gest_time.Reset();
@@ -175,6 +185,8 @@ public class EntryProcessing : MonoBehaviour
         else if (isFirstTap && obj != null && obj.tag.Equals("Key"))
         {
             Server.SendToClient("clear\r\n");
+            shift.ToSmall();
+
             isFirstTap = false;
 
             sentenceField.SetActive(false);
