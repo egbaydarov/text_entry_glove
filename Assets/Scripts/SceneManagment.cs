@@ -41,7 +41,10 @@ public class SceneManagment : MonoBehaviour
 
     public void StartExperiment()
     {
+        MeasuringMetrics.LoadPrefs();
         Settings.id++;
+        EntryProcessing.currentBlock = 0;
+        EntryProcessing.currentSentence = 0;
         switch (currentScene)
         {
             case Scenes.OurMethod:

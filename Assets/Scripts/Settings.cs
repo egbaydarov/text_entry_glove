@@ -11,7 +11,8 @@ public class Settings : MonoBehaviour
 
     void Start()
     {
-        id = 0;
+        if(!PlayerPrefs.HasKey("Respondent_ID"))
+            id = 0;
     }
 
     // Update is called once per frame

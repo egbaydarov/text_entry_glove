@@ -18,7 +18,7 @@ public class MeasuringMetrics : MonoBehaviour
     {
         
     }
-    public void SavePrefs()
+    public static void SavePrefs()
     {
         PlayerPrefs.SetInt("Respondent_ID", (int)Settings.id); // Идентификатор испытуемого
         PlayerPrefs.SetString("InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
@@ -30,9 +30,9 @@ public class MeasuringMetrics : MonoBehaviour
 
     public static void LoadPrefs()
     {
-        if (PlayerPrefs.HasKey("Respondent_id"))
+        if (PlayerPrefs.HasKey("Respondent_ID"))
         {
-            Settings.id = (uint) PlayerPrefs.GetInt("Respondent_id");
+            Settings.id = (uint) PlayerPrefs.GetInt("Respondent_ID");
             SceneManagment.method_id = PlayerPrefs.GetString("InputMethod_ID");
             EntryProcessing.currentBlock = PlayerPrefs.GetInt("Attempt_number");
             EntryProcessing.currentSentence = PlayerPrefs.GetInt("Session_number");
@@ -40,11 +40,15 @@ public class MeasuringMetrics : MonoBehaviour
             Debug.Log(
                 $"Loaded : id {Settings.id}, method  {SceneManagment.method_id}, block {EntryProcessing.currentBlock}, sentence {EntryProcessing.currentSentence}");
         }
+        else 
+            Debug.Log("No saved prefs");
     }
 
     public void DeletePrefs()
     {
-        PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteKey("InputMethod_ID");
+        PlayerPrefs.DeleteKey("Attempt_number");
+        PlayerPrefs.DeleteKey("Session_number");
     }
 
     IEnumerator Post()
@@ -56,13 +60,13 @@ public class MeasuringMetrics : MonoBehaviour
         form.AddField("entry.2130707738",EntryProcessing.currentSentence); // Номер попытки
         form.AddField("entry.1405245047",EntryProcessing.currentSentenceText); // Эталонное предложение
         form.AddField("entry.229951240",Server.mytext); // Введенное испытуемым предложение
-        form.AddField("entry.1830134686",Server.mytext.Length); // Длина введенного испытуемым предложения
+        form.AddField("entry.1830134686",Server.mytext.Length-1); // Длина введенного испытуемым предложения
         form.AddField("entry.1264763496",((float)EntryProcessing.full_time.ElapsedMilliseconds/1000).ToString()); // Время ввода предложения
         form.AddField("entry.452347986","Время перемещения курсора"); // Суммарное время перемещения курсора
         form.AddField("entry.945161006",(((float)Server.gest_time.ElapsedMilliseconds)/1000).ToString()); // Суммарное время вычерчивания росчерка
         form.AddField("entry.2055613067","Время выбора слов"); // Суммарное время выбора слов из списка подсказок
         form.AddField("entry.1730946643",LevenshteinDistance(EntryProcessing.currentSentenceText, Server.mytext.Remove(Server.mytext.Length-1))); // Количество неисправленных опечаток   LevenshDistance(EntryProcessing.currentSentenceText, EntryProcessing.currentSentenceText.Length,Server.mytext,Server.mytext.Length).ToString()
-        form.AddField("entry.1907294220",(((float)Server.mytext.Length-1)*12.0/EntryProcessing.full_time.Elapsed.Seconds).ToString()); // Скорость набора текста
+        form.AddField("entry.1907294220",Math.Round(((float)Server.mytext.Length-1)*12.0/EntryProcessing.full_time.Elapsed.Seconds,2).ToString()); // Скорость набора текста
         
       
         byte[] rawData = form.data;

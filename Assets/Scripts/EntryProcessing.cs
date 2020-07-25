@@ -145,17 +145,21 @@ public class EntryProcessing : MonoBehaviour
 
             if (currentSentence + 1 < SENTENCE_COUNT)
             {
-                ++currentSentence;
+                
                 OnSentenceInputEnd.Invoke();
+                ++currentSentence;
+                MeasuringMetrics.SavePrefs();
                 
                 full_time.Stop();
                 Server.gest_time.Reset();
             }
             else if (currentBlock + 1 < BLOCKS_COUNT)
             {
-                ++currentBlock;
-                currentSentence = 0;
+                
                 OnBlockInputEnd.Invoke();
+                currentSentence = 0;
+                ++currentBlock;
+                MeasuringMetrics.SavePrefs();
 
                 sentenceField.SetActive(false);
                 confirmButton.SetActive(false);
