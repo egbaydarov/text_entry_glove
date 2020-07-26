@@ -12,6 +12,7 @@ using Valve.VR.InteractionSystem;
 [HelpURL("https://developers.google.com/vr/unity/reference/class/GvrReticlePointer")]
 public class LMPointer : GvrBasePointer
 {
+    GameObject enterRaycastObj;
     private Transform trLocal;
     private GameObject canvas;
     TrailRender trRander;
@@ -99,6 +100,7 @@ public class LMPointer : GvrBasePointer
     /// <inheritdoc/>
     public override void OnPointerEnter(RaycastResult raycastResultResult, bool isInteractive)
     {
+        enterRaycastObj = raycastResultResult.gameObject;
         SetPointerTarget(raycastResultResult.worldPosition, isInteractive);
     }
 
@@ -108,7 +110,12 @@ public class LMPointer : GvrBasePointer
 
         SetPointerTarget(raycastResult.worldPosition, isInteractive);
         LastPointerHoveredResult = raycastResult;
-        
+
+        if (!raycastResult.gameObject.tag.Equals("Key"))
+            return;
+
+
+
 
 
         Server.x = trLocal.InverseTransformPoint(raycastResult.worldPosition).x;
@@ -147,7 +154,7 @@ public class LMPointer : GvrBasePointer
         float y_min = -660 / 2 + (float)(0.835 * 660 - 45) / 4 + 20;
         float y_max = -660 / 2 + (float)(0.835 * 660 - 45) / 2 + 20;
         Debug.Log(x_min + " " + x_max + " " + " " + y_min + y_max);
-        if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min))
+        if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min) && enterRaycastObj.tag.Equals("Key"))
         {
             Shift.SizeReset();
         }

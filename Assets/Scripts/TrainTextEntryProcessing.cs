@@ -15,18 +15,18 @@ public class TrainTextEntryProcessing : MonoBehaviour
 
     public GameObject sentenceField;
     public GameObject confirmButton;
-    public GameObject startButton;
+    public GameObject menuButton;
     public InputField TMP_if;
 
     public Text sentenceNumber;
 
     public UnityEvent OnTrainEnd;
-    public UnityEvent OnTrainStart;
+    public UnityEvent OnMenuClicked;
 
     GameObject go;
     Shift shift;
 
-    int currentSentence;
+    int currentSentence = -1;
 
     [SerializeField]
     int SENTENCE_COUNT = 8;
@@ -287,50 +287,54 @@ public class TrainTextEntryProcessing : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        sentenceField.GetComponent<Text>().text = words[currentSentence];
-
-        if (startButton.activeSelf)
-            sentenceNumber.text = $"Нажмите\nначать";
+        if (currentSentence == -1)
+            sentenceField.GetComponent<Text>().text = "ТРЕНИРОВКА";
         else
-            sentenceNumber.text = $"Предложение\n{currentSentence + 1}";
+            sentenceField.GetComponent<Text>().text = words[currentSentence];
+
+        sentenceNumber.text = $"Предложение\n{currentSentence + 1}";
     }
 
     public void OnNextClicked(GameObject obj, PointerEventData pointerData)
     {
-        if ((obj != null && obj.name.Equals("StartTrain")))
+        if (obj != null && obj.name.Equals("NextSentence"))
         {
-            Server.SendToClient("clear\r\n");
-            sentenceField.SetActive(true);
-            confirmButton.SetActive(false);
-            startButton.SetActive(false);
-            OnTrainStart.Invoke();
-        }
-        if (obj != null && obj.name.Equals("NextSentence") && !startButton.activeSelf)
-        {
+            Shift.ToCapital();
             if (currentSentence + 1 < SENTENCE_COUNT)
             {
                 ++currentSentence;
+                sentenceField.SetActive(true);
+                confirmButton.SetActive(false);
+                isFirstTap = true;
             }
             else
             {
                 OnTrainEnd.Invoke();
+                sentenceField.SetActive(false);
+                confirmButton.SetActive(false);
+                menuButton.SetActive(true);
             }
-
-            sentenceField.SetActive(true);
-            confirmButton.SetActive(false);
-            isFirstTap = true;
         }
-        else if (obj != null && isFirstTap && obj.tag == "Key" && !startButton.activeSelf)
+        else if (obj != null && isFirstTap && obj.tag == "Key")
         {
+            Shift.ToSmall();
             Server.SendToClient("clear\r\n");
             isFirstTap = false;
 
             sentenceField.SetActive(false);
-
-            if (currentSentence == SENTENCE_COUNT - 1)
-                confirmButton.GetComponentInChildren<TextMeshProUGUI>().text = "В главное меню";
-
             confirmButton.SetActive(true);
+        }
+    }
+
+    public void OnPointerUpMenu(GameObject obj, PointerEventData pointerData)
+    {
+        if ((obj != null && obj.name.Equals("StartTrain")))
+        {
+            Server.SendToClient("clear\r\n");
+            sentenceField.SetActive(false);
+            confirmButton.SetActive(false);
+            menuButton.SetActive(false);
+            OnMenuClicked.Invoke();
         }
     }
 }

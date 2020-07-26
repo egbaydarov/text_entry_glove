@@ -146,7 +146,8 @@ public class EntryProcessing : MonoBehaviour
     {
         if (obj != null && obj.name.Equals("NextSentence"))
         {
-            
+            Shift.ToCapital();
+
             full_time.Stop();
             Server.gest_time.Stop();
             
@@ -182,6 +183,9 @@ public class EntryProcessing : MonoBehaviour
             }
             else
             {
+                sentenceField.SetActive(false);
+                confirmButton.SetActive(false);
+                menuButton.SetActive(true);
                 OnInputEnd.Invoke();
                 ResetTime();
             }
@@ -190,7 +194,7 @@ public class EntryProcessing : MonoBehaviour
         }
         else if (isFirstTap && obj != null && obj.tag.Equals("Key"))
         {
-            
+            Shift.ToSmall();
             Server.SendToClient("clear\r\n");
             
             
@@ -201,11 +205,6 @@ public class EntryProcessing : MonoBehaviour
             
             
         }
-        else if (obj != null && obj.name.Equals("ToMenu"))
-        {
-            OnMenuClicked.Invoke();
-        }
-
         
     }
     
@@ -216,4 +215,13 @@ public class EntryProcessing : MonoBehaviour
         full_time.Reset();
     }
 
+
+    public void OnMenuClickedUp(GameObject obj, PointerEventData pointerData)
+    {
+        if (obj != null && obj.name.Equals("ToMenu"))
+        {
+            Server.SendToClient("clear\r\n");
+            OnMenuClicked.Invoke();
+        }
+    }
 }

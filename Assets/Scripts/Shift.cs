@@ -10,6 +10,7 @@ public class Shift : MonoBehaviour
     public Sprite capital;
     public Sprite constCapital;
 
+
     public static Sprite sSmall;
     public static Sprite sCapital;
     public static Sprite sConstCapital;
@@ -27,22 +28,22 @@ public class Shift : MonoBehaviour
         im.sprite = capital;
     }
 
-    public void ToCapital()
+    public static void ToCapital()
     {
-
+        Debug.Log("a");
+        im.sprite = sCapital;
+        Debug.Log("A");
         i = 1;
-        im.sprite = capital;
-        Debug.Log("CAPITAl");
 
+        im.GraphicUpdateComplete();
     }
 
-    public void ToSmall()
+    public static void ToSmall()
     {
-
+        Debug.Log("A");
+        im.sprite = sSmall;
+        Debug.Log("a");
         i = 0;
-        im.sprite = small;
-        Debug.Log("small");
-
     }
 
     public void Swap()
@@ -77,5 +78,4 @@ public class Shift : MonoBehaviour
             i = 0;
         }
     }
-
 }
