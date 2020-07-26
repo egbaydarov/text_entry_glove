@@ -90,7 +90,7 @@ public class GlovePointer : GvrBasePointer
 
         if(!(Server.x > -530 && Server.y < -100 && Server.x < -450 && Server.y > -220))
         {
-            Server.shiftReset();
+            Shift.SizeReset();
         }
     }
 

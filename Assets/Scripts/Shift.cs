@@ -10,10 +10,19 @@ public class Shift : MonoBehaviour
     public Sprite capital;
     public Sprite constCapital;
 
-    public int i = 1;
-    private Image im;
+    public static Sprite sSmall;
+    public static Sprite sCapital;
+    public static Sprite sConstCapital;
+
+
+    public static int i = 1;
+    private static Image im;
     void Start()
     {
+        sSmall = small;
+        sCapital = capital;
+        sConstCapital = constCapital;
+
         im = GetComponent<Image>();
         im.sprite = capital;
     }
@@ -33,7 +42,7 @@ public class Shift : MonoBehaviour
         i = 0;
         im.sprite = small;
         Debug.Log("small");
-        
+
     }
 
     public void Swap()
@@ -58,8 +67,15 @@ public class Shift : MonoBehaviour
             i = 0;
             return;
         }
-
     }
 
+    public static void SizeReset()
+    {
+        if (i == 1)
+        {
+            im.sprite = sSmall;
+            i = 0;
+        }
+    }
 
 }
