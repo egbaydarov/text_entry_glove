@@ -37,12 +37,6 @@ public class Server : MonoBehaviour
 
     static string data = "";
 
-    static private Shift shift;
-
-    static private Image im;
-
-    static private GameObject go;
-
     static int BROADCAST_PORT = 9876;
     static int DATA_PORT = 1488;
 
@@ -71,11 +65,6 @@ public class Server : MonoBehaviour
     
     void Start()
     {
-        go = GameObject.Find("keyboard");
-        shift = go.GetComponent<Shift>();
-        im = go.GetComponent<Image>();
-        
-
         NetworkSetup();
         isProcessing = true;
 
@@ -300,14 +289,6 @@ public class Server : MonoBehaviour
         if(!EntryProcessing.full_time.IsRunning)
             EntryProcessing.full_time.Start();
 
-    }
-    public static void shiftReset()
-    {
-        if (shift.i == 1)
-        {
-            im.sprite = shift.small;
-            shift.i = 0;
-        }
     }
 
     private void OnApplicationQuit()

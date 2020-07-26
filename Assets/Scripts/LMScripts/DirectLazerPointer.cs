@@ -120,7 +120,7 @@ public class DirectLazerPointer : GvrBasePointer
         Debug.Log(x_min + " " + x_max + " " + " " + y_min + y_max);
         if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min))
         {
-            Server.shiftReset();
+            Shift.SizeReset();
         }
     }
 

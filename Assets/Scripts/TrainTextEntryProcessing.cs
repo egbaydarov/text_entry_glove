@@ -318,13 +318,11 @@ public class TrainTextEntryProcessing : MonoBehaviour
 
             sentenceField.SetActive(true);
             confirmButton.SetActive(false);
-            shift.ToCapital();
             isFirstTap = true;
         }
         else if (obj != null && isFirstTap && obj.tag == "Key" && !startButton.activeSelf)
         {
             Server.SendToClient("clear\r\n");
-            Server.shiftReset();
             isFirstTap = false;
 
             sentenceField.SetActive(false);

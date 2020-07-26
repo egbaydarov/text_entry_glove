@@ -130,9 +130,6 @@ public class EntryProcessing : MonoBehaviour
 
     void Start()
     {
-        go = GameObject.Find("keyboard");
-        shift = go.GetComponent<Shift>();
-        im = go.GetComponent<Image>();
         words = new List<string>(data);
     }
 
@@ -166,11 +163,7 @@ public class EntryProcessing : MonoBehaviour
                 
                 ++currentSentence;
                 MeasuringMetrics.SavePrefs();
-                
-
-                //shift.Swap();
-                //shiftUp();
-                
+                               
                 
             }
             else if (currentBlock + 1 < BLOCKS_COUNT)
@@ -199,7 +192,6 @@ public class EntryProcessing : MonoBehaviour
         {
             
             Server.SendToClient("clear\r\n");
-            //shift.ToSmall();
             
             
             isFirstTap = false;
@@ -217,15 +209,6 @@ public class EntryProcessing : MonoBehaviour
         
     }
     
-    public static void shiftUp()
-    {
-        if (shift.i == 0)
-        {
-            im.sprite = shift.capital;
-            shift.i = 1;
-        }
-    }
-
     public void ResetTime()
     {
         Server.gest_time.Reset();
