@@ -64,14 +64,11 @@ public class Server : MonoBehaviour
     bool IsBroadcasting = true;
     bool isProcessing;
 
-
-    public static int isRelevant = 0;
-   // public UnityEvent receiveData;
     
     public static Stopwatch gest_time = new Stopwatch();
-
-    public static bool isReceived = false;
-
+    
+    public static Stopwatch move_time = new Stopwatch();
+    
     void Start()
     {
         go = GameObject.Find("keyboard");
@@ -83,6 +80,8 @@ public class Server : MonoBehaviour
         isProcessing = true;
 
         FindClient();
+        
+       // move_time.Start();
     }
 
     IPAddress FindBroadcastAdress()
@@ -238,10 +237,7 @@ public class Server : MonoBehaviour
                             clientMessage = "";
                         mytext = clientMessage;
                         isTextUpdated = true;
-
-                        isRelevant--;
-                        if (isRelevant == 0)
-                            isReceived = true;
+                        
                     }
                 }
                 catch (SocketException socketException)
@@ -259,7 +255,6 @@ public class Server : MonoBehaviour
             Client.Send(Encoding.ASCII.GetBytes(message));
             Debug.Log($"Sent: {message}");
 
-            isRelevant++;
         }
         catch (SocketException socketException)
         {
@@ -289,16 +284,21 @@ public class Server : MonoBehaviour
     {
         isDown = false;
         gest_time.Stop();
+        move_time.Start();
         if (Client != null && Client.Connected)
             SendToClient(data + "\r\n");
 
         data = "";
+        
     }
 
     public static void OnPointerDown()
     {
         isDown = true;
         gest_time.Start();
+        move_time.Stop();
+        if(!EntryProcessing.full_time.IsRunning)
+            EntryProcessing.full_time.Start();
 
     }
     public static void shiftReset()

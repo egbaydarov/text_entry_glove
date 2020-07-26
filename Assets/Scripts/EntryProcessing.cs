@@ -149,6 +149,11 @@ public class EntryProcessing : MonoBehaviour
     {
         if (obj != null && obj.name.Equals("NextSentence"))
         {
+            
+            full_time.Stop();
+            Server.gest_time.Stop();
+            
+            
             isPressed = true;
             confirmButton.SetActive(false);
             sentenceField.SetActive(true);
@@ -157,23 +162,23 @@ public class EntryProcessing : MonoBehaviour
             {
                 
                 OnSentenceInputEnd.Invoke();
-
+                ResetTime();
+                
                 ++currentSentence;
                 MeasuringMetrics.SavePrefs();
                 
 
                 //shift.Swap();
                 //shiftUp();
-
                 
-                full_time.Stop();
-                Server.gest_time.Reset();
                 
             }
             else if (currentBlock + 1 < BLOCKS_COUNT)
             {
                 
                 OnBlockInputEnd.Invoke();
+                ResetTime();
+                
                 currentSentence = 0;
                 ++currentBlock;
                 MeasuringMetrics.SavePrefs();
@@ -185,21 +190,23 @@ public class EntryProcessing : MonoBehaviour
             else
             {
                 OnInputEnd.Invoke();
+                ResetTime();
             }
 
             isFirstTap = true;
         }
         else if (isFirstTap && obj != null && obj.tag.Equals("Key"))
         {
+            
             Server.SendToClient("clear\r\n");
             //shift.ToSmall();
-
+            
+            
             isFirstTap = false;
 
             sentenceField.SetActive(false);
             confirmButton.SetActive(true);
             
-            full_time.Restart();
             
         }
         else if (obj != null && obj.name.Equals("ToMenu"))
@@ -217,6 +224,13 @@ public class EntryProcessing : MonoBehaviour
             im.sprite = shift.capital;
             shift.i = 1;
         }
+    }
+
+    public void ResetTime()
+    {
+        Server.gest_time.Reset();
+        Server.move_time.Reset();
+        full_time.Reset();
     }
 
 }

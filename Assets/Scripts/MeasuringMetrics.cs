@@ -16,30 +16,18 @@ public class MeasuringMetrics : MonoBehaviour
     private string sent_text;
     private float all_time;
     private float gest_time;
-
-    private GvrBasePointer reticleScript;
-
-    private MeshRenderer reticleMesh;
-
-    private TrailRenderer reticleTrail;
+    private float move_time;
+    
     // Start is called before the first frame update
     void Start()
     {
-        //WriteMetricsData();
-        reticleScript = reticlePointer.GetComponent<ReticlePointer>();
-        reticleMesh = reticlePointer.GetComponent<MeshRenderer>();
-        reticleTrail = GetComponent<TrailRenderer>();
+        
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Server.isReceived)
-        {
-           // WriteMetricsData();
-            Server.isReceived = false;
-        }
     }
     public static void SavePrefs()
     {
@@ -82,6 +70,7 @@ public class MeasuringMetrics : MonoBehaviour
         sent_text = EntryProcessing.currentSentenceText;
         all_time = ((float) EntryProcessing.full_time.ElapsedMilliseconds / 1000);
         gest_time = (((float) Server.gest_time.ElapsedMilliseconds) / 1000);
+        move_time = (((float) Server.move_time.ElapsedMilliseconds) / 1000);
     }
 
     IEnumerator Post()
@@ -90,13 +79,13 @@ public class MeasuringMetrics : MonoBehaviour
        
            form.AddField("entry.952386413", Settings.id.ToString()); // Идентификатор испытуемого
            form.AddField("entry.2024755906", SceneManagment.method_id); // Идентификатор техники взаимодействия
-           form.AddField("entry.1905100173", block_num); // Номер блока предложений
-           form.AddField("entry.2130707738", sent_num); // Номер попытки
+           form.AddField("entry.1905100173", block_num+1); // Номер блока предложений
+           form.AddField("entry.2130707738", sent_num+1); // Номер попытки
            form.AddField("entry.1405245047", sent_text); // Эталонное предложение
            form.AddField("entry.229951240", Server.mytext); // Введенное испытуемым предложение
            form.AddField("entry.1830134686", Server.mytext.Length - 1); // Длина введенного испытуемым предложения
            form.AddField("entry.1264763496", all_time.ToString()); // Время ввода предложения
-           form.AddField("entry.452347986", "Время перемещения курсора"); // Суммарное время перемещения курсора
+           form.AddField("entry.452347986", move_time.ToString()); // Суммарное время перемещения курсора
            form.AddField("entry.945161006", gest_time.ToString()); // Суммарное время вычерчивания росчерка
            form.AddField("entry.2055613067", "Время выбора слов"); // Суммарное время выбора слов из списка подсказок
            form.AddField("entry.1730946643", LevenshteinDistance(sent_text, Server.mytext.Remove(Server.mytext.Length - 1))); // Количество неисправленных опечаток  
@@ -114,15 +103,11 @@ public class MeasuringMetrics : MonoBehaviour
 
     IEnumerator Wait()
     {
-        reticleMesh.enabled = false;
-        reticleScript.enabled = false;
-        //reticleTrail.enabled = false;
+        
         Debug.Log("Выключили");
         yield return new WaitForSeconds(3);
         StartCoroutine(Post());
-       // reticleTrail.enabled = true;
-        reticleMesh.enabled = true;
-        reticleScript.enabled = true;
+       
        
         Debug.Log("Включили");
     }
