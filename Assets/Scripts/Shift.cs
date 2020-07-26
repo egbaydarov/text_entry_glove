@@ -30,9 +30,7 @@ public class Shift : MonoBehaviour
 
     public static void ToCapital()
     {
-        Debug.Log("a");
         im.sprite = sCapital;
-        Debug.Log("A");
         i = 1;
 
         im.GraphicUpdateComplete();
@@ -40,9 +38,7 @@ public class Shift : MonoBehaviour
 
     public static void ToSmall()
     {
-        Debug.Log("A");
         im.sprite = sSmall;
-        Debug.Log("a");
         i = 0;
     }
 
