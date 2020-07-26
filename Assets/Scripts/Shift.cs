@@ -20,12 +20,12 @@ public class Shift : MonoBehaviour
 
     public void ToCapital()
     {
-        //Swap();
+        //i = 1;
     }
 
     public void ToSmall()
     {
-        //Server.shiftReset();
+        Server.shiftReset();
     }
 
     public void Swap()

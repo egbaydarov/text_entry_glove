@@ -63,8 +63,14 @@ public class Server : MonoBehaviour
     public static bool IsConnected;
     bool IsBroadcasting = true;
     bool isProcessing;
+
+
+    public static int isRelevant = 0;
+   // public UnityEvent receiveData;
     
     public static Stopwatch gest_time = new Stopwatch();
+
+    public static bool isReceived = false;
 
     void Start()
     {
@@ -232,6 +238,10 @@ public class Server : MonoBehaviour
                             clientMessage = "";
                         mytext = clientMessage;
                         isTextUpdated = true;
+
+                        isRelevant--;
+                        if (isRelevant == 0)
+                            isReceived = true;
                     }
                 }
                 catch (SocketException socketException)
@@ -248,6 +258,8 @@ public class Server : MonoBehaviour
         {
             Client.Send(Encoding.ASCII.GetBytes(message));
             Debug.Log($"Sent: {message}");
+
+            isRelevant++;
         }
         catch (SocketException socketException)
         {

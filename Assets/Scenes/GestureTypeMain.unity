@@ -4639,11 +4639,23 @@ MonoBehaviour:
   confirmButton: {fileID: 929741852}
   menuButton: {fileID: 1141456707}
   sentenceField: {fileID: 1607322439}
+  reticlePointer: {fileID: 0}
   OnSentenceInputEnd:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 948593363}
         m_MethodName: WriteMetricsData
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1540719452}
+        m_MethodName: Swap
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5003,6 +5015,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c882c1b411ff4469b37bdd34c609d9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  receiveData:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1292072907
 Transform:
   m_ObjectHideFlags: 0
@@ -6513,7 +6528,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []

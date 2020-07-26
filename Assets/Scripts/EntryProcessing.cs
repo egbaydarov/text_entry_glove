@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class EntryProcessing : MonoBehaviour
 {
-    List<string> words;
+    public static List<string> words;
 
     public Text tm;
     public Text blockNumber;
@@ -20,8 +20,12 @@ public class EntryProcessing : MonoBehaviour
     public GameObject menuButton;
     public GameObject sentenceField;
 
+    public GvrReticlePointer reticlePointer;
     GameObject go;
-    Shift shift;
+    static Shift shift;
+    static private Image im;
+    
+    public static bool isPressed;
 
     public UnityEvent OnSentenceInputEnd;
     public UnityEvent OnBlockInputEnd;
@@ -59,7 +63,7 @@ public class EntryProcessing : MonoBehaviour
 "Эти праздники тесно связаны между собой ",
 "И государство не может быть обязано это сделать",
 "Должны быть внутренние ограничения ",
-"Более смешной фамилии студенты в жизни не слышали ",
+"Более смешной фамилии студенты в жизни не слышали",
 "Часов в десять вечера был доктор",
 "Я была готова идти на любую зарплату ",
 "Потом материалы будут постепенно добавляться",
@@ -71,7 +75,7 @@ public class EntryProcessing : MonoBehaviour
 "Но пока это только предположения ",
 "Но у самой той обедни приключилось дивное диво",
 "Премьеру показали в присутствии автора",
-"Правительству следует ускорить решение этих вопросов ",
+"Правительству следует ускорить решение этих вопросов",
 "Античная демократия и греческое искусство",
 "Интернет через систему мобильной связи",
 "И зазвенят в такт колокольчики на шее ",
@@ -85,18 +89,18 @@ public class EntryProcessing : MonoBehaviour
 "Ранее она арендовала серверные мощности",
 "Система требует больших расходов",
 "Фильтр на малых расстояниях работает плохо",
-"И обязательное включение ноутбука все три раза ",
+"И обязательное включение ноутбука все три раза",
 "Вы не видите что в какой корзине находится",
 "Символические ценности таким образом не измеряются",
 "Сегодня ситуация в армии качественно меняется ",
-"Результатом станет лучшая пропорция того и другого 	",
+"Результатом станет лучшая пропорция того и другого",
 "Идеальное воплощение на данный момент",
 "Универсальным является метод полного перебора",
 "С некоторым опозданием он появился",
 "Могли бы выиграть и с нами поделиться потом",
 "Ты знаешь больше и умеешь лучше",
-"Именно этого он действительно не говорил ",
-"Сельское хозяйство остается низкопродуктивным ",
+"Именно этого он действительно не говорил",
+"Сельское хозяйство остается низкопродуктивным",
 "Женщина в этих местах не может находиться",
 "Пришлось ему оставшееся время работать самому с собой",
 "И не только с технической стороны",
@@ -105,10 +109,10 @@ public class EntryProcessing : MonoBehaviour
 "Рассмотрим наши выражения подробнее",
 "Быть женой концертирующего пианиста очень непросто",
 "Работники предлагают свои знания и умения предпринимателям",
-"Несмотря на оказываемое давление ",
+"Несмотря на оказываемое давление",
 "Пустые машины со свистом проносятся по левым полосам",
 "Пусть они так же и остаются сюрпризами",
-"Не отстают от медиа и скандальные политики "};
+"Не отстают от медиа и скандальные политики"};
     #endregion sentences
 
 
@@ -128,6 +132,7 @@ public class EntryProcessing : MonoBehaviour
     {
         go = GameObject.Find("keyboard");
         shift = go.GetComponent<Shift>();
+        im = go.GetComponent<Image>();
         words = new List<string>(data);
     }
 
@@ -144,7 +149,7 @@ public class EntryProcessing : MonoBehaviour
     {
         if (obj != null && obj.name.Equals("NextSentence"))
         {
-
+            isPressed = true;
             confirmButton.SetActive(false);
             sentenceField.SetActive(true);
 
@@ -157,11 +162,13 @@ public class EntryProcessing : MonoBehaviour
                 MeasuringMetrics.SavePrefs();
                 
 
-                shift.ToCapital();
+                //shift.Swap();
+                //shiftUp();
 
                 
                 full_time.Stop();
                 Server.gest_time.Reset();
+                
             }
             else if (currentBlock + 1 < BLOCKS_COUNT)
             {
@@ -185,7 +192,7 @@ public class EntryProcessing : MonoBehaviour
         else if (isFirstTap && obj != null && obj.tag.Equals("Key"))
         {
             Server.SendToClient("clear\r\n");
-            shift.ToSmall();
+            //shift.ToSmall();
 
             isFirstTap = false;
 
@@ -193,10 +200,22 @@ public class EntryProcessing : MonoBehaviour
             confirmButton.SetActive(true);
             
             full_time.Restart();
+            
         }
         else if (obj != null && obj.name.Equals("ToMenu"))
         {
             OnMenuClicked.Invoke();
+        }
+
+        
+    }
+    
+    public static void shiftUp()
+    {
+        if (shift.i == 0)
+        {
+            im.sprite = shift.capital;
+            shift.i = 1;
         }
     }
 

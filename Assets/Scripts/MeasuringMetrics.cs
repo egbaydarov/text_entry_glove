@@ -1,22 +1,37 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MeasuringMetrics : MonoBehaviour
 {
 
     [SerializeField] private string FORM_URL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLScWlRx70e3SICI3YnnIJSOVPJ3jGoORoAdh-NvsTnuTtVpqkw/formResponse";
+
+    [SerializeField] private GameObject reticlePointer;
+    private int block_num;
+    private int sent_num;
+    private string sent_text;
+    private float all_time;
+    private float gest_time;
+
     // Start is called before the first frame update
     void Start()
     {
         //WriteMetricsData();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Server.isReceived)
+        {
+           // WriteMetricsData();
+            Server.isReceived = false;
+        }
     }
     public static void SavePrefs()
     {
@@ -51,33 +66,59 @@ public class MeasuringMetrics : MonoBehaviour
         PlayerPrefs.DeleteKey("Session_number");
     }
 
+
+    public void takeMetrics()
+    {
+        block_num = EntryProcessing.currentBlock;
+        sent_num = EntryProcessing.currentSentence;
+        sent_text = EntryProcessing.currentSentenceText;
+        all_time = ((float) EntryProcessing.full_time.ElapsedMilliseconds / 1000);
+        gest_time = (((float) Server.gest_time.ElapsedMilliseconds) / 1000);
+    }
+
     IEnumerator Post()
     {
         WWWForm form = new WWWForm();
-        form.AddField("entry.952386413", Settings.id.ToString()); // Идентификатор испытуемого
-        form.AddField("entry.2024755906", SceneManagment.method_id); // Идентификатор техники взаимодействия
-        form.AddField("entry.1905100173",EntryProcessing.currentBlock); // Номер блока предложений
-        form.AddField("entry.2130707738",EntryProcessing.currentSentence); // Номер попытки
-        form.AddField("entry.1405245047",EntryProcessing.currentSentenceText); // Эталонное предложение
-        form.AddField("entry.229951240",Server.mytext); // Введенное испытуемым предложение
-        form.AddField("entry.1830134686",Server.mytext.Length-1); // Длина введенного испытуемым предложения
-        form.AddField("entry.1264763496",((float)EntryProcessing.full_time.ElapsedMilliseconds/1000).ToString()); // Время ввода предложения
-        form.AddField("entry.452347986","Время перемещения курсора"); // Суммарное время перемещения курсора
-        form.AddField("entry.945161006",(((float)Server.gest_time.ElapsedMilliseconds)/1000).ToString()); // Суммарное время вычерчивания росчерка
-        form.AddField("entry.2055613067","Время выбора слов"); // Суммарное время выбора слов из списка подсказок
-        form.AddField("entry.1730946643",LevenshteinDistance(EntryProcessing.currentSentenceText, Server.mytext.Remove(Server.mytext.Length-1))); // Количество неисправленных опечаток   LevenshDistance(EntryProcessing.currentSentenceText, EntryProcessing.currentSentenceText.Length,Server.mytext,Server.mytext.Length).ToString()
-        form.AddField("entry.1907294220",Math.Round(((float)Server.mytext.Length-1)*12.0/EntryProcessing.full_time.Elapsed.Seconds,2).ToString()); // Скорость набора текста
+       
+           form.AddField("entry.952386413", Settings.id.ToString()); // Идентификатор испытуемого
+           form.AddField("entry.2024755906", SceneManagment.method_id); // Идентификатор техники взаимодействия
+           form.AddField("entry.1905100173", block_num); // Номер блока предложений
+           form.AddField("entry.2130707738", sent_num); // Номер попытки
+           form.AddField("entry.1405245047", sent_text); // Эталонное предложение
+           form.AddField("entry.229951240", Server.mytext); // Введенное испытуемым предложение
+           form.AddField("entry.1830134686", Server.mytext.Length - 1); // Длина введенного испытуемым предложения
+           form.AddField("entry.1264763496", all_time.ToString()); // Время ввода предложения
+           form.AddField("entry.452347986", "Время перемещения курсора"); // Суммарное время перемещения курсора
+           form.AddField("entry.945161006", gest_time.ToString()); // Суммарное время вычерчивания росчерка
+           form.AddField("entry.2055613067", "Время выбора слов"); // Суммарное время выбора слов из списка подсказок
+           form.AddField("entry.1730946643", LevenshteinDistance(sent_text, Server.mytext.Remove(Server.mytext.Length - 1))); // Количество неисправленных опечаток  
+           form.AddField("entry.1907294220", Math.Round(((float) Server.mytext.Length - 1) * 12.0 / all_time, 2).ToString()); // Скорость набора текста
+           
+
+           
         
-      
+
         byte[] rawData = form.data;
         WWW www = new WWW(FORM_URL,rawData);
         yield return www;
         Debug.Log("Send");
     }
 
+    IEnumerator Wait()
+    { 
+        yield return new WaitForSeconds(3);
+        StartCoroutine(Post());
+    }
+
     public void WriteMetricsData()
     {
-        StartCoroutine(Post());
+        
+       // if (EntryProcessing.isPressed && Server.isRelevant == 0)
+       {
+           StartCoroutine(Wait());
+            //StartCoroutine(Post());
+        }
+        
     }
     
     

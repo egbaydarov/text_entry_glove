@@ -9,11 +9,12 @@ public class SceneManagment : MonoBehaviour
     [SerializeField]
     Scenes currentScene = Scenes.OurMethod;
 
-    public static string method_id;
+    public static string method_id = null;
 
     public void Start()
     {
-        //method_id = "test";
+        if(method_id==null)
+            method_id = "test";
     }
 
     public void Exit()
