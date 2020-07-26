@@ -21,7 +21,7 @@ using Debug = UnityEngine.Debug;
 public class Server : MonoBehaviour
 {
 
-    public static string mytext;
+    public static string mytext = " ";
     public static bool isTextUpdated = false;
 
     Socket udpSocket;
