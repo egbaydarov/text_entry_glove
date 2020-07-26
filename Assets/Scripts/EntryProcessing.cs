@@ -20,7 +20,7 @@ public class EntryProcessing : MonoBehaviour
     public GameObject menuButton;
     public GameObject sentenceField;
 
-    public GvrReticlePointer reticlePointer;
+    
     GameObject go;
     static Shift shift;
     static private Image im;

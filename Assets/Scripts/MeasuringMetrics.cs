@@ -17,15 +17,18 @@ public class MeasuringMetrics : MonoBehaviour
     private float all_time;
     private float gest_time;
 
-    private ReticlePointer reticleScript;
+    private GvrBasePointer reticleScript;
 
     private MeshRenderer reticleMesh;
+
+    private TrailRenderer reticleTrail;
     // Start is called before the first frame update
     void Start()
     {
         //WriteMetricsData();
         reticleScript = reticlePointer.GetComponent<ReticlePointer>();
         reticleMesh = reticlePointer.GetComponent<MeshRenderer>();
+        reticleTrail = GetComponent<TrailRenderer>();
 
     }
 
@@ -113,11 +116,14 @@ public class MeasuringMetrics : MonoBehaviour
     {
         reticleMesh.enabled = false;
         reticleScript.enabled = false;
+        //reticleTrail.enabled = false;
         Debug.Log("Выключили");
         yield return new WaitForSeconds(3);
         StartCoroutine(Post());
+       // reticleTrail.enabled = true;
         reticleMesh.enabled = true;
         reticleScript.enabled = true;
+       
         Debug.Log("Включили");
     }
 
