@@ -17,11 +17,16 @@ public class MeasuringMetrics : MonoBehaviour
     private float all_time;
     private float gest_time;
 
+    private ReticlePointer reticleScript;
+
+    private MeshRenderer reticleMesh;
     // Start is called before the first frame update
     void Start()
     {
         //WriteMetricsData();
-        
+        reticleScript = reticlePointer.GetComponent<ReticlePointer>();
+        reticleMesh = reticlePointer.GetComponent<MeshRenderer>();
+
     }
 
     // Update is called once per frame
@@ -105,20 +110,22 @@ public class MeasuringMetrics : MonoBehaviour
     }
 
     IEnumerator Wait()
-    { 
+    {
+        reticleMesh.enabled = false;
+        reticleScript.enabled = false;
+        Debug.Log("Выключили");
         yield return new WaitForSeconds(3);
         StartCoroutine(Post());
+        reticleMesh.enabled = true;
+        reticleScript.enabled = true;
+        Debug.Log("Включили");
     }
 
     public void WriteMetricsData()
     {
         
-       // if (EntryProcessing.isPressed && Server.isRelevant == 0)
-       {
            StartCoroutine(Wait());
-            //StartCoroutine(Post());
-        }
-        
+           
     }
     
     
