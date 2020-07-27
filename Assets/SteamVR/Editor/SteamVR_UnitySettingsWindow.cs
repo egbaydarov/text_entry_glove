@@ -40,8 +40,8 @@ namespace Valve.VR
         const BuildTarget recommended_BuildTarget = BuildTarget.StandaloneWindows64;
         const bool recommended_ShowUnitySplashScreen = true;
         const bool recommended_DefaultIsFullScreen = false;
-        const int recommended_DefaultScreenWidth = 1024;
-        const int recommended_DefaultScreenHeight = 768;
+        const int recommended_DefaultScreenWidth = 640;
+        const int recommended_DefaultScreenHeight = 480;
         const bool recommended_RunInBackground = true;
 #if !UNITY_2019_1_OR_NEWER
         const ResolutionDialogSetting recommended_DisplayResolutionDialog = ResolutionDialogSetting.HiddenByDefault;
@@ -59,7 +59,7 @@ namespace Valve.VR
 #endif
 
 #if UNITY_2018_1_OR_NEWER
-    const FullScreenMode recommended_FullScreenMode = FullScreenMode.FullScreenWindow;
+    const FullScreenMode recommended_FullScreenMode = FullScreenMode.Windowed;
 #endif
         static SteamVR_UnitySettingsWindow window;
 
