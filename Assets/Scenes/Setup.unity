@@ -334,7 +334,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 9
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -669,6 +669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f007d8982d2f140abaf3a79447db70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentScene: 1
 --- !u!114 &1529862513
 MonoBehaviour:
   m_ObjectHideFlags: 0
