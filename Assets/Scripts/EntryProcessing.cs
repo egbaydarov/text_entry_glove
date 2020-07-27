@@ -192,7 +192,7 @@ public class EntryProcessing : MonoBehaviour
         
     }
     
-    public void ResetTime()
+    public static void ResetTime()
     {
         Server.gest_time.Reset();
         Server.move_time.Reset();

@@ -17,6 +17,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
+using UnityEngine.SceneManagement;
 
 public class Server : MonoBehaviour
 {
@@ -272,8 +273,12 @@ public class Server : MonoBehaviour
     public static void OnPointerUp()
     {
         isDown = false;
-        gest_time.Stop();
-        move_time.Start();
+        if (SceneManager.GetActiveScene().name=="OurMethodMain" || SceneManager.GetActiveScene().name=="GestureTypeMain")
+        {
+            gest_time.Stop();
+            move_time.Start();
+        }
+
         if (Client != null && Client.Connected)
             SendToClient(data + "\r\n");
 
@@ -284,10 +289,13 @@ public class Server : MonoBehaviour
     public static void OnPointerDown()
     {
         isDown = true;
-        gest_time.Start();
-        move_time.Stop();
-        if(!EntryProcessing.full_time.IsRunning)
-            EntryProcessing.full_time.Start();
+        if (SceneManager.GetActiveScene().name=="OurMethodMain" || SceneManager.GetActiveScene().name=="GestureTypeMain")
+        {
+            gest_time.Start();
+            move_time.Stop();
+            if (!EntryProcessing.full_time.IsRunning)
+                EntryProcessing.full_time.Start();
+        }
 
     }
 

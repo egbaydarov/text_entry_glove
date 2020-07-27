@@ -23,7 +23,7 @@ public class MeasuringMetrics : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+        //Thread.CurrentThread.CurrentCulture = new CultureInfo("ru-RU");
     }
 
     // Update is called once per frame
@@ -78,25 +78,27 @@ public class MeasuringMetrics : MonoBehaviour
     {
         WWWForm form = new WWWForm();
 
-        Debug.Log("Length of MYtext: "+ Server.mytext.Length);
         if (Server.mytext.Length > 0)
-            text_length = Server.mytext.Length - 1;
-        else
-            text_length = 0;
-        Debug.Log("Length of text: "+text_length);
+        {
+            if (Server.mytext[Server.mytext.Length - 1] == ' ')
+                Server.mytext = Server.mytext.Remove(Server.mytext.Length - 1);
+        }
+        //else
+           // text_length = 0;
+       
             form.AddField("entry.952386413", Settings.id.ToString()); // Идентификатор испытуемого
            form.AddField("entry.2024755906", SceneManagment.method_id); // Идентификатор техники взаимодействия
            form.AddField("entry.1905100173", block_num+1); // Номер блока предложений
            form.AddField("entry.2130707738", sent_num+1); // Номер попытки
            form.AddField("entry.1405245047", sent_text); // Эталонное предложение
            form.AddField("entry.229951240", Server.mytext); // Введенное испытуемым предложение
-           form.AddField("entry.1830134686", text_length); // Длина введенного испытуемым предложения
-           form.AddField("entry.1264763496", all_time.ToString()); // Время ввода предложения
-           form.AddField("entry.452347986", move_time.ToString()); // Суммарное время перемещения курсора
-           form.AddField("entry.945161006", gest_time.ToString()); // Суммарное время вычерчивания росчерка
+           form.AddField("entry.1830134686", Server.mytext.Length); // Длина введенного испытуемым предложения
+           form.AddField("entry.1264763496", all_time.ToString().Replace(".",",")); // Время ввода предложения
+           form.AddField("entry.452347986", move_time.ToString().Replace(".",",")); // Суммарное время перемещения курсора
+           form.AddField("entry.945161006", gest_time.ToString().Replace(".",",")); // Суммарное время вычерчивания росчерка
            form.AddField("entry.2055613067", "Время выбора слов"); // Суммарное время выбора слов из списка подсказок
            form.AddField("entry.1730946643", LevenshteinDistance(sent_text, Server.mytext)); // Количество неисправленных опечаток  
-           form.AddField("entry.1907294220", Math.Round(((float) text_length) * 12.0 / all_time, 2).ToString()); // Скорость набора текста
+           form.AddField("entry.1907294220", Math.Round(((float) Server.mytext.Length) * 12.0 / all_time, 2).ToString().Replace(".",",")); // Скорость набора текста
            
 
            
@@ -133,8 +135,8 @@ public class MeasuringMetrics : MonoBehaviour
         string1 = string1.Replace("ё", "е");
         string2 = string2.ToLower();
         string2 = string2.Replace("ё", "е");
-        if (string2.Length > 0)
-            string2.Remove(string2.Length - 1);
+        //if (string2.Length > 0)
+            //string2.Remove(string2.Length - 1);
         if (string1 == null) throw new ArgumentNullException("string1");
         if (string2 == null) throw new ArgumentNullException("string2");
         int diff;

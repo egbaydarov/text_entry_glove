@@ -9,6 +9,7 @@ public class SceneManagment : MonoBehaviour
     [SerializeField]
     Scenes currentScene = Scenes.OurMethod;
 
+    public static bool isMain = false;
     public static string method_id = null;
 
     public void Start()
@@ -28,6 +29,7 @@ public class SceneManagment : MonoBehaviour
 
     public void Train()
     {
+        isMain = false;
         switch (currentScene)
         {
             case Scenes.OurMethod:
@@ -42,6 +44,8 @@ public class SceneManagment : MonoBehaviour
 
     public void StartExperiment()
     {
+        EntryProcessing.ResetTime();
+        //isMain = true;
         MeasuringMetrics.LoadPrefs();
         Settings.id++;
         EntryProcessing.currentBlock = 0;
@@ -61,6 +65,8 @@ public class SceneManagment : MonoBehaviour
 
     public void ContinueExperiment()
     {
+        EntryProcessing.ResetTime();
+        //isMain = true;
         MeasuringMetrics.LoadPrefs();
         switch (currentScene)
         {
@@ -77,6 +83,7 @@ public class SceneManagment : MonoBehaviour
 
     public void LoadMenu()
     {
+        isMain = false;
         Scene current = SceneManager.GetActiveScene();
         SceneManager.LoadSceneAsync("MainMenu");
         SceneManager.UnloadSceneAsync(current);
@@ -84,6 +91,7 @@ public class SceneManagment : MonoBehaviour
 
     public void Setup()
     {
+        isMain = false;
         SceneManager.LoadSceneAsync("Setup");
     }
 

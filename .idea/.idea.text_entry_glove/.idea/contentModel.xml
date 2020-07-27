@@ -793,6 +793,7 @@
             <e p="AirStrokeMapper.cs" t="Include" />
             <e p="DirectLazerPointer.cs" t="Include" />
             <e p="LMPointer.cs" t="Include" />
+            <e p="PinchDetectorDelay.cs" t="Include" />
             <e p="Pinching.cs" t="Include" />
           </e>
           <e p="MeasuringMetrics.cs" t="Include" />
