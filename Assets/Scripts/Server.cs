@@ -21,6 +21,7 @@ using UnityEngine.SceneManagement;
 
 public class Server : MonoBehaviour
 {
+    static byte[] image;
 
     public static string mytext = " ";
     public static bool isTextUpdated = false;
@@ -222,12 +223,27 @@ public class Server : MonoBehaviour
                     {
                         string[] data = Encoding.UTF8.GetString(bytes, 0, length).Split('\n');
                         string clientMessage = data.Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
-                        Debug.Log("Recieved text: " + clientMessage);
-                        if (clientMessage[0] == '\r')
-                            clientMessage = "";
-                        mytext = clientMessage;
-                        isTextUpdated = true;
-                        
+                        string[] words = clientMessage.Split(' ');
+                        if (words[0].Equals("file"))
+                        {
+                            int size = int.Parse(words[1].Trim());
+                            Debug.Log($"Real Image size: {size}");
+
+                            int received = 0;
+                            image = new byte[size];
+                            while(received < size)
+                                received += Client.Receive(image, received, size - received, SocketFlags.Partial);
+                            Debug.Log($"Image size: {received}");
+                            //target = new Texture2D(screen_y, keyboard_x);
+                        }
+                        else
+                        {
+                            Debug.Log("Recieved text: " + clientMessage);
+                            if (clientMessage[0] == '\r')
+                                clientMessage = "";
+                            mytext = clientMessage;
+                            isTextUpdated = true;
+                        }
                     }
                 }
                 catch (SocketException socketException)
@@ -281,6 +297,9 @@ public class Server : MonoBehaviour
 
         if (Client != null && Client.Connected)
             SendToClient(data + "\r\n");
+
+        SendToClient("screenshot\r\n");
+            
 
         data = "";
         
