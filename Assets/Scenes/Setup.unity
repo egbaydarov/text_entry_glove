@@ -620,13 +620,13 @@ MonoBehaviour:
         m_CallState: 2
   Period: 1.5
   HandModel: {fileID: 1529862506}
-  Thumb: 2
-  Index: 0
+  Thumb: 0
+  Index: 1
   Middle: 1
   Ring: 1
   Pinky: 1
   MinimumExtendedCount: 1
-  MaximumExtendedCount: 2
+  MaximumExtendedCount: 1
   ShowGizmos: 1
 --- !u!114 &1529862511
 MonoBehaviour:
@@ -712,13 +712,13 @@ MonoBehaviour:
         m_CallState: 2
   Period: 1.5
   HandModel: {fileID: 1529862508}
-  Thumb: 2
-  Index: 0
+  Thumb: 0
+  Index: 1
   Middle: 1
   Ring: 1
   Pinky: 1
   MinimumExtendedCount: 1
-  MaximumExtendedCount: 2
+  MaximumExtendedCount: 1
   ShowGizmos: 1
 --- !u!4 &1529862514 stripped
 Transform:

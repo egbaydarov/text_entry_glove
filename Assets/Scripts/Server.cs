@@ -23,7 +23,9 @@ public class Server : MonoBehaviour
 {
     static byte[] image;
 
-    public static string mytext = " ";
+    public static string[] predictions = { "Левая", "Центр", "Правая" };
+
+    public static string mytext = ""; //should be empty on start
     public static bool isTextUpdated = false;
 
     Socket udpSocket;
@@ -60,19 +62,21 @@ public class Server : MonoBehaviour
     bool IsBroadcasting = true;
     bool isProcessing;
 
-    
+
     public static Stopwatch gest_time = new Stopwatch();
-    
+
     public static Stopwatch move_time = new Stopwatch();
-    
+
+    public static bool isGestureValid = false;
+
     void Start()
     {
         NetworkSetup();
         isProcessing = true;
 
         FindClient();
-        
-       // move_time.Start();
+
+        // move_time.Start();
     }
 
     IPAddress FindBroadcastAdress()
@@ -156,12 +160,16 @@ public class Server : MonoBehaviour
                     Debug.Log($"Height - {keyboard_y}, Width - {keyboard_x}, Screen Height - {screen_y}");
                     Debug.Log(coef_x + " " + coef_y);
                     Debug.Log("Socket connected");
+
                     IsConnected = true;
                     IsBroadcasting = false;
 
                     Thread textUpdate = new Thread(new ThreadStart(ReadFromClient));
+
+
                     textUpdate.IsBackground = true;
                     textUpdate.Start();
+
                     break;
                 }
                 catch (Exception ex)
@@ -231,7 +239,7 @@ public class Server : MonoBehaviour
 
                             int received = 0;
                             image = new byte[size];
-                            while(received < size)
+                            while (received < size)
                                 received += Client.Receive(image, received, size - received, SocketFlags.Partial);
                             Debug.Log($"Image size: {received}");
                             //target = new Texture2D(screen_y, keyboard_x);
@@ -241,7 +249,23 @@ public class Server : MonoBehaviour
                             Debug.Log("Recieved text: " + clientMessage);
                             if (clientMessage[0] == '\r')
                                 clientMessage = "";
-                            mytext = clientMessage;
+
+                            predictions = clientMessage.Split(';');
+                            if (mytext.Length == 0)
+                            {
+                                if (predictions[0].Length > 0)
+                                    predictions[0] = char.ToUpper(predictions[0][0]) + predictions[0].Substring(1);
+                                if (predictions[1].Length > 0)
+                                    predictions[1] = char.ToUpper(predictions[1][0]) + predictions[1].Substring(1);
+                                if (predictions[2].Length > 0)
+                                    predictions[2] = char.ToUpper(predictions[2][0]) + predictions[2].Substring(1);
+                            }
+                            else
+                            {
+                                mytext += ' ';
+                            }
+                            mytext += $"{predictions[1]}";
+
                             isTextUpdated = true;
                         }
                     }
@@ -289,26 +313,24 @@ public class Server : MonoBehaviour
     public static void OnPointerUp()
     {
         isDown = false;
-        if (SceneManager.GetActiveScene().name=="OurMethodMain" || SceneManager.GetActiveScene().name=="GestureTypeMain")
+
+        if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
         {
             gest_time.Stop();
             move_time.Start();
         }
 
-        if (Client != null && Client.Connected)
+        if (Client != null && Client.Connected && isGestureValid)
             SendToClient(data + "\r\n");
 
-        SendToClient("screenshot\r\n");
-            
-
         data = "";
-        
+        isGestureValid = false;
     }
 
     public static void OnPointerDown()
     {
         isDown = true;
-        if (SceneManager.GetActiveScene().name=="OurMethodMain" || SceneManager.GetActiveScene().name=="GestureTypeMain")
+        if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
         {
             gest_time.Start();
             move_time.Stop();

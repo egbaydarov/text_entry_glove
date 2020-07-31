@@ -128,6 +128,7 @@ public class EntryProcessing : MonoBehaviour
 
     public void OnNextClicked(GameObject obj, PointerEventData pointerData)
     {
+        //UnityEngine.Debug.Log(obj == null ? "null" : $"{obj.name} : {obj.tag}");
         if (obj != null && obj.name.Equals("NextSentence"))
         {
             Shift.ToCapital();
@@ -176,10 +177,10 @@ public class EntryProcessing : MonoBehaviour
 
             isFirstTap = true;
         }
-        else if (isFirstTap && obj != null && obj.tag.Equals("Key"))
+        else if (isFirstTap && obj != null && obj.tag.Equals("Key") && !menuButton.activeSelf)
         {
             Shift.ToSmall();
-            Server.SendToClient("clear\r\n");
+            Server.mytext = "";
             
             
             isFirstTap = false;
