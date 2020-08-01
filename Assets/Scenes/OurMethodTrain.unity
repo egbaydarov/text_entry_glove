@@ -4034,7 +4034,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed7d71f7d326514ca87212ee0faac88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: {fileID: 0}
+  audio: {fileID: 1922753977}
   soundToPlay: {fileID: 8300000, guid: c06c368f193269d458a52422f062d171, type: 3}
 --- !u!114 &1165560836
 MonoBehaviour:
@@ -4079,7 +4079,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1580676978}
         m_MethodName: ChangeOnPrediction1
         m_Mode: 1
         m_Arguments:
@@ -5901,7 +5901,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed7d71f7d326514ca87212ee0faac88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: {fileID: 0}
+  audio: {fileID: 1922753977}
   soundToPlay: {fileID: 8300000, guid: c06c368f193269d458a52422f062d171, type: 3}
 --- !u!114 &1495519321
 MonoBehaviour:
@@ -5946,7 +5946,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1580676978}
         m_MethodName: ChangeOnPrediction2
         m_Mode: 1
         m_Arguments:
@@ -7898,8 +7898,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d321ec24d157a74c8cd95f4f449a63a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftPinchDetector: {fileID: 0}
-  rightPinchDetector: {fileID: 0}
+  leftPinchDetector: {fileID: 760815629}
+  rightPinchDetector: {fileID: 1531458206}
   PinchHand: 1
   delay: 3
 --- !u!1001 &1953431905
@@ -8225,7 +8225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed7d71f7d326514ca87212ee0faac88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: {fileID: 0}
+  audio: {fileID: 1922753977}
   soundToPlay: {fileID: 8300000, guid: c06c368f193269d458a52422f062d171, type: 3}
 --- !u!114 &1970784967
 MonoBehaviour:
@@ -8270,7 +8270,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1580676978}
         m_MethodName: ChangeOnPrediction0
         m_Mode: 1
         m_Arguments:

@@ -4960,7 +4960,6 @@ GameObject:
   - component: {fileID: 1192986103}
   - component: {fileID: 1192986107}
   - component: {fileID: 1192986106}
-  - component: {fileID: 1192986105}
   - component: {fileID: 1192986104}
   m_Layer: 5
   m_Name: CanvasKeyboard
@@ -5006,22 +5005,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &1192986105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1192986102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d5c25a245e5ced4d865301c5049c986, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  keyboard: {fileID: 644089459}
-  keys: {fileID: 0}
-  spaceBar: {fileID: 1565709780}
-  predictionBar: {fileID: 0}
 --- !u!114 &1192986106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5275,7 +5258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed7d71f7d326514ca87212ee0faac88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: {fileID: 0}
+  audio: {fileID: 1922753977}
   soundToPlay: {fileID: 8300000, guid: c06c368f193269d458a52422f062d171, type: 3}
 --- !u!114 &1313553322
 MonoBehaviour:
@@ -5320,7 +5303,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 644089462}
         m_MethodName: ChangeOnPrediction1
         m_Mode: 1
         m_Arguments:
@@ -8418,8 +8401,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d321ec24d157a74c8cd95f4f449a63a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftPinchDetector: {fileID: 0}
-  rightPinchDetector: {fileID: 0}
+  leftPinchDetector: {fileID: 760815629}
+  rightPinchDetector: {fileID: 1531458206}
   PinchHand: 1
   delay: 3
 --- !u!1 &1960954531
@@ -9014,7 +8997,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed7d71f7d326514ca87212ee0faac88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: {fileID: 0}
+  audio: {fileID: 1922753977}
   soundToPlay: {fileID: 8300000, guid: c06c368f193269d458a52422f062d171, type: 3}
 --- !u!114 &2027894535
 MonoBehaviour:
@@ -9059,7 +9042,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 644089462}
         m_MethodName: ChangeOnPrediction2
         m_Mode: 1
         m_Arguments:
@@ -9841,7 +9824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed7d71f7d326514ca87212ee0faac88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: {fileID: 0}
+  audio: {fileID: 1922753977}
   soundToPlay: {fileID: 8300000, guid: c06c368f193269d458a52422f062d171, type: 3}
 --- !u!114 &2085543649
 MonoBehaviour:
@@ -9886,7 +9869,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 644089462}
         m_MethodName: ChangeOnPrediction0
         m_Mode: 1
         m_Arguments:
