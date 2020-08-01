@@ -11,6 +11,7 @@ public class MeasuringMetrics : MonoBehaviour
 
     [SerializeField] private string FORM_URL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLScWlRx70e3SICI3YnnIJSOVPJ3jGoORoAdh-NvsTnuTtVpqkw/formResponse";
 
+    [SerializeField] private InputField intext;
     [SerializeField] private GameObject reticlePointer;
     private int block_num;
     private int sent_num;
@@ -78,10 +79,10 @@ public class MeasuringMetrics : MonoBehaviour
     {
         WWWForm form = new WWWForm();
 
-        if (Server.mytext.Length > 0)
+        if (intext.text.Length > 0)
         {
-            if (Server.mytext[Server.mytext.Length - 1] == ' ')
-                Server.mytext = Server.mytext.Remove(Server.mytext.Length - 1);
+            if (intext.text[intext.text.Length - 1] == ' ')
+                intext.text = intext.text.Remove(intext.text.Length - 1);
         }
         //else
            // text_length = 0;
@@ -91,14 +92,14 @@ public class MeasuringMetrics : MonoBehaviour
            form.AddField("entry.1905100173", block_num+1); // Номер блока предложений
            form.AddField("entry.2130707738", sent_num+1); // Номер попытки
            form.AddField("entry.1405245047", sent_text); // Эталонное предложение
-           form.AddField("entry.229951240", Server.mytext); // Введенное испытуемым предложение
-           form.AddField("entry.1830134686", Server.mytext.Length); // Длина введенного испытуемым предложения
+           form.AddField("entry.229951240", intext.text); // Введенное испытуемым предложение
+           form.AddField("entry.1830134686", intext.text.Length); // Длина введенного испытуемым предложения
            form.AddField("entry.1264763496", all_time.ToString().Replace(".",",")); // Время ввода предложения
            form.AddField("entry.452347986", move_time.ToString().Replace(".",",")); // Суммарное время перемещения курсора
            form.AddField("entry.945161006", gest_time.ToString().Replace(".",",")); // Суммарное время вычерчивания росчерка
            form.AddField("entry.2055613067", "Время выбора слов"); // Суммарное время выбора слов из списка подсказок
-           form.AddField("entry.1730946643", LevenshteinDistance(sent_text, Server.mytext)); // Количество неисправленных опечаток  
-           form.AddField("entry.1907294220", Math.Round(((float) Server.mytext.Length) * 12.0 / all_time, 2).ToString().Replace(".",",")); // Скорость набора текста
+           form.AddField("entry.1730946643", LevenshteinDistance(sent_text, intext.text)); // Количество неисправленных опечаток  
+           form.AddField("entry.1907294220", Math.Round(((float) intext.text.Length) * 12.0 / all_time, 2).ToString().Replace(".",",")); // Скорость набора текста
            
 
            

@@ -26,11 +26,14 @@ public class EntryProcessing : MonoBehaviour
     static private Image im;
     
     public static bool isPressed;
+    [SerializeField] private InputField intext;
 
     public UnityEvent OnSentenceInputEnd;
     public UnityEvent OnBlockInputEnd;
     public UnityEvent OnInputEnd;
     public UnityEvent OnMenuClicked;
+
+   
 
     #region sentences
     string[] data = {"﻿Раньше ненависти также не испытывала",
@@ -129,6 +132,8 @@ public class EntryProcessing : MonoBehaviour
     public void OnNextClicked(GameObject obj, PointerEventData pointerData)
     {
         //UnityEngine.Debug.Log(obj == null ? "null" : $"{obj.name} : {obj.tag}");
+        
+        // Если нажата кнопка "Ввод завершен" (мб поменять на завершить ввод)
         if (obj != null && obj.name.Equals("NextSentence"))
         {
             Shift.ToCapital();
@@ -141,6 +146,7 @@ public class EntryProcessing : MonoBehaviour
             confirmButton.SetActive(false);
             sentenceField.SetActive(true);
 
+            // Если в блоке еще есть предложения
             if (currentSentence + 1 < SENTENCE_COUNT)
             {
                 
@@ -149,9 +155,11 @@ public class EntryProcessing : MonoBehaviour
                 
                 ++currentSentence;
                 MeasuringMetrics.SavePrefs();
+                
                                
                 
             }
+            // Если в блоке больше нет предложений (это последнее предложение блока)
             else if (currentBlock + 1 < BLOCKS_COUNT)
             {
                 
@@ -166,6 +174,7 @@ public class EntryProcessing : MonoBehaviour
                 confirmButton.SetActive(false);
                 menuButton.SetActive(true);
             }
+            // если ввод полностью закончен
             else
             {
                 sentenceField.SetActive(false);
@@ -174,14 +183,17 @@ public class EntryProcessing : MonoBehaviour
                 OnInputEnd.Invoke();
                 ResetTime();
             }
-
+            
             isFirstTap = true;
+
+            //
         }
+        // если нажатие на клавиатуру
         else if (isFirstTap && obj != null && obj.tag.Equals("Key") && !menuButton.activeSelf)
         {
             Shift.ToSmall();
-            Server.mytext = "";
-            
+            //Server.mytext = "";
+            intext.text = "";
             
             isFirstTap = false;
 

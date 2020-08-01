@@ -19,6 +19,8 @@ public class TrainTextEntryProcessing : MonoBehaviour
     public InputField TMP_if;
 
     public Text sentenceNumber;
+    
+    [SerializeField] private InputField intext;
 
     public UnityEvent OnTrainEnd;
     public UnityEvent OnMenuClicked;
@@ -311,6 +313,7 @@ public class TrainTextEntryProcessing : MonoBehaviour
             Shift.ToSmall();
             Server.SendToClient("clear\r\n");
             isFirstTap = false;
+            intext.text = "";
 
             sentenceField.SetActive(false);
             confirmButton.SetActive(true);
