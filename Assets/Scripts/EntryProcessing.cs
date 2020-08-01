@@ -27,6 +27,7 @@ public class EntryProcessing : MonoBehaviour
     
     public static bool isPressed;
     [SerializeField] private InputField intext;
+    
 
     public UnityEvent OnSentenceInputEnd;
     public UnityEvent OnBlockInputEnd;

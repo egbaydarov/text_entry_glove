@@ -34,20 +34,22 @@ public class TextHelper: MonoBehaviour
         // parse mytext in array, middle word goes to intext 
         if (Server.isTextUpdated)
         {
-            if (intext.text != "")
+            if (intext.text == "")
             {
-                intext.text += " " + Server.predictions[1];
+                for (var i = 0; i < Server.predictions.Length; i++)
+                {
+                    Server.predictions[i] = Server.predictions[i].Capitalize();
+                }
+
+                intext.text = Server.predictions[1];
                 prediction0.text = Server.predictions[0];
                 prediction1.text = Server.predictions[1];
                 prediction2.text = Server.predictions[2];
             }
             else
             {
-                foreach (var prediction in Server.predictions)
-                {
-                    prediction.Capitalize();
-                }
-                intext.text = Server.predictions[1];
+
+                intext.text += " " + Server.predictions[1];
                 prediction0.text = Server.predictions[0];
                 prediction1.text = Server.predictions[1];
                 prediction2.text = Server.predictions[2];
