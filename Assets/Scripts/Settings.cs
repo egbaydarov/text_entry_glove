@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class Settings : MonoBehaviour
 {
-    Text text;
+    [SerializeField] private Text text;
 
     public static uint id;
 
     void Start()
     {
         if(!PlayerPrefs.HasKey("Respondent_ID"))
-            id = 0;
+            id = 1;
     }
 
     // Update is called once per frame
@@ -28,7 +28,10 @@ public class Settings : MonoBehaviour
 
     public void decrementId()
     {
-        --id;
+        if (id >= 1)
+        {
+            --id;
+        }
     }
 
     private void Awake()
