@@ -20,7 +20,7 @@ public class EntryProcessing : MonoBehaviour
     public GameObject menuButton;
     public GameObject sentenceField;
 
-    
+    TextHelper th;
     GameObject go;
     static Shift shift;
     static private Image im;
@@ -191,18 +191,39 @@ public class EntryProcessing : MonoBehaviour
             //
         }
         // если нажатие на клавиатуру
-        else if (isFirstTap && obj != null && obj.tag.Equals("Key") && !menuButton.activeSelf)
+        else if (isFirstTap && obj != null && obj.tag.Equals("Key"))
         {
-            Shift.ToSmall();
-            //Server.mytext = "";
-            intext.text = "";
-            
-            isFirstTap = false;
+            //First PointerDown after OnNextSentence
+            if (!menuButton.activeSelf)
+            {
+                Shift.ToSmall();
+                //Server.mytext = "";
+                intext.text = "";
 
-            sentenceField.SetActive(false);
-            confirmButton.SetActive(true);
-            
-            
+                isFirstTap = false;
+
+                sentenceField.SetActive(false);
+                confirmButton.SetActive(true);
+            }
+            else
+                th.IsAvailable = false;
+        }
+        else if (obj != null && obj.tag.Equals("Prediction") && th.IsAvailable && !isFirstTap)
+        {
+            switch (obj.name)
+            {
+                case "Prediction0":
+                    th.ChangeOnPrediction0();
+                    break;
+                case "Prediction1":
+                    th.ChangeOnPrediction1();
+                    break;
+                case "Prediction2":
+                    th.ChangeOnPrediction2();
+                    break;
+                default:
+                    break;
+            }
         }
         
     }
@@ -217,6 +238,7 @@ public class EntryProcessing : MonoBehaviour
     private void Awake()
     {
         server = FindObjectOfType<Server>();
+        th = FindObjectOfType<TextHelper>();
     }
     public void OnMenuClickedUp(GameObject obj, PointerEventData pointerData)
     {

@@ -10,6 +10,7 @@ TagManager:
   - LMPointer
   - Key
   - Server
+  - Prediction
   layers:
   - Default
   - TransparentFX

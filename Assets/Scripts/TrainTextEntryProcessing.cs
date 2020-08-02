@@ -13,16 +13,20 @@ public class TrainTextEntryProcessing : MonoBehaviour
     List<string> words = new List<string>();
     Random rnd = new Random();
 
+
+
     public GameObject sentenceField;
     public GameObject confirmButton;
     public GameObject menuButton;
     public InputField TMP_if;
 
     public Text sentenceNumber;
+    TextHelper th;
     
-    [SerializeField] private InputField intext;
+    [SerializeField] 
+    private InputField intext;
 
-    public UnityEvent OnTrainEnd;
+    public UnityEvent OnSentenceEnd;
     public UnityEvent OnMenuClicked;
 
     Server server;
@@ -50,8 +54,8 @@ public class TrainTextEntryProcessing : MonoBehaviour
     }
     private void Awake()
     {
-        GameObject objs = GameObject.FindGameObjectWithTag("Server");
-        server = objs.GetComponent<Server>();
+        server = FindObjectOfType<Server>();
+        th = FindObjectOfType<TextHelper>();
     }
 
     #region sentences
@@ -302,6 +306,7 @@ public class TrainTextEntryProcessing : MonoBehaviour
             Shift.ToCapital();
             if (currentSentence + 1 < SENTENCE_COUNT)
             {
+                OnSentenceEnd.Invoke();
                 ++currentSentence;
                 sentenceField.SetActive(true);
                 confirmButton.SetActive(false);
@@ -309,21 +314,44 @@ public class TrainTextEntryProcessing : MonoBehaviour
             }
             else
             {
-                OnTrainEnd.Invoke();
                 sentenceField.SetActive(false);
                 confirmButton.SetActive(false);
                 menuButton.SetActive(true);
             }
         }
-        else if (obj != null && isFirstTap && obj.tag == "Key")
+        else if (obj != null && obj.tag == "Key")
         {
-            Shift.ToSmall();
-            server.SendToClient("clear\r\n");
-            isFirstTap = false;
-            intext.text = "";
+            if (isFirstTap)
+            {
+                Shift.ToSmall();
+                server.SendToClient("clear\r\n");
+                isFirstTap = false;
+                intext.text = "";
 
-            sentenceField.SetActive(false);
-            confirmButton.SetActive(true);
+                sentenceField.SetActive(false);
+                confirmButton.SetActive(true);
+            }
+            else
+            {
+                th.IsAvailable = false;
+            }
+        }
+        else if (obj != null && obj.tag.Equals("Prediction") && th.IsAvailable && !isFirstTap)
+        {
+            switch (obj.name)
+            {
+                case "Prediction0":
+                    th.ChangeOnPrediction0();
+                    break;
+                case "Prediction1":
+                    th.ChangeOnPrediction1();
+                    break;
+                case "Prediction2":
+                    th.ChangeOnPrediction2();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
