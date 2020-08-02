@@ -20,6 +20,8 @@ public class MeasuringMetrics : MonoBehaviour
     private float gest_time;
     private float move_time;
     private int text_length;
+
+    Server server;
     
     // Start is called before the first frame update
     void Start()
@@ -71,8 +73,8 @@ public class MeasuringMetrics : MonoBehaviour
         sent_num = EntryProcessing.currentSentence;
         sent_text = EntryProcessing.currentSentenceText;
         all_time = ((float) EntryProcessing.full_time.ElapsedMilliseconds / 1000);
-        gest_time = (((float) Server.gest_time.ElapsedMilliseconds) / 1000);
-        move_time = (((float) Server.move_time.ElapsedMilliseconds) / 1000);
+        gest_time = (((float) server.gest_time.ElapsedMilliseconds) / 1000);
+        move_time = (((float) server.move_time.ElapsedMilliseconds) / 1000);
     }
 
     IEnumerator Post()
@@ -159,5 +161,8 @@ public class MeasuringMetrics : MonoBehaviour
         }
         return m[string1.Length, string2.Length];
     }
-    
+    private void Awake()
+    {
+        server = FindObjectOfType<Server>();
+    }
 }

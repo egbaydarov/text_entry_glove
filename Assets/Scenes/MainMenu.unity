@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f007d8982d2f140abaf3a79447db70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentScene: 0
+  currentScene: 1
 --- !u!4 &438944048 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4057968051431532, guid: dae2e2be31c98324eac460f702db97e9,
@@ -579,6 +579,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c882c1b411ff4469b37bdd34c609d9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unity_keyboard_x: 1080
+  unity_keyboard_y: 660
+  unity_screen_y: 2214
+  keyboard_x: 0
+  keyboard_y: 0
+  screen_y: 0
+  coef_x: 0
+  coef_y: 0
+  isSizeSet: 0
+  IsConnected: 0
 --- !u!4 &2026602160
 Transform:
   m_ObjectHideFlags: 0

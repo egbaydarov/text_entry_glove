@@ -11,21 +11,33 @@ using UnityEngine;
 using System.Collections;
 using System;
 using Leap;
+using UnityEngine.Events;
 
-namespace Leap.Unity{
-  public class HandEnableDisable : HandTransitionBehavior {
-    protected override void Awake() {
-      base.Awake();
-      gameObject.SetActive(false);
+namespace Leap.Unity
+{
+    public class HandEnableDisable : HandTransitionBehavior
+    {
+        public UnityEvent OnHandReset;
+        public UnityEvent OnHandFinish;
+               
+
+        protected override void Awake()
+        {
+            base.Awake();
+            gameObject.SetActive(false);
+        }
+
+
+        protected override void HandReset()
+        {
+            gameObject.SetActive(true);
+            OnHandReset.Invoke();
+        }
+
+        protected override void HandFinish()
+        {
+            gameObject.SetActive(false);
+            OnHandFinish.Invoke();
+        }
     }
-
-  	protected override void HandReset() {
-      gameObject.SetActive(true);
-    }
-
-    protected override void HandFinish() {
-      gameObject.SetActive(false);
-    }
-
-  }
 }

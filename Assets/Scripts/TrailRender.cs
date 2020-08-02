@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class TrailRender : MonoBehaviour
 {
-    List<GameObject> trailPoints = new List<GameObject>();
+    public List<GameObject> trailPoints = new List<GameObject>();
 
     private LineRenderer line;
 

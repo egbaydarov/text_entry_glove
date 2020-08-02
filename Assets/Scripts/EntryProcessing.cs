@@ -34,7 +34,8 @@ public class EntryProcessing : MonoBehaviour
     public UnityEvent OnInputEnd;
     public UnityEvent OnMenuClicked;
 
-   
+
+    Server server;
 
     #region sentences
     string[] data = {"﻿Раньше ненависти также не испытывала",
@@ -140,7 +141,7 @@ public class EntryProcessing : MonoBehaviour
             Shift.ToCapital();
 
             full_time.Stop();
-            Server.gest_time.Stop();
+            server.gest_time.Stop();
             
             
             isPressed = true;
@@ -206,19 +207,22 @@ public class EntryProcessing : MonoBehaviour
         
     }
     
-    public static void ResetTime()
+    public void ResetTime()
     {
-        Server.gest_time.Reset();
-        Server.move_time.Reset();
+        server.gest_time.Reset();
+        server.move_time.Reset();
         full_time.Reset();
     }
 
-
+    private void Awake()
+    {
+        server = FindObjectOfType<Server>();
+    }
     public void OnMenuClickedUp(GameObject obj, PointerEventData pointerData)
     {
         if (obj != null && obj.name.Equals("ToMenu"))
         {
-            Server.SendToClient("clear\r\n");
+            server.SendToClient("clear\r\n");
             OnMenuClicked.Invoke();
         }
     }

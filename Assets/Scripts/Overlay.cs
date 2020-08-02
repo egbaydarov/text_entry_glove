@@ -13,6 +13,8 @@ public class Overlay : MonoBehaviour
     [SerializeField]
     private GameObject children;
 
+    Server server;
+
     void Start()
     {
         if (reticlePointer == null)
@@ -37,12 +39,16 @@ public class Overlay : MonoBehaviour
         }
 
     }
+    private void Awake()
+    {
+        server = FindObjectOfType<Server>();
+    }
 
     void Update()
     {
-        reticlePointer.SetActive(Server.IsConnected);
-        LMPointer.SetActive(Server.IsConnected);
-        children.SetActive(!Server.IsConnected);
-        GetComponent<MeshRenderer>().enabled = !Server.IsConnected;
+        reticlePointer.SetActive(server.IsConnected);
+        LMPointer.SetActive(server.IsConnected);
+        children.SetActive(!server.IsConnected);
+        GetComponent<MeshRenderer>().enabled = !server.IsConnected;
     }
 }

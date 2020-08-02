@@ -9,6 +9,8 @@ using Valve.VR.InteractionSystem;
 [RequireComponent(typeof(TrailRender))]
 public class GlovePointer : GvrBasePointer
 {
+    Server server;
+
     /// <summary>Maximum distance from the pointer that raycast hits will be detected.</summary>
     [Tooltip("Distance from the pointer that raycast hits will be detected.")]
     public float maxPointerDistance = 20.0f;
@@ -64,8 +66,6 @@ public class GlovePointer : GvrBasePointer
     {
         pointer_dot.transform.position = raycastResult.worldPosition;
 
-        Server.x = raycastResult.worldPosition.x;
-        Server.y = raycastResult.worldPosition.y;
         if (SerialCommunication.buttonState)
         {
             GameObject trailPoint = new GameObject();
@@ -86,18 +86,12 @@ public class GlovePointer : GvrBasePointer
     public override void OnPointerClickDown()
     {
         
-        Server.OnPointerDown();
 
-        if(!(Server.x > -530 && Server.y < -100 && Server.x < -450 && Server.y > -220))
-        {
-            Shift.SizeReset();
-        }
     }
 
     /// <inheritdoc/>
     public override void OnPointerClickUp()
     {
-        Server.OnPointerUp();
         trRander.RemoveTrail();
     }
 
@@ -117,6 +111,8 @@ public class GlovePointer : GvrBasePointer
     {
         pointer_dot = GameObject.FindWithTag("KeyboardDot");
         trRander = GetComponent<TrailRender>();
+        server = FindObjectOfType<Server>();
+
     }
 
     private void Update()

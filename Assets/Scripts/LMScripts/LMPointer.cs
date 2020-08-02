@@ -5,6 +5,7 @@ using TextEntry;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using Valve.VR.InteractionSystem;
 
@@ -12,6 +13,9 @@ using Valve.VR.InteractionSystem;
 [HelpURL("https://developers.google.com/vr/unity/reference/class/GvrReticlePointer")]
 public class LMPointer : GvrBasePointer
 {
+    public bool isGestureValid { get; set; }
+
+    Server server;
     GameObject enterRaycastObj;
     private Transform trLocal;
     private GameObject canvas;
@@ -111,15 +115,10 @@ public class LMPointer : GvrBasePointer
         SetPointerTarget(raycastResult.worldPosition, isInteractive);
         LastPointerHoveredResult = raycastResult;
 
-        if (!raycastResult.gameObject.tag.Equals("Key"))
+        if (!raycastResult.gameObject.tag.Equals("Key") || !isGestureValid)
             return;
 
 
-
-
-
-        Server.x = trLocal.InverseTransformPoint(raycastResult.worldPosition).x;
-        Server.y = trLocal.InverseTransformPoint(raycastResult.worldPosition).y;
         if (Triggering)
         {
             GameObject trailPoint = new GameObject();
@@ -143,9 +142,18 @@ public class LMPointer : GvrBasePointer
     public override void OnPointerClickDown()
     {
 
-        Server.OnPointerDown();
+        //Server.OnPointerDown();
 
         //Set gesture start point
+        if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
+        {
+            server.gest_time.Start();
+            server.move_time.Stop();
+            if (!EntryProcessing.full_time.IsRunning)
+                EntryProcessing.full_time.Start();
+        }
+        isGestureValid = enterRaycastObj.tag.Equals("Key");
+
         Vector3 local = FakePointer.transform.parent.InverseTransformPoint(LastPointerHoveredResult.worldPosition);
         FakePointer.transform.localPosition = new Vector3(local.x, local.y, 0);
 
@@ -154,16 +162,37 @@ public class LMPointer : GvrBasePointer
         float y_min = -660 / 2 + (float)(0.835 * 660 - 45) / 4 + 20;
         float y_max = -660 / 2 + (float)(0.835 * 660 - 45) / 2 + 20;
         Debug.Log(x_min + " " + x_max + " " + " " + y_min + y_max);
-        if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min) && enterRaycastObj.tag.Equals("Key"))
-        {
-            Shift.SizeReset();
-        }
+        //if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min) && enterRaycastObj.tag.Equals("Key"))
+        //{
+        //    Shift.SizeReset();
+        //}
     }
 
     /// <inheritdoc/>
     public override void OnPointerClickUp()
     {
-        Server.OnPointerUp();
+        string data = "";
+
+        foreach (var tp in trRander.trailPoints)
+        {
+            float x = trLocal.InverseTransformPoint(tp.transform.position).x;
+            float y = trLocal.InverseTransformPoint(tp.transform.position).y;
+            x = (float)(x * server.coef_x + server.keyboard_x / 2.0);
+            y = (float)(-y * server.coef_y + server.screen_y - (server.keyboard_y / 2.0));
+            data += $"{x};{y};";
+        }
+
+        if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
+        {
+            server.gest_time.Stop();
+            server.move_time.Start();
+        }
+
+        if (server.IsConnected && isGestureValid)
+            server.SendToClient(data + "\r\n");
+
+        isGestureValid = false;
+
         trRander.RemoveTrail();
     }
 
@@ -263,6 +292,7 @@ public class LMPointer : GvrBasePointer
         ReticleInnerAngle = RETICLE_MIN_INNER_ANGLE;
         ReticleOuterAngle = RETICLE_MIN_OUTER_ANGLE;
         trRander = GetComponent<TrailRender>();
+        server = FindObjectOfType<Server>();
     }
 
     /// @cond

@@ -85,8 +85,6 @@ public class DirectLazerPointer : GvrBasePointer
         isHittingTarget = true;
 
 
-        Server.x = trLocal.InverseTransformPoint(raycastResult.worldPosition).x;
-        Server.y = trLocal.InverseTransformPoint(raycastResult.worldPosition).y;
         if (Triggering)
         {
             GameObject trailPoint = new GameObject();
@@ -110,7 +108,7 @@ public class DirectLazerPointer : GvrBasePointer
     /// <inheritdoc/>
     public override void OnPointerClickDown()
     {
-        Server.OnPointerDown();
+        //Server.OnPointerDown();
 
 
         float x_min = -1080 / 2 + 10;
@@ -118,16 +116,16 @@ public class DirectLazerPointer : GvrBasePointer
         float y_min = -660 / 2 + (float)(0.835 * 660 - 45) / 4 + 20;
         float y_max = -660 / 2 + (float)(0.835 * 660 - 45) / 2 + 20;
         Debug.Log(x_min + " " + x_max + " " + " " + y_min + y_max);
-        if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min))
-        {
-            Shift.SizeReset();
-        }
+        //if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min))
+        //{
+        //    Shift.SizeReset();
+        //}
     }
 
     /// <inheritdoc/>
     public override void OnPointerClickUp()
     {
-        Server.OnPointerUp();
+        //Server.OnPointerUp();
         trRander.RemoveTrail();
     }
 

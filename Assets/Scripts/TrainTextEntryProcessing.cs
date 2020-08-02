@@ -25,6 +25,8 @@ public class TrainTextEntryProcessing : MonoBehaviour
     public UnityEvent OnTrainEnd;
     public UnityEvent OnMenuClicked;
 
+    Server server;
+
     GameObject go;
     Shift shift;
 
@@ -45,6 +47,11 @@ public class TrainTextEntryProcessing : MonoBehaviour
             if (rnd.Next(data.Length - i) < SENTENCE_COUNT)
                 words.Add(data[i]);
         }
+    }
+    private void Awake()
+    {
+        GameObject objs = GameObject.FindGameObjectWithTag("Server");
+        server = objs.GetComponent<Server>();
     }
 
     #region sentences
@@ -311,7 +318,7 @@ public class TrainTextEntryProcessing : MonoBehaviour
         else if (obj != null && isFirstTap && obj.tag == "Key")
         {
             Shift.ToSmall();
-            Server.SendToClient("clear\r\n");
+            server.SendToClient("clear\r\n");
             isFirstTap = false;
             intext.text = "";
 
@@ -324,7 +331,7 @@ public class TrainTextEntryProcessing : MonoBehaviour
     {
         if ((obj != null && obj.name.Equals("StartTrain")))
         {
-            Server.SendToClient("clear\r\n");
+            server.SendToClient("clear\r\n");
             sentenceField.SetActive(false);
             confirmButton.SetActive(false);
             menuButton.SetActive(false);

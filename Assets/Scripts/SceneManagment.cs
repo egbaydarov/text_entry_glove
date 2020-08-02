@@ -44,7 +44,7 @@ public class SceneManagment : MonoBehaviour
 
     public void StartExperiment()
     {
-        EntryProcessing.ResetTime();
+        //EntryProcessing.ResetTime(); //TODO сделац отдеьный компонент для замера времени
         //isMain = true;
         MeasuringMetrics.LoadPrefs();
         Settings.id++;
@@ -65,7 +65,7 @@ public class SceneManagment : MonoBehaviour
 
     public void ContinueExperiment()
     {
-        EntryProcessing.ResetTime();
+        //EntryProcessing.ResetTime(); //TODO сделац отдеьный компонент для замера времени
         //isMain = true;
         MeasuringMetrics.LoadPrefs();
         switch (currentScene)

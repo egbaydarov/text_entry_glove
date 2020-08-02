@@ -18,10 +18,10 @@ public class Screenshot : MonoBehaviour
 
     public static Sprite makeSprite(byte[] bytes)
     {
-        Sprite sprite;
-        Texture2D tex = new Texture2D(Server.keyboard_x,Server.keyboard_y);
-        tex.LoadImage(bytes);
-        sprite = Sprite.Create(tex, new Rect(0,0,tex.width,tex.height), new Vector2(0,0));
+        Sprite sprite = null; //TODO мб
+        //Texture2D tex = new Texture2D(Server.keyboard_x,Server.keyboard_y);
+        //tex.LoadImage(bytes);
+        //sprite = Sprite.Create(tex, new Rect(0,0,tex.width,tex.height), new Vector2(0,0));
         return sprite;
     }
 }

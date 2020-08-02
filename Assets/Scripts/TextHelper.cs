@@ -6,10 +6,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TextHelper: MonoBehaviour
+public class TextHelper : MonoBehaviour
 {
     [SerializeField]
-    private InputField intext;
+    private InputField TextField;
     // Prediction buttons 
     [SerializeField] private Button button0;
     [SerializeField] private Button button1;
@@ -17,59 +17,94 @@ public class TextHelper: MonoBehaviour
     [SerializeField] private Text prediction0;
     [SerializeField] private Text prediction1;
     [SerializeField] private Text prediction2;
-    
+
+    string[] predictions;
+
+    Server server;
+    volatile bool shouldUpdate;
+
     private void Awake()
     {
-        //server = go.GetComponent<Server>();
+        GameObject objs = GameObject.FindGameObjectWithTag("Server");
+        server = objs.GetComponent<Server>();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
+        server.OnMessageRecieved.AddListener(UpdateTextFieldAndPredictionsButtons);
+    }
+    private void OnDisable()
+    {
+        server.OnMessageRecieved.RemoveListener(UpdateTextFieldAndPredictionsButtons);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // parse mytext in array, middle word goes to intext 
-        if (Server.isTextUpdated)
+        if(shouldUpdate)
         {
-            if (intext.text == "")
+            if (TextField.text == "")
             {
-                for (var i = 0; i < Server.predictions.Length; i++)
+                for (var i = 0; i < predictions.Length; i++)
                 {
-                    Server.predictions[i] = Server.predictions[i].Capitalize();
+                    predictions[i] = predictions[i].Capitalize();
                 }
 
-                intext.text = Server.predictions[1];
-                prediction0.text = Server.predictions[0];
-                prediction1.text = Server.predictions[1];
-                prediction2.text = Server.predictions[2];
+                TextField.text = predictions[1];
+                prediction0.text = predictions[0];
+                prediction1.text = predictions[1];
+                prediction2.text = predictions[2];
             }
             else
             {
 
-                intext.text += " " + Server.predictions[1];
-                prediction0.text = Server.predictions[0];
-                prediction1.text = Server.predictions[1];
-                prediction2.text = Server.predictions[2];
+                TextField.text += " " + predictions[1];
+                prediction0.text = predictions[0];
+                prediction1.text = predictions[1];
+                prediction2.text = predictions[2];
             }
-
-            Server.isTextUpdated = false;
+            EnableButtons();
+            shouldUpdate = false;
         }
-        
+    }
+
+    void DisableButtons()
+    {
+        button0.interactable = false;
+        button1.interactable = false;
+        button2.interactable = false;
+    }
+
+    void EnableButtons()
+    {
+        button0.interactable = true;
+        button1.interactable = true;
+        button2.interactable = true;
     }
 
     public void ChangeOnPrediction0()
     {
-        intext.text = intext.text.Remove(intext.text.Length - Server.predictions[1].Length) + Server.predictions[0];
+        TextField.text = TextField.text.Remove(TextField.text.Length - prediction1.text.Length) + prediction0.text;
+        DisableButtons();
     }
     public void ChangeOnPrediction1()
     {
-        intext.text = intext.text.Remove(intext.text.Length - Server.predictions[1].Length) + Server.predictions[1];
+        DisableButtons();
     }
     public void ChangeOnPrediction2()
     {
-        intext.text = intext.text.Remove(intext.text.Length - Server.predictions[1].Length) + Server.predictions[2];
+        TextField.text = TextField.text.Remove(TextField.text.Length - prediction1.text.Length) + prediction2.text;
+        DisableButtons();
+    }
+
+    void UpdateTextFieldAndPredictionsButtons(string data)
+    {
+        predictions = data.Split(';');
+
+        if (predictions.Length != 3)
+        {
+            Debug.Log("Not text data. Skipping ...");
+        }
+        else
+            shouldUpdate = true;
     }
 }

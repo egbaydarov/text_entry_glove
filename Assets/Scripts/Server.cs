@@ -18,56 +18,47 @@ using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 using UnityEngine.SceneManagement;
+using System.Diagnostics.Eventing.Reader;
+
+public class ServerEvent<T> : UnityEvent<T>
+{
+
+}
 
 public class Server : MonoBehaviour
 {
-    static byte[] image;
-
-    public static string[] predictions = { "Левая", "Центр", "Правая" };
-
-    public static string mytext = ""; //should be empty on start
-    public static bool isTextUpdated = false;
-
     Socket udpSocket;
-
     private TcpListener Listener = null;
+    private Socket Client = null;
 
-    private static Socket Client = null;
+    string data = "";
 
-    public static float x;
-    public static float y;
+    int BROADCAST_PORT = 9876;
+    int DATA_PORT = 1488;
 
-    public static bool isDown = false;
+    IPEndPoint endPoint = null;
 
-    static string data = "";
-
-    static int BROADCAST_PORT = 9876;
-    static int DATA_PORT = 1488;
-
-    static IPAddress broadcast = null;
-    IPEndPoint ep = null;
-
-    private static int unity_keyboard_x = 1080;
-    private static int unity_keyboard_y = 660;
-    private static int unity_screen_y = 2214;
-    public static int keyboard_x;
-    public static int keyboard_y;
-    int screen_y;
-    private float coef_x;
-    private float coef_y;
-    public static bool isSizeSet;
+    public int unity_keyboard_x = 1080;
+    public int unity_keyboard_y = 660;
+    public int unity_screen_y = 2214;
+    public int keyboard_x;
+    public int keyboard_y;
+    public int screen_y;
+    public float coef_x;
+    public float coef_y;
+    public bool isSizeSet;
 
 
-    public static bool IsConnected;
+    public bool IsConnected;
     bool IsBroadcasting = true;
     bool isProcessing;
 
 
-    public static Stopwatch gest_time = new Stopwatch();
+    public Stopwatch gest_time = new Stopwatch();
 
-    public static Stopwatch move_time = new Stopwatch();
+    public Stopwatch move_time = new Stopwatch();
 
-    public static bool isGestureValid = false;
+    public ServerEvent<String> OnMessageRecieved = new ServerEvent<string>();
 
     void Start()
     {
@@ -105,7 +96,7 @@ public class Server : MonoBehaviour
                             var maskInt = BitConverter.ToInt32(address.IPv4Mask.GetAddressBytes(), 0);
                             var broadcastInt = addressInt | ~maskInt;
                             broadcast = new IPAddress(BitConverter.GetBytes(broadcastInt));
-                            ep = new IPEndPoint(broadcast, BROADCAST_PORT);
+                            endPoint = new IPEndPoint(broadcast, BROADCAST_PORT);
                             success = true;
                             BroadcastIP("HI");
                             //Debug.Log($"Broadcasted - {broadcast}");
@@ -182,14 +173,13 @@ public class Server : MonoBehaviour
 
     void Update()
     {
-        if (isDown)
-        {
-            //Debug.Log("x: " + x + " ; y: " + y);
-            float data_x = (float)(x * coef_x + keyboard_x / 2.0);
-            float data_y = (float)(-y * coef_y + screen_y - (keyboard_y / 2.0));
-            data += (data_x + ";" + data_y + ";").ToString();
-        }
-
+        //if (isDown)
+        //{
+        //    //Debug.Log("x: " + x + " ; y: " + y);
+        //    float data_x = (float)(x * coef_x + keyboard_x / 2.0);
+        //    float data_y = (float)(-y * coef_y + screen_y - (keyboard_y / 2.0));
+        //    data += (data_x + ";" + data_y + ";").ToString();
+        //}
     }
 
     bool SocketConnected(Socket s)
@@ -211,7 +201,6 @@ public class Server : MonoBehaviour
             if (IsConnected)
                 try
                 {
-
                     if (Client == null)
                         continue;
 
@@ -222,63 +211,28 @@ public class Server : MonoBehaviour
                         continue;
                     }
 
-
                     Debug.Log("Waiting for data from socket . . .");
 
                     int length = Client.Receive(bytes);
 
                     if (length != 0)
                     {
-                        string[] data = Encoding.UTF8.GetString(bytes, 0, length).Split('\n');
-                        string clientMessage = data.Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
-                        string[] words = clientMessage.Split(' ');
-                        if (words[0].Equals("file"))
-                        {
-                            int size = int.Parse(words[1].Trim());
-                            Debug.Log($"Real Image size: {size}");
+                        data = Encoding.UTF8.GetString(bytes, 0, length);
 
-                            int received = 0;
-                            image = new byte[size];
-                            while (received < size)
-                                received += Client.Receive(image, received, size - received, SocketFlags.Partial);
-                            Debug.Log($"Image size: {received}");
-                            //target = new Texture2D(screen_y, keyboard_x);
-                        }
-                        else
-                        {
-                            Debug.Log("Recieved text: " + clientMessage);
-                            if (clientMessage[0] == '\r')
-                                clientMessage = "";
+                        Debug.Log("Recieved text: " + data);
 
-                            predictions = clientMessage.Split(';');
-                            if (mytext.Length == 0)
-                            {
-                                if (predictions[0].Length > 0)
-                                    predictions[0] = char.ToUpper(predictions[0][0]) + predictions[0].Substring(1);
-                                if (predictions[1].Length > 0)
-                                    predictions[1] = char.ToUpper(predictions[1][0]) + predictions[1].Substring(1);
-                                if (predictions[2].Length > 0)
-                                    predictions[2] = char.ToUpper(predictions[2][0]) + predictions[2].Substring(1);
-                            }
-                            else
-                            {
-                                mytext += ' ';
-                            }
-                            mytext += $"{predictions[1]}";
-
-                            isTextUpdated = true;
-                        }
+                        OnMessageRecieved.Invoke(data);
                     }
                 }
                 catch (SocketException socketException)
                 {
-                    Debug.Log("ReadFromClient - " + socketException.ToString());
+                    Debug.Log("ReadFromClient: " + socketException.ToString());
                 }
         }
     }
 
 
-    public static void SendToClient(string message)
+    public void SendToClient(string message)
     {
         try
         {
@@ -306,38 +260,7 @@ public class Server : MonoBehaviour
     private void BroadcastIP(String text)
     {
         var data = Encoding.UTF8.GetBytes(text);
-        udpSocket.SendTo(data, ep);
-    }
-
-
-    public static void OnPointerUp()
-    {
-        isDown = false;
-
-        if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
-        {
-            gest_time.Stop();
-            move_time.Start();
-        }
-
-        if (Client != null && Client.Connected && isGestureValid)
-            SendToClient(data + "\r\n");
-
-        data = "";
-        isGestureValid = false;
-    }
-
-    public static void OnPointerDown()
-    {
-        isDown = true;
-        if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
-        {
-            gest_time.Start();
-            move_time.Stop();
-            if (!EntryProcessing.full_time.IsRunning)
-                EntryProcessing.full_time.Start();
-        }
-
+        udpSocket.SendTo(data, endPoint);
     }
 
     private void OnApplicationQuit()

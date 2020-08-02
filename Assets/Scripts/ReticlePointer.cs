@@ -19,6 +19,7 @@
 using LeapMotionGesture;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 /// <summary>Draws a circular reticle in front of any object that the user points at.</summary>
 /// <remarks>The circle dilates if the object is clickable.</remarks>
@@ -32,6 +33,9 @@ public class ReticlePointer : GvrBasePointer
     private Transform trLocal;
     private GameObject canvas;
     TrailRender trRander;
+
+    Server server;
+    public bool isGestureValid { get; set; }
 
     public ReticleMode mReticleMode = ReticleMode.Reticle;
 
@@ -115,8 +119,8 @@ public class ReticlePointer : GvrBasePointer
     /// <inheritdoc/>
     public override void OnPointerEnter(RaycastResult raycastResultResult, bool isInteractive)
     {
-        enterRaycastObj = raycastResultResult.gameObject;
         SetPointerTarget(raycastResultResult.worldPosition, isInteractive);
+        enterRaycastObj = raycastResultResult.gameObject;
     }
 
     /// <inheritdoc/>
@@ -125,12 +129,9 @@ public class ReticlePointer : GvrBasePointer
 
         SetPointerTarget(raycastResult.worldPosition, isInteractive);
 
-        if (!raycastResult.gameObject.tag.Equals("Key") || !Server.isGestureValid)
+        if (!raycastResult.gameObject.tag.Equals("Key") || !isGestureValid)
             return;
 
-
-        Server.x = trLocal.InverseTransformPoint(raycastResult.worldPosition).x;
-        Server.y = trLocal.InverseTransformPoint(raycastResult.worldPosition).y;
         if (Triggering)
         {
             GameObject trailPoint = new GameObject();
@@ -153,8 +154,15 @@ public class ReticlePointer : GvrBasePointer
     public override void OnPointerClickDown()
     {
 
-        Server.isGestureValid = enterRaycastObj.tag.Equals("Key");
-        Server.OnPointerDown();
+
+        if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
+        {
+            server.gest_time.Start();
+            server.move_time.Stop();
+            if (!EntryProcessing.full_time.IsRunning)
+                EntryProcessing.full_time.Start();
+        }
+        isGestureValid = enterRaycastObj.tag.Equals("Key");
 
 
         float x_min = -1080 / 2 + 10;
@@ -162,18 +170,38 @@ public class ReticlePointer : GvrBasePointer
         float y_min = -660 / 2 + (float)(0.835 * 660 - 45) / 4 + 20;
         float y_max = -660 / 2 + (float)(0.835 * 660 - 45) / 2 + 20;
         //Debug.Log(x_min + " " + x_max + " " + " " + y_min + y_max);
-        if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min) && enterRaycastObj.tag.Equals("Key"))
-        {
-            Shift.SizeReset();
-        }
-
-        
+        //if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min) && enterRaycastObj.tag.Equals("Key"))
+        //{
+        //    Shift.SizeReset();
+        //}
     }
 
     /// <inheritdoc/>
     public override void OnPointerClickUp()
     {
-        Server.OnPointerUp();
+        string data = "";
+
+        foreach(var tp in trRander.trailPoints)
+        {
+            float x = trLocal.InverseTransformPoint(tp.transform.position).x;
+            float y = trLocal.InverseTransformPoint(tp.transform.position).y;
+            x = (float)(x * server.coef_x + server.keyboard_x / 2.0);
+            y = (float)(-y * server.coef_y + server.screen_y - (server.keyboard_y / 2.0));
+            data += $"{x};{y};";
+        }
+
+        if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
+        {
+            server.gest_time.Stop();
+            server.move_time.Start();
+        }
+
+        if(server.IsConnected && isGestureValid)
+            server.SendToClient(data + "\r\n");
+
+        isGestureValid = false;
+
+
         trRander.RemoveTrail();
     }
 
@@ -265,6 +293,7 @@ public class ReticlePointer : GvrBasePointer
         ReticleInnerAngle = RETICLE_MIN_INNER_ANGLE;
         ReticleOuterAngle = RETICLE_MIN_OUTER_ANGLE;
         trRander = GetComponent<TrailRender>();
+        server = FindObjectOfType<Server>();
     }
 
     /// @cond

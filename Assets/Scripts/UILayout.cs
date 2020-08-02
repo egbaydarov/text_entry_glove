@@ -27,7 +27,6 @@ public class UILayout : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        server = keyboard.GetComponent<Server>();
         gridLayoutGroup = keys.GetComponent<GridLayoutGroup>();
         keyboardTransform = keyboard.GetComponent<RectTransform>();
         keysTransform = keys.GetComponent<RectTransform>();
@@ -43,10 +42,10 @@ public class UILayout : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Server.isSizeSet)
+        if (server.isSizeSet)
         {
-            keyboard_x = Server.keyboard_x;
-            keyboard_y = Server.keyboard_y;
+            keyboard_x = server.keyboard_x;
+            keyboard_y = server.keyboard_y;
             ChangeKeyboard();
             ChangeKeys();
             ChangePredictionBar();
@@ -78,5 +77,12 @@ public class UILayout : MonoBehaviour
     {
         spaceBarTransform.sizeDelta = new Vector2(keyboard_x,(float) (0.20875*keyboard_y)); 
         // space button 
+    }
+
+    private void Awake()
+    {
+        GameObject objs = GameObject.FindGameObjectWithTag("Server");
+        Debug.Log(objs.name);
+        server = objs.GetComponent<Server>();
     }
 }
