@@ -16,6 +16,17 @@ public class SceneManagment : MonoBehaviour
     {
         if(method_id==null)
             method_id = "test";
+
+        if (!PlayerPrefs.HasKey("Respondent_ID"))
+        {
+            Settings.id = 0;
+            PlayerPrefs.SetInt("Respondent_ID", (int) Settings.id);
+        }
+
+        else
+        {
+            Settings.id = (uint) PlayerPrefs.GetInt("Respondent_ID");
+        }
     }
 
     public void Exit()
@@ -48,6 +59,7 @@ public class SceneManagment : MonoBehaviour
         //isMain = true;
         MeasuringMetrics.LoadPrefs();
         Settings.id++;
+        PlayerPrefs.SetInt("Respondent_ID", (int)Settings.id);
         EntryProcessing.currentBlock = 0;
         EntryProcessing.currentSentence = 0;
         switch (currentScene)

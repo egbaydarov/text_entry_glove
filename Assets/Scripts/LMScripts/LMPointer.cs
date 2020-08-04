@@ -147,10 +147,11 @@ public class LMPointer : GvrBasePointer
         //Set gesture start point
         if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
         {
-            server.gest_time.Start();
-            server.move_time.Stop();
-            if (!EntryProcessing.full_time.IsRunning)
-                EntryProcessing.full_time.Start();
+            MeasuringMetrics.StartGesture();
+            //server.gest_time.Start();
+            //server.move_time.Stop();
+            //if (!EntryProcessing.full_time.IsRunning)
+              //  EntryProcessing.full_time.Start();
         }
         isGestureValid = enterRaycastObj.tag.Equals("Key");
 
@@ -184,8 +185,9 @@ public class LMPointer : GvrBasePointer
 
         if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
         {
-            server.gest_time.Stop();
-            server.move_time.Start();
+            //server.gest_time.Stop();
+            //server.move_time.Start();
+            MeasuringMetrics.EndGesture();
         }
 
         if (server.IsConnected && isGestureValid)

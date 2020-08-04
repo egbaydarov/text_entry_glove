@@ -54,20 +54,21 @@ public class Server : MonoBehaviour
     bool isProcessing;
 
 
-    public Stopwatch gest_time = new Stopwatch();
+    //public Stopwatch gest_time = new Stopwatch();
 
-    public Stopwatch move_time = new Stopwatch();
+   // public Stopwatch move_time = new Stopwatch();
 
     public ServerEvent<String> OnMessageRecieved = new ServerEvent<string>();
 
+   
+    
     void Start()
     {
         NetworkSetup();
         isProcessing = true;
 
         FindClient();
-
-        // move_time.Start();
+        
     }
 
     IPAddress FindBroadcastAdress()
@@ -222,6 +223,8 @@ public class Server : MonoBehaviour
                         Debug.Log("Recieved text: " + data);
 
                         OnMessageRecieved.Invoke(data);
+                        
+                        MeasuringMetrics.ReceivePredictions();
                     }
                 }
                 catch (SocketException socketException)

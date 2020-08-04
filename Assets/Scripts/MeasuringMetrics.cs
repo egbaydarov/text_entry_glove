@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 public class MeasuringMetrics : MonoBehaviour
 {
@@ -16,10 +18,20 @@ public class MeasuringMetrics : MonoBehaviour
     private int block_num;
     private int sent_num;
     private string sent_text;
-    private float all_time;
-    private float gest_time;
-    private float move_time;
+   // private float all_time;
+   // private float gest_time;
+   // private float move_time;
     private int text_length;
+
+
+    public static Stopwatch all_time = new Stopwatch();
+    public static Stopwatch move_time = new Stopwatch();
+    public static Stopwatch gest_time = new Stopwatch();
+    public static Stopwatch choose_time = new Stopwatch();
+    public static Stopwatch fix_choose_time = new Stopwatch();
+    public static Stopwatch wait_time = new Stopwatch();
+    
+    
 
     Server server;
     
@@ -45,7 +57,7 @@ public class MeasuringMetrics : MonoBehaviour
 
     public static void LoadPrefs()
     {
-        if (PlayerPrefs.HasKey("Respondent_ID"))
+        if (PlayerPrefs.HasKey("InputMethod_ID"))
         {
             Settings.id = (uint) PlayerPrefs.GetInt("Respondent_ID");
             SceneManagment.method_id = PlayerPrefs.GetString("InputMethod_ID");
@@ -66,15 +78,42 @@ public class MeasuringMetrics : MonoBehaviour
         PlayerPrefs.DeleteKey("Session_number");
     }
 
-
-    public void takeMetrics()
+    public static void StartGesture()
     {
+        if (!all_time.IsRunning)
+           all_time.Start();
+        gest_time.Start();
+        move_time.Stop();
+    }
+
+    public static void EndGesture()
+    {
+        move_time.Start();
+        wait_time.Start();
+        gest_time.Stop();
+        choose_time.Start();
+    }
+
+    public static void ReceivePredictions()
+    {
+        wait_time.Stop();
+    }
+
+    public static void ChoosePredictions()
+    {
+        choose_time.Stop();
+    }
+    
+    /*public void takeMetrics()
+    {
+        
         block_num = EntryProcessing.currentBlock;
         sent_num = EntryProcessing.currentSentence;
         sent_text = EntryProcessing.currentSentenceText;
         all_time = ((float) EntryProcessing.full_time.ElapsedMilliseconds / 1000);
         gest_time = (((float) server.gest_time.ElapsedMilliseconds) / 1000);
         move_time = (((float) server.move_time.ElapsedMilliseconds) / 1000);
+        
     }
 
     IEnumerator Post()
@@ -100,6 +139,8 @@ public class MeasuringMetrics : MonoBehaviour
            form.AddField("entry.452347986", move_time.ToString().Replace(".",",")); // Суммарное время перемещения курсора
            form.AddField("entry.945161006", gest_time.ToString().Replace(".",",")); // Суммарное время вычерчивания росчерка
            form.AddField("entry.2055613067", "Время выбора слов"); // Суммарное время выбора слов из списка подсказок
+           form.AddField("entry.824354990", "Время выбора слов"); // Суммарное время выбора слов из списка подсказок
+           form.AddField("entry.254841772", "Время выбора слов"); // Суммарное время выбора слов из списка подсказок
            form.AddField("entry.1730946643", LevenshteinDistance(sent_text, intext.text)); // Количество неисправленных опечаток  
            form.AddField("entry.1907294220", Math.Round(((float) intext.text.Length) * 12.0 / all_time, 2).ToString().Replace(".",",")); // Скорость набора текста
            
@@ -127,7 +168,7 @@ public class MeasuringMetrics : MonoBehaviour
     public void WriteMetricsData()
     {
         
-           StartCoroutine(Wait());
+         //  StartCoroutine(Wait());
            
     }
     
@@ -138,8 +179,8 @@ public class MeasuringMetrics : MonoBehaviour
         string1 = string1.Replace("ё", "е");
         string2 = string2.ToLower();
         string2 = string2.Replace("ё", "е");
-        //if (string2.Length > 0)
-            //string2.Remove(string2.Length - 1);
+        
+        
         if (string1 == null) throw new ArgumentNullException("string1");
         if (string2 == null) throw new ArgumentNullException("string2");
         int diff;
@@ -165,4 +206,5 @@ public class MeasuringMetrics : MonoBehaviour
     {
         server = FindObjectOfType<Server>();
     }
+    */
 }

@@ -11,8 +11,7 @@ public class Settings : MonoBehaviour
 
     void Start()
     {
-        if(!PlayerPrefs.HasKey("Respondent_ID"))
-            id = 1;
+        id = (uint) PlayerPrefs.GetInt("Respondent_ID");
     }
 
     // Update is called once per frame
@@ -24,13 +23,15 @@ public class Settings : MonoBehaviour
     public void incrementId()
     {
         ++id;
+        PlayerPrefs.SetInt("Respondent_ID", (int)id);
     }
 
     public void decrementId()
     {
-        if (id >= 1)
+        if (id >= 2)
         {
             --id;
+            PlayerPrefs.SetInt("Respondent_ID", (int)id);
         }
     }
 

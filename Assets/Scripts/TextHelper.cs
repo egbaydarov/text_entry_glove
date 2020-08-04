@@ -21,7 +21,7 @@ public class TextHelper : MonoBehaviour
     volatile bool shouldUpdate;
     public bool IsAvailable { get; set; }
 
-
+    public static string text;
     private void Awake()
     {
         GameObject objs = GameObject.FindGameObjectWithTag("Server");
@@ -53,6 +53,7 @@ public class TextHelper : MonoBehaviour
                 prediction0.text = predictions[0];
                 prediction1.text = predictions[1];
                 prediction2.text = predictions[2].Trim();
+                
             }
             else
             {
@@ -61,10 +62,16 @@ public class TextHelper : MonoBehaviour
                 prediction0.text = predictions[0];
                 prediction1.text = predictions[1];
                 prediction2.text = predictions[2].Trim();
+                
             }
+            prediction0.fontSize = 40 + 20 / predictions[0].Length;
+            prediction1.fontSize = 40 + 20 / predictions[1].Length;
+            prediction2.fontSize = 40 + 20 / predictions[2].Length;
+            
             shouldUpdate = false;
             IsAvailable = true;
         }
+        text = TextField.text;
     }
 
     public void ChangeOnPrediction0()
