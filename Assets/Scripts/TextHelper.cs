@@ -26,6 +26,9 @@ public class TextHelper : MonoBehaviour
     {
         GameObject objs = GameObject.FindGameObjectWithTag("Server");
         server = objs.GetComponent<Server>();
+        prediction0.resizeTextForBestFit = true;
+        prediction1.resizeTextForBestFit = true;
+        prediction2.resizeTextForBestFit = true;
     }
 
     void Start()
@@ -69,16 +72,60 @@ public class TextHelper : MonoBehaviour
 
     public void ChangeOnPrediction0()
     {
-        TextField.text = TextField.text.Remove(TextField.text.Length - prediction1.text.Length) + prediction0.text;
+        int index = 0;
+        for (int i = TextField.text.Length - 1; i > -1; --i)
+        {
+            if (TextField.text[i] == ' ')
+            {
+                index = i;
+                break;
+            }
+        }
+
+        if (index == 0)
+            TextField.text = TextField.text.Substring(0, index) + $"{prediction0.text}";
+        else
+            TextField.text = TextField.text.Substring(0, index) + $" {prediction0.text}";
+
         IsAvailable = false;
     }
+
     public void ChangeOnPrediction1()
     {
+        int index = 0;
+        for (int i = TextField.text.Length - 1; i > -1; --i)
+        {
+            if (TextField.text[i] == ' ')
+            {
+                index = i;
+                break;
+            }
+        }
+
+        if (index == 0)
+            TextField.text = TextField.text.Substring(0, index) + $"{prediction1.text}";
+        else
+            TextField.text = TextField.text.Substring(0, index) + $" {prediction1.text}";
+
         IsAvailable = false;
     }
+
     public void ChangeOnPrediction2()
     {
-        TextField.text = TextField.text.Remove(TextField.text.Length - prediction1.text.Length) + prediction2.text;
+        int index = 0;
+        for (int i = TextField.text.Length - 1; i > -1; --i)
+        {
+            if (TextField.text[i] == ' ')
+            {
+                index = i;
+                break;
+            }
+        }
+
+        if (index == 0)
+            TextField.text = TextField.text.Substring(0, index) + $"{prediction2.text}";
+        else
+            TextField.text = TextField.text.Substring(0, index) + $" {prediction2.text}";
         IsAvailable = false;
     }
 

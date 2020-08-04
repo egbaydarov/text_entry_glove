@@ -208,7 +208,7 @@ public class EntryProcessing : MonoBehaviour
             else
                 th.IsAvailable = false;
         }
-        else if (obj != null && obj.tag.Equals("Prediction") && th.IsAvailable && !isFirstTap)
+        else if (obj != null && obj.tag.Equals("Prediction")  && !isFirstTap)
         {
             switch (obj.name)
             {
