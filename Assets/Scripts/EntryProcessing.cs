@@ -38,7 +38,7 @@ public class EntryProcessing : MonoBehaviour
     Server server;
 
     #region sentences
-    string[] data = {"﻿Раньше ненависти также не испытывала",
+    string[] data = {"Раньше ненависти также не испытывала",
 "Формат марки желательно заранее оговорить",
 "Постепенно у нас сложились свои направления",
 "В алтарь они заходить не собирались",
@@ -140,8 +140,8 @@ public class EntryProcessing : MonoBehaviour
         {
             Shift.ToCapital();
 
-            full_time.Stop();
-            server.gest_time.Stop();
+           // full_time.Stop();
+            //server.gest_time.Stop();
             
             
             isPressed = true;
@@ -153,7 +153,7 @@ public class EntryProcessing : MonoBehaviour
             {
                 
                 OnSentenceInputEnd.Invoke();
-                ResetTime();
+               // ResetTime();
                 
                 ++currentSentence;
                 MeasuringMetrics.SavePrefs();
@@ -166,7 +166,7 @@ public class EntryProcessing : MonoBehaviour
             {
                 
                 OnBlockInputEnd.Invoke();
-                ResetTime();
+                //ResetTime();
                 
                 currentSentence = 0;
                 ++currentBlock;
@@ -210,6 +210,7 @@ public class EntryProcessing : MonoBehaviour
         }
         else if (obj != null && obj.tag.Equals("Prediction")  && !isFirstTap)
         {
+            MeasuringMetrics.ChoosePredictions();
             switch (obj.name)
             {
                 case "Prediction0":
@@ -230,9 +231,9 @@ public class EntryProcessing : MonoBehaviour
     
     public void ResetTime()
     {
-        server.gest_time.Reset();
-        server.move_time.Reset();
-        full_time.Reset();
+        //server.gest_time.Reset();
+        //server.move_time.Reset();
+        //full_time.Reset();
     }
 
     private void Awake()

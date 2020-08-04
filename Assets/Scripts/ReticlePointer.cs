@@ -157,13 +157,17 @@ public class ReticlePointer : GvrBasePointer
 
         if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
         {
-            server.gest_time.Start();
-            server.move_time.Stop();
-            if (!EntryProcessing.full_time.IsRunning)
-                EntryProcessing.full_time.Start();
+            //server.gest_time.Start();
+            //server.move_time.Stop();
+            //if (!EntryProcessing.full_time.IsRunning)
+            //    EntryProcessing.full_time.Start();
+            
+           // MeasuringMetrics.StartGesture();
         }
         isGestureValid = enterRaycastObj.tag.Equals("Key");
 
+        if(isGestureValid)
+            MeasuringMetrics.StartGesture();
 
         float x_min = -1080 / 2 + 10;
         float x_max = -1080 / 2 + 10 + (1080 - 120) / 11;
@@ -192,12 +196,17 @@ public class ReticlePointer : GvrBasePointer
 
         if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
         {
-            server.gest_time.Stop();
-            server.move_time.Start();
+            //server.gest_time.Stop();
+            //server.move_time.Start();
+            
+            //MeasuringMetrics.EndGesture();
         }
 
         if(server.IsConnected && isGestureValid)
             server.SendToClient(data + "\r\n");
+        
+        if(isGestureValid)
+            MeasuringMetrics.EndGesture();
 
         isGestureValid = false;
 

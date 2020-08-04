@@ -147,12 +147,18 @@ public class LMPointer : GvrBasePointer
         //Set gesture start point
         if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
         {
-            server.gest_time.Start();
-            server.move_time.Stop();
-            if (!EntryProcessing.full_time.IsRunning)
-                EntryProcessing.full_time.Start();
+            
+            //MeasuringMetrics.StartGesture();
+            //server.gest_time.Start();
+            //server.move_time.Stop();
+            //if (!EntryProcessing.full_time.IsRunning)
+              //  EntryProcessing.full_time.Start();
         }
         isGestureValid = enterRaycastObj.tag.Equals("Key");
+        if (isGestureValid)
+        {
+            MeasuringMetrics.StartGesture();
+        }
 
         Vector3 local = FakePointer.transform.parent.InverseTransformPoint(LastPointerHoveredResult.worldPosition);
         FakePointer.transform.localPosition = new Vector3(local.x, local.y, 0);
@@ -184,10 +190,14 @@ public class LMPointer : GvrBasePointer
 
         if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
         {
-            server.gest_time.Stop();
-            server.move_time.Start();
+            //server.gest_time.Stop();
+            //server.move_time.Start();
+            
+           // MeasuringMetrics.EndGesture();
         }
 
+        if(isGestureValid)
+            MeasuringMetrics.EndGesture();
         if (server.IsConnected && isGestureValid)
             server.SendToClient(data + "\r\n");
 

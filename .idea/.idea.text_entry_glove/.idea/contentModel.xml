@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="C:\Users\79102\.Rider2019.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\79102\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_text_entry_glove.-199841085.00" t="ExcludeRecursive" />
-    <e p="C:\Users\79102\TEXR\text_entry_glove" t="IncludeRecursive">
+    <e p="C:\Users\79102\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_text_entry_glove.735650930.00" t="ExcludeRecursive" />
+    <e p="C:\Users\79102\text_entry_glove" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp-firstpass.csproj" t="IncludeRecursive" />
@@ -804,6 +804,7 @@
           <e p="ReticlePointer.cs" t="Include" />
           <e p="ReturnToDefaultPlace.cs" t="Include" />
           <e p="SceneManagment.cs" t="Include" />
+          <e p="Screenshot.cs" t="Include" />
           <e p="Server.cs" t="Include" />
           <e p="Settings.cs" t="Include" />
           <e p="Shift.cs" t="Include" />
@@ -813,6 +814,8 @@
           <e p="TorsoReferencedContent.cs" t="Include" />
           <e p="TrailRender.cs" t="Include" />
           <e p="TrainTextEntryProcessing.cs" t="Include" />
+          <e p="TrialData.cs" t="Include" />
+          <e p="TrialDataStorage.cs" t="Include" />
           <e p="UILayout.cs" t="Include" />
         </e>
         <e p="SteamVR" t="Include">
