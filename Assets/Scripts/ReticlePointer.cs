@@ -162,10 +162,12 @@ public class ReticlePointer : GvrBasePointer
             //if (!EntryProcessing.full_time.IsRunning)
             //    EntryProcessing.full_time.Start();
             
-            MeasuringMetrics.StartGesture();
+           // MeasuringMetrics.StartGesture();
         }
         isGestureValid = enterRaycastObj.tag.Equals("Key");
 
+        if(isGestureValid)
+            MeasuringMetrics.StartGesture();
 
         float x_min = -1080 / 2 + 10;
         float x_max = -1080 / 2 + 10 + (1080 - 120) / 11;
@@ -196,12 +198,16 @@ public class ReticlePointer : GvrBasePointer
         {
             //server.gest_time.Stop();
             //server.move_time.Start();
-            MeasuringMetrics.EndGesture();
+            
+            //MeasuringMetrics.EndGesture();
         }
 
         if(server.IsConnected && isGestureValid)
             //server.SendToClient("674.245;2077.208;\r\n");
             server.SendToClient(data + "\r\n");
+        
+        if(isGestureValid)
+            MeasuringMetrics.EndGesture();
 
         isGestureValid = false;
 

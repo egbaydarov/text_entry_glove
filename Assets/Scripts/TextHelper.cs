@@ -64,10 +64,7 @@ public class TextHelper : MonoBehaviour
                 prediction2.text = predictions[2].Trim();
                 
             }
-            prediction0.fontSize = 40 + 20 / predictions[0].Length;
-            prediction1.fontSize = 40 + 20 / predictions[1].Length;
-            prediction2.fontSize = 40 + 20 / predictions[2].Length;
-            
+           
             shouldUpdate = false;
             IsAvailable = true;
         }

@@ -48,9 +48,9 @@ public class TrialData
         form.Add("entry.1264763496", all_time.ToString().Replace(".",",")); // Время ввода предложения
         form.Add("entry.452347986", move_time.ToString().Replace(".",",")); // Суммарное время перемещения курсора
         form.Add("entry.945161006", gest_time.ToString().Replace(".",",")); // Суммарное время вычерчивания росчерка
-        form.Add("entry.2055613067", "Время выбора слов"); // Суммарное время выбора слов из списка подсказок
-        form.Add("entry.824354990", "Скорректированное ремя выбора слов"); // Скорректированное ремя выбора слов
-        form.Add("entry.254841772", "Время ожидания подсказок"); //Время ожидания подсказок
+        form.Add("entry.2055613067", choose_time.ToString().Replace(".",",")); // Суммарное время выбора слов из списка подсказок
+        form.Add("entry.824354990", fix_choose_time.ToString().Replace(".",",")); // Скорректированное ремя выбора слов
+        form.Add("entry.254841772", wait_time.ToString().Replace(".",",")); //Время ожидания подсказок
         form.Add("entry.1730946643", LevenshteinDistance(sent_text, TextHelper.text).ToString()); // Количество неисправленных опечаток  
         form.Add("entry.1907294220", Math.Round(((float) TextHelper.text.Length) * 12.0 / all_time, 2).ToString().Replace(".",",")); // Скорость набора текста
         
@@ -66,8 +66,8 @@ public class TrialData
         string1 = string1.Replace("ё", "е");
         string2 = string2.ToLower();
         string2 = string2.Replace("ё", "е");
-        Debug.Log(string1);
-        Debug.Log(string2);
+        //Debug.Log(string1);
+        //Debug.Log(string2);
         
        // for(int i =0;i<string1.Length;i++)
             //Debug.Log(string1[i].Equals(string2[i]));

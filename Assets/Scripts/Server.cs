@@ -240,12 +240,12 @@ public class Server : MonoBehaviour
         try
         {
             Client.Send(Encoding.ASCII.GetBytes(message));
-            Debug.Log($"Sent: {message}");
+           // Debug.Log($"Sent: {message}");
 
         }
         catch (SocketException socketException)
         {
-            Debug.Log("SendToClient: " + socketException);
+            //Debug.Log("SendToClient: " + socketException);
         }
     }
 

@@ -62,7 +62,8 @@ public class TrialDataStorage : MonoBehaviour
     }
 
     public void NextTrial()
-    {
+    {MeasuringMetrics.Finish();
+        
         // Fool proffing
         if (_currentTrialData != null)
             _storedTrialData.Enqueue(_currentTrialData);
@@ -73,10 +74,12 @@ public class TrialDataStorage : MonoBehaviour
         _currentTrialData.sent_text = EntryProcessing.currentSentenceText;
         _currentTrialData.all_time = ((float) MeasuringMetrics.all_time.ElapsedMilliseconds / 1000);
         _currentTrialData.gest_time = (((float) MeasuringMetrics.gest_time.ElapsedMilliseconds) / 1000);
-        _currentTrialData.move_time = (((float) MeasuringMetrics.move_time.ElapsedMilliseconds) / 1000);
-        //_currentTrialData.choose_time = (((float) MeasuringMetrics.choose_time.ElapsedMilliseconds) / 1000);
-        //_currentTrialData.fix_choose_time = (((float) MeasuringMetrics.fix_choose_time.ElapsedMilliseconds) / 1000);
-        //_currentTrialData.wait_time = (((float) MeasuringMetrics.wait_time.ElapsedMilliseconds) / 1000);
+        _currentTrialData.move_time = MeasuringMetrics.all_move_time;
+        _currentTrialData.choose_time = MeasuringMetrics.all_choose_time;
+        _currentTrialData.fix_choose_time = MeasuringMetrics.all_fix_choose_time;
+        _currentTrialData.wait_time = (((float) MeasuringMetrics.wait_time.ElapsedMilliseconds) / 1000);
+        
+        MeasuringMetrics.ResetTime();
     }
 
     public IEnumerator Wait()
