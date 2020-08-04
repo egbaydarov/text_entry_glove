@@ -85,7 +85,6 @@ public class TextHelper : MonoBehaviour
     void UpdateTextFieldAndPredictionsButtons(string data)
     {
         predictions = data.Split(';');
-
         if (predictions.Length != 3)
         {
             Debug.Log("Not text data. Skipping ...");

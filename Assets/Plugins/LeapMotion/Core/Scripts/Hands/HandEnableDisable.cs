@@ -30,14 +30,16 @@ namespace Leap.Unity
 
         protected override void HandReset()
         {
-            gameObject.SetActive(true);
             OnHandReset.Invoke();
+            gameObject.SetActive(true);
+            Debug.Log("HAND RESET");
         }
 
         protected override void HandFinish()
         {
-            gameObject.SetActive(false);
             OnHandFinish.Invoke();
+            gameObject.SetActive(false);
+            Debug.Log("HAND FINISH");
         }
     }
 }

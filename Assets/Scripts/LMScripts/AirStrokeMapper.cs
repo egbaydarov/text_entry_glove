@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace LeapMotionGesture
 {
@@ -31,6 +32,9 @@ namespace LeapMotionGesture
         private Vector2 prevProjectedPoint;
         private float distanceToObj;
         private Transform mainCamera;
+
+        public UnityEvent onPinchOn;
+        public UnityEvent onPinchOff;
 
 
         private void Start()
@@ -83,13 +87,21 @@ namespace LeapMotionGesture
 
         public void OnPinchBegan()
         {
-            prevProjectedPoint = GetProjectionOnPlane();
-            pinchIsOn = true;
+            if (!pinchIsOn)
+            {
+                prevProjectedPoint = GetProjectionOnPlane();
+                pinchIsOn = true;
+                onPinchOn.Invoke();
+            }
         }
 
         public void OnPinchEnded()
         {
-            pinchIsOn = false;
+            if (pinchIsOn)
+            {
+                pinchIsOn = false;
+                onPinchOff.Invoke();
+            }
         }
 
         private Vector2 GetProjectionOnPlane()

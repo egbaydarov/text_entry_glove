@@ -197,6 +197,7 @@ public class ReticlePointer : GvrBasePointer
         }
 
         if(server.IsConnected && isGestureValid)
+            //server.SendToClient("674.245;2077.208;\r\n");
             server.SendToClient(data + "\r\n");
 
         isGestureValid = false;
