@@ -25,12 +25,12 @@ public class UILayout : MonoBehaviour
 
     private int keyboard_x, keyboard_y;
     // Start is called before the first frame update
-    void Start()
+ /*   void Start()
     {
         gridLayoutGroup = keys.GetComponent<GridLayoutGroup>();
         keyboardTransform = keyboard.GetComponent<RectTransform>();
         keysTransform = keys.GetComponent<RectTransform>();
-        spaceBarTransform = spaceBar.GetComponent<RectTransform>();
+      //  spaceBarTransform = spaceBar.GetComponent<RectTransform>();
         predictionBarTransform = predictionBar.GetComponent<RectTransform>();
         //keyboard_x = 1080;
         //keyboard_y = 401;
@@ -85,4 +85,5 @@ public class UILayout : MonoBehaviour
         Debug.Log(objs.name);
         server = objs.GetComponent<Server>();
     }
+    */
 }

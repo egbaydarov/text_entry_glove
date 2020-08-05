@@ -60,6 +60,7 @@ public class SceneManagment : MonoBehaviour
         MeasuringMetrics.LoadPrefs();
         Settings.id++;
         PlayerPrefs.SetInt("Respondent_ID", (int)Settings.id);
+        
         EntryProcessing.currentBlock = 0;
         EntryProcessing.currentSentence = 0;
         switch (currentScene)
