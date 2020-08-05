@@ -138,6 +138,7 @@ public class TrialDataStorage : MonoBehaviour
             StreamWriter writer = new StreamWriter(Application.persistentDataPath + FILE_NAME, false, System.Text.Encoding.UTF8);
             writer.Write(JsonUtility.ToJson(new SerializableWrapper(_storedTrialData)));
             writer.Close();
+            Debug.Log(Application.persistentDataPath + FILE_NAME);
         }
         catch (Exception e)
         {
@@ -151,6 +152,7 @@ public class TrialDataStorage : MonoBehaviour
         {
             StreamWriter writer = new StreamWriter(Application.persistentDataPath + FILE_NAME, false, System.Text.Encoding.UTF8);
             writer.Close();
+            Debug.Log(Application.persistentDataPath + FILE_NAME);
         }
         catch (Exception e)
         {

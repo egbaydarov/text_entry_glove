@@ -14,6 +14,7 @@ public class SceneManagment : MonoBehaviour
 
     public void Start()
     {
+        MeasuringMetrics.ResetTime();
         if(method_id==null)
             method_id = "test";
 

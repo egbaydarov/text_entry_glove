@@ -31,6 +31,8 @@ public class MeasuringMetrics : MonoBehaviour
     public static Stopwatch choose_time = new Stopwatch();
     public static Stopwatch fix_choose_time = new Stopwatch();
     public static Stopwatch wait_time = new Stopwatch();
+    public static Stopwatch receive_time = new Stopwatch();
+    public static Stopwatch end_time = new Stopwatch();
     public static float all_move_time = 0;
     public static float all_choose_time = 0;
     public static float all_fix_choose_time = 0;
@@ -97,10 +99,11 @@ public class MeasuringMetrics : MonoBehaviour
         //Debug.Log("move time added and reset");
         if (wasChosen)
         {
-            all_choose_time += ((float) choose_time.ElapsedMilliseconds) / 1000;
-            all_fix_choose_time += ((float) fix_choose_time.ElapsedMilliseconds) / 1000;
+            all_choose_time += (float)end_time.ElapsedMilliseconds/1000 - ((float) choose_time.ElapsedMilliseconds) / 1000;
+            all_fix_choose_time += (float)receive_time.ElapsedMilliseconds/1000 - ((float) choose_time.ElapsedMilliseconds) / 1000;
             choose_time.Reset();
-            fix_choose_time.Reset(); 
+            receive_time.Reset();
+            end_time.Reset();
             //Debug.Log("choose time added and reset");
             //Debug.Log("fix choose time added and reset");
             wasChosen = false;
@@ -119,7 +122,7 @@ public class MeasuringMetrics : MonoBehaviour
         //Debug.Log("wait time start");
         gest_time.Stop();
         //Debug.Log("gest time stop");
-        choose_time.Restart();
+        end_time.Restart();
         //Debug.Log("choose time restart");
         
         //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
@@ -127,25 +130,28 @@ public class MeasuringMetrics : MonoBehaviour
 
     public static void ReceivePredictions()
     {
-        //Debug.Log("Receive Predictions");
+        Debug.Log("Receive Predictions");
         //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
         wait_time.Stop();
         //Debug.Log("wait time stop");
-        fix_choose_time.Restart();
+        
         //Debug.Log("fix choose time restart");
+        
+        
+        receive_time.Restart();
         
         //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
            }
 
     public static void ChoosePredictions()
     {
-        //Debug.Log("Choose Prediction");
+        Debug.Log("Choose Prediction");
         //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
          move_time.Restart();
         //Debug.Log("move time restart");
-        choose_time.Stop();
+        choose_time.Restart();
         //Debug.Log("choose time stop");
-        fix_choose_time.Stop();
+       
         wasChosen = true;
         
         //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
@@ -161,10 +167,11 @@ public class MeasuringMetrics : MonoBehaviour
         //Debug.Log("move time added and reset");
         if (wasChosen)
         {
-            all_choose_time += ((float) choose_time.ElapsedMilliseconds) / 1000;
-            all_fix_choose_time += ((float) fix_choose_time.ElapsedMilliseconds) / 1000;
+            all_choose_time += (float)end_time.ElapsedMilliseconds/1000 - ((float) choose_time.ElapsedMilliseconds) / 1000;
+            all_fix_choose_time += (float)receive_time.ElapsedMilliseconds/1000 - ((float) choose_time.ElapsedMilliseconds) / 1000;
+            receive_time.Restart();
             choose_time.Reset();
-            fix_choose_time.Reset();
+            end_time.Reset();
         //    Debug.Log("fix time added and reset");
         //    Debug.Log("all fix time added and reset");
             wasChosen = false;
@@ -184,6 +191,8 @@ public class MeasuringMetrics : MonoBehaviour
         choose_time.Reset();
         fix_choose_time.Reset();
         wait_time.Reset();
+        receive_time.Reset();
+        end_time.Reset();
         all_move_time = 0;
         all_choose_time = 0;
         all_fix_choose_time = 0;
