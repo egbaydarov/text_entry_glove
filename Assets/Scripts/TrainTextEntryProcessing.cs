@@ -27,6 +27,7 @@ public class TrainTextEntryProcessing : MonoBehaviour
     private InputField intext;
 
     public UnityEvent OnSentenceEnd;
+    public UnityEvent OnTrainEnd;
     public UnityEvent OnMenuClicked;
 
     Server server;
@@ -314,6 +315,7 @@ public class TrainTextEntryProcessing : MonoBehaviour
             }
             else
             {
+                OnTrainEnd.Invoke();
                 sentenceField.SetActive(false);
                 confirmButton.SetActive(false);
                 menuButton.SetActive(true);
@@ -336,7 +338,7 @@ public class TrainTextEntryProcessing : MonoBehaviour
                 th.IsAvailable = false;
             }
         }
-        else if (obj != null && obj.tag.Equals("Prediction") && !isFirstTap)
+        else if (obj != null && obj.tag.Equals("Prediction") && !isFirstTap && !menuButton.activeSelf)
         {
             switch (obj.name)
             {

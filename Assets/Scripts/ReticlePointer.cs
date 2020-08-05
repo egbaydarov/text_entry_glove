@@ -36,6 +36,7 @@ public class ReticlePointer : GvrBasePointer
 
     Server server;
     public bool isGestureValid { get; set; }
+    public bool isInputEnd { get; set; } = false;
 
     public ReticleMode mReticleMode = ReticleMode.Reticle;
 
@@ -202,10 +203,10 @@ public class ReticlePointer : GvrBasePointer
             //MeasuringMetrics.EndGesture();
         }
 
-        if(server.IsConnected && isGestureValid)
+        if(server.IsConnected && isGestureValid && !isInputEnd)
             server.SendToClient(data + "\r\n");
         
-        if(isGestureValid)
+        if(isGestureValid && !isInputEnd)
             MeasuringMetrics.EndGesture();
 
         isGestureValid = false;
