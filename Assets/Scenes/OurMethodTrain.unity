@@ -2984,6 +2984,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnTrainEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2037215425}
+        m_MethodName: set_isInputEnd
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   OnMenuClicked:
     m_PersistentCalls:
       m_Calls:
@@ -3296,7 +3310,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &760815628
 Transform:
   m_ObjectHideFlags: 0
@@ -3318,7 +3332,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 760815627}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e309ac4138f124f9f8ad312a14a8e9ff, type: 3}
   m_Name: 
@@ -5528,18 +5542,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnActivate:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1960954533}
-        m_MethodName: Setup
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
@@ -5844,7 +5847,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed7d71f7d326514ca87212ee0faac88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: {fileID: 0}
+  audio: {fileID: 1922753977}
   soundToPlay: {fileID: 8300000, guid: c06c368f193269d458a52422f062d171, type: 3}
 --- !u!114 &1408183957
 MonoBehaviour:
@@ -7632,7 +7635,7 @@ PrefabInstance:
         type: 3}
       propertyPath: followee
       value: 
-      objectReference: {fileID: 1531458205}
+      objectReference: {fileID: 760815628}
     - target: {fileID: 5727461873571377420, guid: 56d7649a53fd0ef4f92fbf39e23bd0b3,
         type: 3}
       propertyPath: follower
@@ -8545,7 +8548,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftPinchDetector: {fileID: 760815629}
   rightPinchDetector: {fileID: 1531458206}
-  PinchHand: 1
+  PinchHand: 0
   delay: 3
 --- !u!1 &1960954531
 GameObject:

@@ -14,6 +14,7 @@ using Valve.VR.InteractionSystem;
 public class LMPointer : GvrBasePointer
 {
     public bool isGestureValid { get; set; }
+    public bool isInputEnd { get; set; } = false;
 
     Server server;
     GameObject enterRaycastObj;
@@ -196,9 +197,9 @@ public class LMPointer : GvrBasePointer
            // MeasuringMetrics.EndGesture();
         }
 
-        if(isGestureValid)
+        if(isGestureValid && !isInputEnd)
             MeasuringMetrics.EndGesture();
-        if (server.IsConnected && isGestureValid)
+        if (server.IsConnected && isGestureValid && !isInputEnd)
             server.SendToClient(data + "\r\n");
 
         isGestureValid = false;
