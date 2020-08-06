@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Leap.Unity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Valve.VR.InteractionSystem;
 
 public class TextHelper : MonoBehaviour
 {
@@ -16,10 +18,10 @@ public class TextHelper : MonoBehaviour
     [SerializeField] private Text prediction2;
 
     string[] predictions = { "", "", "" };
+    int current;
 
     Server server;
     volatile bool shouldUpdate;
-    public bool IsAvailable { get; set; }
 
     public static string text;
     private void Awake()
@@ -46,96 +48,53 @@ public class TextHelper : MonoBehaviour
         {
             if (TextField.text == "")
             {
-                for (var i = 0; i < predictions.Length; i++)
-                {
-                    if (!string.IsNullOrEmpty(predictions[i]))
+                for (int i = 0; i < predictions.Length; ++i)
+                    if (predictions[i].Length > 0)
                         predictions[i] = predictions[i].Capitalize();
-                }
 
                 TextField.text = predictions[1];
-                prediction0.text = predictions[0];
-                prediction1.text = predictions[1];
-                prediction2.text = predictions[2].Trim();
-                
             }
             else
-            {
+                TextField.text += $" {predictions[1]}";
 
-                TextField.text += " " + predictions[1];
-                prediction0.text = predictions[0];
-                prediction1.text = predictions[1];
-                prediction2.text = predictions[2].Trim();
-                
-            }
-           
+            prediction0.text = predictions[0];
+            prediction1.text = predictions[1];
+            prediction2.text = predictions[2];
+
             shouldUpdate = false;
-            IsAvailable = true;
+            current = 1;
         }
         text = TextField.text;
     }
 
     public void ChangeOnPrediction0()
     {
-        int index = 0;
-        for (int i = TextField.text.Length - 1; i > -1; --i)
-        {
-            if (TextField.text[i] == ' ')
-            {
-                index = i;
-                break;
-            }
-        }
+        TextField.text = $"{TextField.text.Substring(0, TextField.text.Length - predictions[current].Length)}{prediction0.text}";
 
-        if (index == 0)
-            TextField.text = TextField.text.Substring(0, index) + $"{prediction0.text}";
-        else
-            TextField.text = TextField.text.Substring(0, index) + $" {prediction0.text}";
-
-        IsAvailable = false;
+        current = 0;
     }
 
     public void ChangeOnPrediction1()
     {
-        int index = 0;
-        for (int i = TextField.text.Length - 1; i > -1; --i)
-        {
-            if (TextField.text[i] == ' ')
-            {
-                index = i;
-                break;
-            }
-        }
+        TextField.text = $"{TextField.text.Substring(0, TextField.text.Length - predictions[current].Length)}{prediction1.text}";
 
-        if (index == 0)
-            TextField.text = TextField.text.Substring(0, index) + $"{prediction1.text}";
-        else
-            TextField.text = TextField.text.Substring(0, index) + $" {prediction1.text}";
-
-        IsAvailable = false;
+        current = 1;
     }
 
     public void ChangeOnPrediction2()
     {
-        int index = 0;
-        for (int i = TextField.text.Length - 1; i > -1; --i)
-        {
-            if (TextField.text[i] == ' ')
-            {
-                index = i;
-                break;
-            }
-        }
+        TextField.text = $"{TextField.text.Substring(0, TextField.text.Length - predictions[current].Length)}{prediction2.text}";
 
-        if (index == 0)
-            TextField.text = TextField.text.Substring(0, index) + $"{prediction2.text}";
-        else
-            TextField.text = TextField.text.Substring(0, index) + $" {prediction2.text}";
-        IsAvailable = false;
+        current = 2;
     }
 
     void UpdateTextFieldAndPredictionsButtons(string data)
     {
         predictions = data.Split(';');
+
+        for (int i = 0; i < predictions.Length; ++i)
+            predictions[i] = predictions[i].Trim();
+
         if (predictions.Length != 3)
         {
             Debug.Log("Not text data. Skipping ...");

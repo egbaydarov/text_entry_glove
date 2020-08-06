@@ -333,10 +333,6 @@ public class TrainTextEntryProcessing : MonoBehaviour
                 sentenceField.SetActive(false);
                 confirmButton.SetActive(true);
             }
-            else
-            {
-                th.IsAvailable = false;
-            }
         }
         else if (obj != null && obj.tag.Equals("Prediction") && !isFirstTap && !menuButton.activeSelf)
         {
