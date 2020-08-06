@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f007d8982d2f140abaf3a79447db70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentScene: 0
+  currentScene: 1
 --- !u!4 &438944048 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4057968051431532, guid: dae2e2be31c98324eac460f702db97e9,
@@ -265,6 +265,21 @@ PrefabInstance:
         type: 3}
       propertyPath: _roomScaleHeightOffset
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114292754717913548, guid: dae2e2be31c98324eac460f702db97e9,
+        type: 3}
+      propertyPath: _deviceOffsetMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114292754717913548, guid: dae2e2be31c98324eac460f702db97e9,
+        type: 3}
+      propertyPath: _deviceOffsetYAxis
+      value: -0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 114292754717913548, guid: dae2e2be31c98324eac460f702db97e9,
+        type: 3}
+      propertyPath: _deviceTiltXAxis
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 114473456793702560, guid: dae2e2be31c98324eac460f702db97e9,
         type: 3}
@@ -715,19 +730,19 @@ PrefabInstance:
       objectReference: {fileID: 1012758010}
     - target: {fileID: 2044284766951223, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.2
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 2044284766951223, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.2
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 2044284766951223, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.2
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 2044284766951223, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.07
       objectReference: {fileID: 0}
     - target: {fileID: 2044284962996900, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
       propertyPath: _manager

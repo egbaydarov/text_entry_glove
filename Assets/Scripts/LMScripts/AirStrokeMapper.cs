@@ -21,6 +21,9 @@ namespace LeapMotionGesture
         [SerializeField]
         private float fixedValue = 1f;
 
+        [SerializeField]
+        private float originPointOffset = 0f;
+
 #pragma warning disable 414
         [Space]
         [TextArea]
@@ -62,7 +65,10 @@ namespace LeapMotionGesture
                     return;
                 }
                 mainCamera = Camera.main.transform;
-                distanceToObj = Vector3.Distance(follower.root.position, mainCamera.position);
+
+                Vector3 originPos = mainCamera.position;
+                originPos.x += originPointOffset;
+                distanceToObj = Vector3.Distance(follower.root.position, originPos);
             }
 
             // Hiding all child GOs
@@ -116,7 +122,10 @@ namespace LeapMotionGesture
 
         private float GetMultiplicationFactor()
         {
-            return calculateDynamically ? distanceToObj / Vector3.Distance(followee.position, mainCamera.position) : fixedValue;
+            Vector3 originPos = mainCamera.position;
+            originPos.z += originPointOffset;
+
+            return calculateDynamically ? distanceToObj / Vector3.Distance(followee.position, originPos) : fixedValue;
         }
     }
 }
