@@ -15,6 +15,7 @@ public class TrialData
     public float choose_time;
     public float fix_choose_time;
     public float wait_time;
+    public string resp_text = "";
     
     
     
@@ -43,16 +44,16 @@ public class TrialData
         form.Add("entry.1905100173", (block_num+1).ToString()); // Номер блока предложений
         form.Add("entry.2130707738", (sent_num+1).ToString()); // Номер попытки
         form.Add("entry.1405245047", sent_text); // Эталонное предложение
-        form.Add("entry.229951240", TextHelper.text); // Введенное испытуемым предложение
-        form.Add("entry.1830134686", TextHelper.text.Length.ToString()); // Длина введенного испытуемым предложения
+        form.Add("entry.229951240", resp_text); // Введенное испытуемым предложение
+        form.Add("entry.1830134686", resp_text.Length.ToString()); // Длина введенного испытуемым предложения
         form.Add("entry.1264763496", all_time.ToString().Replace(".",",")); // Время ввода предложения
         form.Add("entry.452347986", move_time.ToString().Replace(".",",")); // Суммарное время перемещения курсора
         form.Add("entry.945161006", gest_time.ToString().Replace(".",",")); // Суммарное время вычерчивания росчерка
         form.Add("entry.2055613067", choose_time.ToString().Replace(".",",")); // Суммарное время выбора слов из списка подсказок
         form.Add("entry.824354990", fix_choose_time.ToString().Replace(".",",")); // Скорректированное ремя выбора слов
         form.Add("entry.254841772", wait_time.ToString().Replace(".",",")); //Время ожидания подсказок
-        form.Add("entry.1730946643", LevenshteinDistance(sent_text, TextHelper.text).ToString()); // Количество неисправленных опечаток  
-        form.Add("entry.1907294220", Math.Round(((float) TextHelper.text.Length) * 12.0 / all_time, 2).ToString().Replace(".",",")); // Скорость набора текста
+        form.Add("entry.1730946643", LevenshteinDistance(sent_text, resp_text).ToString()); // Количество неисправленных опечаток  
+        form.Add("entry.1907294220", Math.Round(((float) resp_text.Length) * 12.0 / all_time, 2).ToString().Replace(".",",")); // Скорость набора текста
         
         
         

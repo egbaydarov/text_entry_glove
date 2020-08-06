@@ -78,6 +78,7 @@ public class TrialDataStorage : MonoBehaviour
         _currentTrialData.choose_time = MeasuringMetrics.all_choose_time;
         _currentTrialData.fix_choose_time = MeasuringMetrics.all_fix_choose_time;
         _currentTrialData.wait_time = (((float) MeasuringMetrics.wait_time.ElapsedMilliseconds) / 1000);
+        _currentTrialData.resp_text = TextHelper.text;
         
         MeasuringMetrics.ResetTime();
     }
