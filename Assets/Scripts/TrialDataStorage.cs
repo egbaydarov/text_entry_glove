@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 
 public class TrialDataStorage : MonoBehaviour
 {
+    
     [Serializable]
     private struct SerializableWrapper
     {
@@ -22,6 +23,11 @@ public class TrialDataStorage : MonoBehaviour
     private TrialData _currentTrialData;
 
     private const string FILE_NAME = "/AllTrialData.json";
+
+    private void Start()
+    {
+        Save();
+    }
 
     void Awake()
     {
@@ -78,9 +84,15 @@ public class TrialDataStorage : MonoBehaviour
         _currentTrialData.choose_time = MeasuringMetrics.all_choose_time;
         _currentTrialData.fix_choose_time = MeasuringMetrics.all_fix_choose_time;
         _currentTrialData.wait_time = (((float) MeasuringMetrics.wait_time.ElapsedMilliseconds) / 1000);
+        StartCoroutine(OnlyWait());
         _currentTrialData.resp_text = TextHelper.text;
         
         MeasuringMetrics.ResetTime();
+    }
+
+    public IEnumerator OnlyWait()
+    {
+        yield return new WaitForSeconds(2);
     }
 
     public IEnumerator Wait()
