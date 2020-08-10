@@ -167,8 +167,11 @@ public class ReticlePointer : GvrBasePointer
         }
         isGestureValid = enterRaycastObj.tag.Equals("Key");
 
-        if(isGestureValid)
+        if (isGestureValid)
+        {
             MeasuringMetrics.StartGesture();
+            TextHelper.isGestureStarted = true;
+        }
 
         float x_min = -1080 / 2 + 10;
         float x_max = -1080 / 2 + 10 + (1080 - 120) / 11;

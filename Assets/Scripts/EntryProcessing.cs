@@ -112,6 +112,7 @@ public class EntryProcessing : MonoBehaviour
     public static int currentBlock;
     public static int currentSentence;
     public static string currentSentenceText;
+    public UnityEvent disablePinch;
 
     public static Stopwatch full_time = new Stopwatch();
     
@@ -177,6 +178,7 @@ public class EntryProcessing : MonoBehaviour
 
                 sentenceField.SetActive(false);
                 confirmButton.SetActive(false);
+                disablePinch.Invoke();
                 StartCoroutine(Wait());
                // menuButton.SetActive(true);
             }
@@ -187,6 +189,7 @@ public class EntryProcessing : MonoBehaviour
                 confirmButton.SetActive(false);
                 OnInputEnd.Invoke();
                 ResetTime();
+                disablePinch.Invoke();
                 StartCoroutine(Wait());
                // menuButton.SetActive(true);
             }

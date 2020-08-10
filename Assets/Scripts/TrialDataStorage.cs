@@ -19,8 +19,7 @@ public class TrialDataStorage : MonoBehaviour
 
         public TrialData[] AllTrialsData;
     }
-
-    [SerializeField] private GameObject ToMenu;
+    
 
     private Queue<TrialData> _storedTrialData;
     private TrialData _currentTrialData;

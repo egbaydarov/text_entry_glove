@@ -159,6 +159,7 @@ public class LMPointer : GvrBasePointer
         if (isGestureValid)
         {
             MeasuringMetrics.StartGesture();
+            TextHelper.isGestureStarted = true;
         }
 
         Vector3 local = FakePointer.transform.parent.InverseTransformPoint(LastPointerHoveredResult.worldPosition);

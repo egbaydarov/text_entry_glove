@@ -23,6 +23,8 @@ public class TextHelper : MonoBehaviour
     Server server;
     volatile bool shouldUpdate;
 
+    public static bool isGestureStarted=false;
+
     public static string text;
     private void Awake()
     {
@@ -40,6 +42,14 @@ public class TextHelper : MonoBehaviour
     private void OnDisable()
     {
         server.OnMessageRecieved.RemoveListener(UpdateTextFieldAndPredictionsButtons);
+    }
+    
+    private void CleanPredictions()
+    {
+        prediction0.text = "";
+        prediction1.text = "";
+        prediction2.text = "";
+        
     }
 
     void Update()
@@ -65,6 +75,13 @@ public class TextHelper : MonoBehaviour
             current = 1;
         }
         text = TextField.text;
+        
+        
+        if (isGestureStarted)
+        {
+            CleanPredictions();
+            isGestureStarted = false;
+        }
     }
 
     public void ChangeOnPrediction0()
