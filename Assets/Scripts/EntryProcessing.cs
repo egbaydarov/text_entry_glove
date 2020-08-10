@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 public class EntryProcessing : MonoBehaviour
 {
@@ -153,6 +154,7 @@ public class EntryProcessing : MonoBehaviour
             {
                 
                 OnSentenceInputEnd.Invoke();
+                Debug.Log("On Sentence End");
                // ResetTime();
                 
                 ++currentSentence;
@@ -166,6 +168,7 @@ public class EntryProcessing : MonoBehaviour
             {
                 
                 OnBlockInputEnd.Invoke();
+                Debug.Log("On Block End");
                 //ResetTime();
                 
                 currentSentence = 0;
@@ -174,16 +177,18 @@ public class EntryProcessing : MonoBehaviour
 
                 sentenceField.SetActive(false);
                 confirmButton.SetActive(false);
-                menuButton.SetActive(true);
+                StartCoroutine(Wait());
+               // menuButton.SetActive(true);
             }
             // если ввод полностью закончен
             else
             {
                 sentenceField.SetActive(false);
                 confirmButton.SetActive(false);
-                menuButton.SetActive(true);
                 OnInputEnd.Invoke();
                 ResetTime();
+                StartCoroutine(Wait());
+               // menuButton.SetActive(true);
             }
             
             isFirstTap = true;
@@ -246,5 +251,11 @@ public class EntryProcessing : MonoBehaviour
             server.SendToClient("clear\r\n");
             OnMenuClicked.Invoke();
         }
+    }
+
+    public IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(3);
+        menuButton.SetActive(true);
     }
 }

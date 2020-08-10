@@ -42,6 +42,7 @@ namespace LeapMotionGesture
 
         private void Start()
         {
+            mainCamera = Camera.main.transform; //Чтобы не падало на 125 строчке с null exception
             if (followee == null)
             {
                 Debug.LogError("AirStrokeMapper: The 'Followee' field cannot be left unassigned. Disabling the script");

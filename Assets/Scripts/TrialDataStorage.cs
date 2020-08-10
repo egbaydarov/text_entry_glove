@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class TrialDataStorage : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class TrialDataStorage : MonoBehaviour
 
         public TrialData[] AllTrialsData;
     }
+
+    [SerializeField] private GameObject ToMenu;
 
     private Queue<TrialData> _storedTrialData;
     private TrialData _currentTrialData;

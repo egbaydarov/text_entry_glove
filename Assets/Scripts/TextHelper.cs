@@ -102,4 +102,11 @@ public class TextHelper : MonoBehaviour
         else
             shouldUpdate = true;
     }
+
+    public void ClearPredictions()
+    {
+        prediction0.text = null;
+        prediction1.text = null;
+        prediction2.text = null;
+    }
 }
