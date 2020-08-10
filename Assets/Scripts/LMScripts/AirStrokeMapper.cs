@@ -42,7 +42,6 @@ namespace LeapMotionGesture
 
         private void Start()
         {
-            mainCamera = Camera.main.transform; //Чтобы не падало на 125 строчке с null exception
             if (followee == null)
             {
                 Debug.LogError("AirStrokeMapper: The 'Followee' field cannot be left unassigned. Disabling the script");
@@ -123,10 +122,15 @@ namespace LeapMotionGesture
 
         private float GetMultiplicationFactor()
         {
-            Vector3 originPos = mainCamera.position;
-            originPos.z += originPointOffset;
+            if (calculateDynamically)
+            {
+                Vector3 originPos = mainCamera.position;
+                originPos.z += originPointOffset;
 
-            return calculateDynamically ? distanceToObj / Vector3.Distance(followee.position, originPos) : fixedValue;
+                return distanceToObj / Vector3.Distance(followee.position, originPos);
+            }
+            else
+                return fixedValue;
         }
     }
 }
