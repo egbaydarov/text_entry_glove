@@ -50,6 +50,9 @@ public class SceneManagment : MonoBehaviour
             case Scenes.GestureType:
                 SceneManager.LoadSceneAsync("GestureTypeTrain");
                 break;
+            case Scenes.OculusQuest:
+                SceneManager.LoadSceneAsync("OculusQuestTrain");
+                break;
         }
 
     }
@@ -74,6 +77,10 @@ public class SceneManagment : MonoBehaviour
                 SceneManager.LoadSceneAsync("GestureTypeMain");
                 method_id = "GestureType";
                 break;
+            case Scenes.OculusQuest:
+                SceneManager.LoadSceneAsync("OculusQuestMain");
+                method_id = "OculusQuest";
+                break;
         }
     }
 
@@ -91,6 +98,10 @@ public class SceneManagment : MonoBehaviour
             case Scenes.GestureType:
                 SceneManager.LoadSceneAsync("GestureTypeMain");
                 method_id = "GestureType";
+                break;
+            case Scenes.OculusQuest:
+                SceneManager.LoadSceneAsync("OculusQuestMain");
+                method_id = "OculusQuest";
                 break;
         }
     }
@@ -112,6 +123,7 @@ public class SceneManagment : MonoBehaviour
     public enum Scenes
     {
         GestureType,
-        OurMethod
+        OurMethod,
+        OculusQuest
     }
 }
