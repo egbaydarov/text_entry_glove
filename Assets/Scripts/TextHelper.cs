@@ -25,6 +25,8 @@ public class TextHelper : MonoBehaviour
 
     public static bool isGestureStarted=false;
 
+    public static bool isAllNull;
+
     public static string text;
     private void Awake()
     {
@@ -82,27 +84,48 @@ public class TextHelper : MonoBehaviour
             CleanPredictions();
             isGestureStarted = false;
         }
+
+        if (prediction0.text == "" && prediction1.text == "" && prediction2.text == "")
+        {
+            isAllNull = true;
+        }
+        else
+        {
+            isAllNull = false;
+        }
     }
 
     public void ChangeOnPrediction0()
     {
-        TextField.text = $"{TextField.text.Substring(0, TextField.text.Length - predictions[current].Length)}{prediction0.text}";
+        if (prediction0.text != "")
+        {
+            TextField.text =
+                $"{TextField.text.Substring(0, TextField.text.Length - predictions[current].Length)}{prediction0.text}";
 
-        current = 0;
+            current = 0;
+        }
     }
 
     public void ChangeOnPrediction1()
     {
-        TextField.text = $"{TextField.text.Substring(0, TextField.text.Length - predictions[current].Length)}{prediction1.text}";
+        if (prediction1.text != "")
+        {
+            TextField.text =
+                $"{TextField.text.Substring(0, TextField.text.Length - predictions[current].Length)}{prediction1.text}";
 
         current = 1;
-    }
+        }
+}
 
     public void ChangeOnPrediction2()
     {
-        TextField.text = $"{TextField.text.Substring(0, TextField.text.Length - predictions[current].Length)}{prediction2.text}";
+        if (prediction2.text != "")
+        {
+            TextField.text =
+                $"{TextField.text.Substring(0, TextField.text.Length - predictions[current].Length)}{prediction2.text}";
 
-        current = 2;
+            current = 2;
+        }
     }
 
     void UpdateTextFieldAndPredictionsButtons(string data)

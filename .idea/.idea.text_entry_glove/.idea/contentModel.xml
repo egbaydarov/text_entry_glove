@@ -798,6 +798,9 @@
           </e>
           <e p="MeasuringMetrics.cs" t="Include" />
           <e p="MoveDirectPointer.cs" t="Include" />
+          <e p="Oculus" t="Include">
+            <e p="PointerHandler.cs" t="Include" />
+          </e>
           <e p="Overlay.cs" t="Include" />
           <e p="PinchWithReticle.cs" t="Include" />
           <e p="PointGesture.cs" t="Include" />

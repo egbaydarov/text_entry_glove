@@ -146,18 +146,20 @@ public class MeasuringMetrics : MonoBehaviour
 
     public static void ChoosePredictions()
     {
-        Debug.Log("Choose Prediction");
-        //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
-         move_time.Restart();
-        //Debug.Log("move time restart");
-        choose_time.Restart();
-        Debug.Log("Choose time restart");
-        //Debug.Log("choose time stop");
-       
-        wasChosen = true;
-        
-        //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
+        if (!TextHelper.isAllNull)
+        {
+            Debug.Log("Choose Prediction");
+            //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
+            move_time.Restart();
+            //Debug.Log("move time restart");
+            choose_time.Restart();
+            Debug.Log("Choose time restart");
+            //Debug.Log("choose time stop");
 
+            wasChosen = true;
+
+            //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
+        }
     }
 
     public static void Finish()

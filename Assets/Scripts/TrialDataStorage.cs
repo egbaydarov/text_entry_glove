@@ -28,7 +28,9 @@ public class TrialDataStorage : MonoBehaviour
 
     private void Start()
     {
-        Save();
+        //Save();
+        if (IsThereUnsavedData())
+            StartCoroutine(TryToSaveToGoogleSheets());
     }
 
     void Awake()
