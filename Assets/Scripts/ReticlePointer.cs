@@ -16,6 +16,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using Leap;
 using LeapMotionGesture;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -34,7 +35,9 @@ public class ReticlePointer : GvrBasePointer
     private GameObject canvas;
     TrailRender trRander;
 
-    Server server;
+    public Vector3 ReticleWorldPosition { get;private set; }
+
+Server server;
     public bool isGestureValid { get; set; }
     public bool isInputEnd { get; set; } = false;
 
@@ -127,7 +130,7 @@ public class ReticlePointer : GvrBasePointer
     /// <inheritdoc/>
     public override void OnPointerHover(RaycastResult raycastResult, bool isInteractive)
     {
-
+        ReticleWorldPosition = raycastResult.worldPosition;
         SetPointerTarget(raycastResult.worldPosition, isInteractive);
 
         if (!raycastResult.gameObject.tag.Equals("Key") || !isGestureValid)
