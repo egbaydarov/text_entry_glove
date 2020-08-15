@@ -966,10 +966,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2edb1075a3755f343b38c412c4b64e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 710789989}
+  targetLeft: {fileID: 215632376}
+  targetRight: {fileID: 710789989}
   cameraTransform: {fileID: 963194228}
   shoulderOffset: {x: 0.15, y: -0.3, z: -0.25}
   damping: 100
+  laserWidth: 0.06
   laser: {fileID: 698360892}
 --- !u!114 &244715517
 MonoBehaviour:
@@ -4831,7 +4833,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc1b687e94d11c240a6e4b22e507f65e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followee: {fileID: 710789989}
+  followeeLeft: {fileID: 215632376}
+  followeeRight: {fileID: 710789989}
   follower: {fileID: 2016258219}
   calculateDynamically: 1
   fixedValue: 1
@@ -8653,6 +8656,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftPinchDetector: {fileID: 215632377}
   rightPinchDetector: {fileID: 710789990}
+  pointerRig: {fileID: 698360890}
   PinchHand: 1
   delay: 3
 --- !u!1 &1894353646

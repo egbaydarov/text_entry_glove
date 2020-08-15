@@ -7447,6 +7447,16 @@ PrefabInstance:
       propertyPath: originPointOffset
       value: -0.25
       objectReference: {fileID: 0}
+    - target: {fileID: 5727461873571377420, guid: 56d7649a53fd0ef4f92fbf39e23bd0b3,
+        type: 3}
+      propertyPath: followeeLeft
+      value: 
+      objectReference: {fileID: 760815628}
+    - target: {fileID: 5727461873571377420, guid: 56d7649a53fd0ef4f92fbf39e23bd0b3,
+        type: 3}
+      propertyPath: followeeRight
+      value: 
+      objectReference: {fileID: 1531458205}
     - target: {fileID: 7474950737991005225, guid: 56d7649a53fd0ef4f92fbf39e23bd0b3,
         type: 3}
       propertyPath: m_LocalPosition.x

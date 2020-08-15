@@ -1,10 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PointerHandler : MonoBehaviour
 {
     [SerializeField]
+    Transform targetLeft;
+
+    [SerializeField]
+    Transform targetRight;
+
     Transform target;
 
     [SerializeField]
@@ -18,7 +24,7 @@ public class PointerHandler : MonoBehaviour
     float damping = 1.0f;
 
     [SerializeField]
-    float laserWidth = 0.1f;
+    float laserWidth = 0.06f;
 
     [SerializeField]
     LineRenderer laser;
@@ -50,6 +56,21 @@ public class PointerHandler : MonoBehaviour
 
     }
 
-    
+    private void Awake()
+    {
+
+        if (FindObjectOfType<PinchDetectorDelay>().PinchHand == PinchDetectorDelay.HandMode.right)
+        {
+            target = targetRight;
+            shoulderOffset.x = Mathf.Abs(shoulderOffset.x);
+        }
+        else
+        {
+            target = targetLeft;
+            shoulderOffset.x = -Mathf.Abs(shoulderOffset.x);
+        }
+    }
+
+
 
 }

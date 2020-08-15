@@ -14,7 +14,10 @@ public class PinchDetectorDelay : MonoBehaviour
     PinchDetector rightPinchDetector;
 
     [SerializeField]
-    HandMode PinchHand = HandMode.right;
+    GameObject pointerRig;
+
+    [SerializeField]
+    public HandMode PinchHand = HandMode.right;
 
 
     [SerializeField]
@@ -38,17 +41,31 @@ public class PinchDetectorDelay : MonoBehaviour
 
 
         if (PinchHand == HandMode.right)
+        {
             rightPinchDetector.enabled = true;
+        }
         else
+        {
             leftPinchDetector.enabled = true;
+        }
+
+        if (pointerRig != null)
+            pointerRig.SetActive(true);
     }
 
     public void DisablePinchForSeconds(float seconds)
     {
         if (PinchHand == HandMode.right)
+        {
             rightPinchDetector.enabled = false;
+        }
         else
+        {
             leftPinchDetector.enabled = false;
+        }
+
+        if (pointerRig != null)
+            pointerRig.SetActive(false);
 
         StartCoroutine(ExecuteAfterTime(seconds));
     }

@@ -7,7 +7,12 @@ namespace LeapMotionGesture
     {
 #pragma warning disable 649
         [SerializeField]
+        private Transform followeeLeft;
+        [SerializeField]
+        private Transform followeeRight;
+
         private Transform followee;
+
         [SerializeField]
         private Transform follower;
 #pragma warning restore 649
@@ -42,9 +47,15 @@ namespace LeapMotionGesture
 
         private void Start()
         {
-            if (followee == null)
+            if (followeeLeft == null)
             {
-                Debug.LogError("AirStrokeMapper: The 'Followee' field cannot be left unassigned. Disabling the script");
+                Debug.LogError("AirStrokeMapper: The 'FolloweeLeft' field cannot be left unassigned. Disabling the script");
+                enabled = false;
+                return;
+            }
+            if (followeeRight == null)
+            {
+                Debug.LogError("AirStrokeMapper: The 'FolloweeRight' field cannot be left unassigned. Disabling the script");
                 enabled = false;
                 return;
             }
@@ -55,6 +66,12 @@ namespace LeapMotionGesture
                 enabled = false;
                 return;
             }
+
+            if (FindObjectOfType<PinchDetectorDelay>().PinchHand == PinchDetectorDelay.HandMode.right)
+                followee = followeeRight;
+            else
+                followee = followeeLeft;
+
 
             if (calculateDynamically)
             {
@@ -113,6 +130,7 @@ namespace LeapMotionGesture
         private Vector2 GetProjectionOnPlane()
         {
             // Projecting a position of our followee to a plane which is at the origin. The plane is rotated as our GO
+
             Vector3 p = Vector3.ProjectOnPlane(followee.position, transform.forward);
 
             // Transforming a position of the projected point to local space of our GO, which makes its Z component equal to 0

@@ -3705,13 +3705,13 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.103
     widthCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.10302321
+        value: 0.10302423
         inSlope: -0.31040573
         outSlope: -0.31040573
         tangentMode: 0
@@ -4422,6 +4422,16 @@ PrefabInstance:
       propertyPath: onPinchOff.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 8300000, guid: 1e63ec2ab01c0474696c947a3f2003b6, type: 3}
+    - target: {fileID: 5727461873571377420, guid: 56d7649a53fd0ef4f92fbf39e23bd0b3,
+        type: 3}
+      propertyPath: followeeLeft
+      value: 
+      objectReference: {fileID: 1561718093}
+    - target: {fileID: 5727461873571377420, guid: 56d7649a53fd0ef4f92fbf39e23bd0b3,
+        type: 3}
+      propertyPath: followeeRight
+      value: 
+      objectReference: {fileID: 2121455423}
     - target: {fileID: 7474950737991005225, guid: 56d7649a53fd0ef4f92fbf39e23bd0b3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8101,11 +8111,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2edb1075a3755f343b38c412c4b64e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 2121455423}
+  targetLeft: {fileID: 1561718093}
+  targetRight: {fileID: 2121455423}
   cameraTransform: {fileID: 963194228}
   shoulderOffset: {x: 0.15, y: -0.3, z: -0.25}
   damping: 100
-  laser: {fileID: 0}
+  laserWidth: 0.06
+  laser: {fileID: 962234102}
 --- !u!1 &1784976539
 GameObject:
   m_ObjectHideFlags: 0
@@ -8641,6 +8653,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftPinchDetector: {fileID: 1561718094}
   rightPinchDetector: {fileID: 2121455422}
+  pointerRig: {fileID: 962234100}
   PinchHand: 1
   delay: 3
 --- !u!1 &1964721768

@@ -25,6 +25,7 @@ namespace Leap.Unity
         {
             base.Awake();
             gameObject.SetActive(false);
+            
         }
 
 
@@ -32,14 +33,12 @@ namespace Leap.Unity
         {
             OnHandReset.Invoke();
             gameObject.SetActive(true);
-            Debug.Log("HAND RESET");
         }
 
         protected override void HandFinish()
         {
             OnHandFinish.Invoke();
             gameObject.SetActive(false);
-            Debug.Log("HAND FINISH");
         }
     }
 }
