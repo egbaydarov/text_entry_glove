@@ -18,11 +18,16 @@ public class PointerHandler : MonoBehaviour
     float damping = 1.0f;
 
     [SerializeField]
+    float laserWidth = 0.1f;
+
+    [SerializeField]
     LineRenderer laser;
 
     void Start()
     {
         laser.positionCount = 3;
+        laser.endWidth = laserWidth;
+        laser.startWidth = laserWidth;
     }
 
     // Update is called once per frame

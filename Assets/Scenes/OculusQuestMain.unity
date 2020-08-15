@@ -456,8 +456,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6f64df8bf7c48d438e929a5374948b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reticlePointer: {fileID: 0}
-  LMPointer: {fileID: 0}
+  reticlePointer: {fileID: 1751980851}
+  LMPointer: {fileID: 1751980851}
   children: {fileID: 896806757}
 --- !u!23 &23243649
 MeshRenderer:
@@ -3639,7 +3639,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 962234101}
-  - component: {fileID: 962234103}
+  - component: {fileID: 962234102}
   m_Layer: 0
   m_Name: PointerRig
   m_TagString: Untagged
@@ -3662,7 +3662,7 @@ Transform:
   m_Father: {fileID: 1841606695}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!120 &962234103
+--- !u!120 &962234102
 LineRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3710,21 +3710,21 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.11387846
-        value: 0.103023216
-        inSlope: 0
-        outSlope: 0
+        time: 0
+        value: 0.10302321
+        inSlope: -0.31040573
+        outSlope: -0.31040573
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.33333334
+        outWeight: 0.1967218
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0, b: 0, a: 1}
-      key1: {r: 1, g: 0, b: 0, a: 0}
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 0.12941177}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -5424,13 +5424,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnHandReset:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 962234100}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   OnHandFinish:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1042628819}
         m_MethodName: OnPinchEnded
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 962234100}
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -8083,7 +8105,7 @@ MonoBehaviour:
   cameraTransform: {fileID: 963194228}
   shoulderOffset: {x: 0.15, y: -0.3, z: -0.25}
   damping: 100
-  laser: {fileID: 962234103}
+  laser: {fileID: 0}
 --- !u!1 &1784976539
 GameObject:
   m_ObjectHideFlags: 0
