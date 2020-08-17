@@ -43,14 +43,17 @@ public class PinchDetectorDelay : MonoBehaviour
         if (PinchHand == HandMode.right)
         {
             rightPinchDetector.enabled = true;
+            if (pointerRig != null && rightPinchDetector.gameObject.activeInHierarchy)
+                pointerRig.SetActive(true);
         }
         else
         {
             leftPinchDetector.enabled = true;
+            if (pointerRig != null && leftPinchDetector.gameObject.activeInHierarchy)
+                pointerRig.SetActive(true);
         }
 
-        if (pointerRig != null)
-            pointerRig.SetActive(true);
+        
     }
 
     public void DisablePinchForSeconds(float seconds)
@@ -58,14 +61,16 @@ public class PinchDetectorDelay : MonoBehaviour
         if (PinchHand == HandMode.right)
         {
             rightPinchDetector.enabled = false;
+            if (pointerRig != null && rightPinchDetector.gameObject.activeInHierarchy)
+                pointerRig.SetActive(false);
         }
         else
         {
             leftPinchDetector.enabled = false;
+            if (pointerRig != null && leftPinchDetector.gameObject.activeInHierarchy)
+                pointerRig.SetActive(false);
         }
-
-        if (pointerRig != null)
-            pointerRig.SetActive(false);
+        
 
         StartCoroutine(ExecuteAfterTime(seconds));
     }

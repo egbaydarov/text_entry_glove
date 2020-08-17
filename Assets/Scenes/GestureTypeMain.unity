@@ -8208,6 +8208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftPinchDetector: {fileID: 2563648472449443606}
   rightPinchDetector: {fileID: 2562552827742448366}
+  pointerRig: {fileID: 0}
   PinchHand: 1
   delay: 3
 --- !u!1 &1964721768
@@ -9064,18 +9065,7 @@ MonoBehaviour:
       m_Calls: []
   OnHandFinish:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1042628819}
-        m_MethodName: OnPinchEnded
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1001 &5342979748955060791
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -35,7 +35,6 @@ public class ReticlePointer : GvrBasePointer
     private GameObject canvas;
     TrailRender trRander;
 
-    public Vector3 ReticleWorldPosition { get;private set; }
 
 Server server;
     public bool isGestureValid { get; set; }
@@ -130,7 +129,6 @@ Server server;
     /// <inheritdoc/>
     public override void OnPointerHover(RaycastResult raycastResult, bool isInteractive)
     {
-        ReticleWorldPosition = raycastResult.worldPosition;
         SetPointerTarget(raycastResult.worldPosition, isInteractive);
 
         if (!raycastResult.gameObject.tag.Equals("Key") || !isGestureValid)

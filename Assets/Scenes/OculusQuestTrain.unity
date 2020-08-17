@@ -972,7 +972,7 @@ MonoBehaviour:
   shoulderOffset: {x: 0.15, y: -0.3, z: -0.25}
   damping: 100
   laserWidth: 0.06
-  laser: {fileID: 698360892}
+  laser: {fileID: 0}
 --- !u!114 &244715517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1043,23 +1043,14 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.17750806
-        value: 0.15316682
+        time: 0.14904279
+        value: 0.31150728
         inSlope: 0
         outSlope: 0
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.9928767
-        value: 0.041667685
-        inSlope: 0.06272669
-        outSlope: 0.06272669
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.48882264
-        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4

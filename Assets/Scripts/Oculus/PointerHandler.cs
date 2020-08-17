@@ -26,14 +26,10 @@ public class PointerHandler : MonoBehaviour
     [SerializeField]
     float laserWidth = 0.06f;
 
-    [SerializeField]
-    LineRenderer laser;
 
     void Start()
     {
-        laser.positionCount = 3;
-        laser.endWidth = laserWidth;
-        laser.startWidth = laserWidth;
+        
     }
 
     // Update is called once per frame
@@ -48,9 +44,6 @@ public class PointerHandler : MonoBehaviour
         Vector3 delta = target.position - transform.position;
         Quaternion rotation = Quaternion.LookRotation(delta);
 
-        laser.SetPosition(0, transform.position);
-        laser.SetPosition(1, target.position);
-        laser.SetPosition(2, GetComponent<ReticlePointer>().ReticleWorldPosition);
 
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * damping);
 
