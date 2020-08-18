@@ -36,7 +36,7 @@ public class ReticlePointer : GvrBasePointer
     TrailRender trRander;
 
 
-Server server;
+    Server server;
     public bool isGestureValid { get; set; }
     public bool isInputEnd { get; set; } = false;
 
@@ -163,8 +163,8 @@ Server server;
             //server.move_time.Stop();
             //if (!EntryProcessing.full_time.IsRunning)
             //    EntryProcessing.full_time.Start();
-            
-           // MeasuringMetrics.StartGesture();
+
+            // MeasuringMetrics.StartGesture();
         }
         isGestureValid = enterRaycastObj.tag.Equals("Key");
 
@@ -190,7 +190,7 @@ Server server;
     {
         string data = "";
 
-        foreach(var tp in trRander.trailPoints)
+        foreach (var tp in trRander.trailPoints)
         {
             float x = trLocal.InverseTransformPoint(tp.transform.position).x;
             float y = trLocal.InverseTransformPoint(tp.transform.position).y;
@@ -203,14 +203,14 @@ Server server;
         {
             //server.gest_time.Stop();
             //server.move_time.Start();
-            
+
             //MeasuringMetrics.EndGesture();
         }
 
-        if(server.IsConnected && isGestureValid && !isInputEnd)
+        if (server.IsConnected && isGestureValid && !isInputEnd)
             server.SendToClient(data + "\r\n");
-        
-        if(isGestureValid && !isInputEnd)
+
+        if (isGestureValid && !isInputEnd)
             MeasuringMetrics.EndGesture();
 
         isGestureValid = false;
