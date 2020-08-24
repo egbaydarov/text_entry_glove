@@ -18,7 +18,7 @@ public class MoveDirectPointer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector3.Lerp(transform.position, (wrist.position + palm.position) / 2, smoothing * Time.deltaTime);
-        transform.rotation = Quaternion.Lerp(transform.rotation, palm.rotation * Quaternion.Euler(offset), Time.deltaTime * rotationSmoothing);
+        transform.position = wrist.position;
+        transform.rotation = Quaternion.Lerp(transform.rotation, palm.rotation, Time.deltaTime * rotationSmoothing);
     }
 }

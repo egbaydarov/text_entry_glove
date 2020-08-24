@@ -26,10 +26,15 @@ public class PointerHandler : MonoBehaviour
     [SerializeField]
     float laserWidth = 0.06f;
 
+    [SerializeField]
+    float cameraCoeff = 0.06f;
+
+    [SerializeField]
+    bool MRTKMode = false;
 
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -44,6 +49,8 @@ public class PointerHandler : MonoBehaviour
         Vector3 delta = target.position - transform.position;
         Quaternion rotation = Quaternion.LookRotation(delta);
 
+        if (MRTKMode)
+            rotation = Quaternion.RotateTowards(cameraTransform.rotation, Quaternion.LookRotation(delta), Quaternion.Angle(cameraTransform.rotation, Quaternion.LookRotation(delta)) * cameraCoeff);
 
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * damping);
 

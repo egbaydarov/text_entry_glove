@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028432, g: 0.22571476, b: 0.30692232, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028477, g: 0.22571531, b: 0.30692357, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -601,7 +601,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sentenceField: {fileID: 1667760146}
   confirmButton: {fileID: 1906086803}
+  menuButton: {fileID: 0}
   TMP_if: {fileID: 0}
+  sentenceNumber: {fileID: 0}
+  intext: {fileID: 0}
+  OnSentenceEnd:
+    m_PersistentCalls:
+      m_Calls: []
   OnTrainEnd:
     m_PersistentCalls:
       m_Calls:
@@ -616,6 +622,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnMenuClicked:
+    m_PersistentCalls:
+      m_Calls: []
   SENTENCE_COUNT: 8
 --- !u!114 &234016102
 MonoBehaviour:
@@ -2194,7 +2203,6 @@ MonoBehaviour:
   small: {fileID: 21300000, guid: 4cd9da8df2dee804eafc20ed9f35e378, type: 3}
   capital: {fileID: 21300000, guid: c6fd34c71bbe74c42ab0aa61564c2512, type: 3}
   constCapital: {fileID: 21300000, guid: 94f9980476a098e46a84fe6888b903f9, type: 3}
-  i: 1
 --- !u!114 &530826118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2207,7 +2215,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5429f934b888f4775bedaa5d6f648fbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intext: {fileID: 0}
+  TextField: {fileID: 0}
+  prediction0: {fileID: 0}
+  prediction1: {fileID: 0}
+  prediction2: {fileID: 0}
 --- !u!114 &530826119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2220,6 +2231,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c882c1b411ff4469b37bdd34c609d9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unity_keyboard_x: 1080
+  unity_keyboard_y: 660
+  unity_screen_y: 2214
+  keyboard_x: 0
+  keyboard_y: 0
+  screen_y: 0
+  coef_x: 0
+  coef_y: 0
+  isSizeSet: 0
+  IsConnected: 0
 --- !u!114 &530826120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3733,6 +3754,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bcd03e00992e084c8be61565d44b8bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnHandReset:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHandFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1005986876
 GameObject:
   m_ObjectHideFlags: 0
@@ -6702,6 +6729,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bcd03e00992e084c8be61565d44b8bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnHandReset:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHandFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1626475461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7837,7 +7870,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1953305069
 Transform:
   m_ObjectHideFlags: 0
@@ -7914,12 +7947,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1953305068}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1957575373 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4481817357345236, guid: 80001c6c93c5068488198a82e151e3ff,
-    type: 3}
-  m_PrefabInstance: {fileID: 731556667}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2002890449
 GameObject:
   m_ObjectHideFlags: 0
@@ -9091,6 +9118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a7fe97f073039643a944fbc3b6c80d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trailPoints: []
   LINE_WIDTH: 0.01
   Drawing_Surface: {x: 0, y: 0, z: -0.01}
 --- !u!120 &5298084049720475959
@@ -9291,7 +9319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wrist: {fileID: 731556669}
-  palm: {fileID: 1957575373}
-  smoothing: 10
-  rotationSmoothing: 4
+  palm: {fileID: 896107544}
+  smoothing: 1000
+  rotationSmoothing: 1000
   offset: {x: 50, y: 20, z: 0}
