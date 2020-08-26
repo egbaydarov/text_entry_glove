@@ -27,14 +27,31 @@ public class PointerHandler : MonoBehaviour
     float laserWidth = 0.06f;
 
     [SerializeField]
-    float cameraCoeff = 0.06f;
+    float fingerYOffset = 0.06f;
 
     [SerializeField]
     bool MRTKMode = false;
 
     void Start()
     {
+        if (MRTKMode && PlayerPrefs.GetString("PointEye") != null && PlayerPrefs.GetString("PointEye").Equals("Right"))
+        {
+            Settings.isRightEye = true;
+            shoulderOffset.x = -Mathf.Abs(shoulderOffset.x);
 
+
+        }
+        else
+            shoulderOffset.x = Mathf.Abs(shoulderOffset.x);
+
+        if (FindObjectOfType<PinchDetectorDelay>().PinchHand == PinchDetectorDelay.HandMode.right)
+        {
+            target = targetRight;
+        }
+        else
+        {
+            target = targetLeft;
+        }
     }
 
     // Update is called once per frame
@@ -46,11 +63,17 @@ public class PointerHandler : MonoBehaviour
 
     void lookAt()
     {
+        var targetPos = target.position;
+        targetPos.y += fingerYOffset;
+
         Vector3 delta = target.position - transform.position;
+        if(MRTKMode)
+            delta = targetPos - transform.position;
+
         Quaternion rotation = Quaternion.LookRotation(delta);
 
-        if (MRTKMode)
-            rotation = Quaternion.RotateTowards(cameraTransform.rotation, Quaternion.LookRotation(delta), Quaternion.Angle(cameraTransform.rotation, Quaternion.LookRotation(delta)) * cameraCoeff);
+        //if (MRTKMode)
+        //    rotation = Quaternion.RotateTowards(cameraTransform.rotation, Quaternion.LookRotation(delta), Quaternion.Angle(cameraTransform.rotation, Quaternion.LookRotation(delta)) * cameraCoeff);
 
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * damping);
 
@@ -58,8 +81,7 @@ public class PointerHandler : MonoBehaviour
 
     private void Awake()
     {
-
-        if (FindObjectOfType<PinchDetectorDelay>().PinchHand == PinchDetectorDelay.HandMode.right)
+        if (!MRTKMode && FindObjectOfType<PinchDetectorDelay>().PinchHand == PinchDetectorDelay.HandMode.right)
         {
             target = targetRight;
             shoulderOffset.x = Mathf.Abs(shoulderOffset.x);
@@ -70,7 +92,5 @@ public class PointerHandler : MonoBehaviour
             shoulderOffset.x = -Mathf.Abs(shoulderOffset.x);
         }
     }
-
-
 
 }

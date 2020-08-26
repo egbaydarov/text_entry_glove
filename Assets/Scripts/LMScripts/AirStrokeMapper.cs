@@ -66,8 +66,8 @@ namespace LeapMotionGesture
                 enabled = false;
                 return;
             }
-
-            if (FindObjectOfType<PinchDetectorDelay>().PinchHand == PinchDetectorDelay.HandMode.right)
+            var pdd = FindObjectOfType<PinchDetectorDelay>();
+            if (pdd != null && pdd.PinchHand == PinchDetectorDelay.HandMode.right)
                 followee = followeeRight;
             else
                 followee = followeeLeft;

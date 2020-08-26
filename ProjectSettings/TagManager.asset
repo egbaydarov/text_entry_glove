@@ -11,6 +11,8 @@ TagManager:
   - Key
   - Server
   - Prediction
+  - MiddleFinger
+  - ThumbFinger
   layers:
   - Default
   - TransparentFX

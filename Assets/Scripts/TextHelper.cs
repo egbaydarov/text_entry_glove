@@ -32,6 +32,7 @@ public class TextHelper : MonoBehaviour
     {
         GameObject objs = GameObject.FindGameObjectWithTag("Server");
         server = objs.GetComponent<Server>();
+        //server = new Server();
         prediction0.resizeTextForBestFit = true;
         prediction1.resizeTextForBestFit = true;
         prediction2.resizeTextForBestFit = true;

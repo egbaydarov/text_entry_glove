@@ -53,6 +53,9 @@ public class SceneManagment : MonoBehaviour
             case Scenes.OculusQuest:
                 SceneManager.LoadSceneAsync("OculusQuestTrain");
                 break;
+            case Scenes.PointMethod:
+                SceneManager.LoadSceneAsync("PointMethodTrain");
+                break;
         }
 
     }
@@ -81,6 +84,10 @@ public class SceneManagment : MonoBehaviour
                 SceneManager.LoadSceneAsync("OculusQuestMain");
                 method_id = "OculusQuest";
                 break;
+            case Scenes.PointMethod:
+                SceneManager.LoadSceneAsync("PointMethodMain");
+                method_id = "PontMethod";
+                break;
         }
     }
 
@@ -103,6 +110,10 @@ public class SceneManagment : MonoBehaviour
                 SceneManager.LoadSceneAsync("OculusQuestMain");
                 method_id = "OculusQuest";
                 break;
+            case Scenes.PointMethod:
+                SceneManager.LoadSceneAsync("PointMethodMain");
+                method_id = "PontMethod";
+                break;
         }
     }
 
@@ -124,6 +135,7 @@ public class SceneManagment : MonoBehaviour
     {
         GestureType,
         OurMethod,
-        OculusQuest
+        OculusQuest,
+        PointMethod
     }
 }

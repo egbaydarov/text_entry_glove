@@ -9,10 +9,10 @@ using UnityEngine;
 public class PinchDetectorDelay : MonoBehaviour
 {
     [SerializeField]
-    PinchDetector leftPinchDetector;
+    MonoBehaviour leftPinchDetector;
 
     [SerializeField]
-    PinchDetector rightPinchDetector;
+    MonoBehaviour rightPinchDetector;
 
     [SerializeField]
     GameObject pointerRig;
@@ -28,7 +28,7 @@ public class PinchDetectorDelay : MonoBehaviour
 
     private void Start()
     {
-        if(rightPinchDetector == null || leftPinchDetector == null)
+        if (rightPinchDetector == null || leftPinchDetector == null)
         {
             Debug.LogError("Empty instance of Hand Models GO.");
             enabled = false;
@@ -57,7 +57,7 @@ public class PinchDetectorDelay : MonoBehaviour
                 pointerRig.GetComponent<MeshRenderer>().enabled = true;
         }
 
-        
+
     }
 
     public void DisablePinchForSeconds(float seconds)
@@ -81,10 +81,11 @@ public class PinchDetectorDelay : MonoBehaviour
     public void SetReticleMeshEnabled(bool value)
     {
         //В случае ожтдания трех екунд при запуске сцены и после нажатия на клавишу ввод завершен
-        if (value && InWaiting) 
+        if (value && InWaiting)
             return;
 
-        pointerRig.GetComponent<MeshRenderer>().enabled = value;
+        if (pointerRig != null)
+            pointerRig.GetComponent<MeshRenderer>().enabled = value;
     }
 
     public enum HandMode
