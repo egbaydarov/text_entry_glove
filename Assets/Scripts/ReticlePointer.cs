@@ -35,7 +35,7 @@ public class ReticlePointer : GvrBasePointer
     private GameObject canvas;
     TrailRender trRander;
 
-
+    int hoverCounter = 0;
     Server server;
     public bool isGestureValid { get; set; }
     public bool isInputEnd { get; set; } = false;
@@ -141,6 +141,16 @@ public class ReticlePointer : GvrBasePointer
             trailPoint.transform.SetParent(canvas.transform);
 
             trRander.AddPoint(trailPoint);
+
+            float x = trLocal.InverseTransformPoint(trailPoint.transform.position).x;
+            float y = trLocal.InverseTransformPoint(trailPoint.transform.position).y;
+            x = (float)(x * server.coef_x + server.keyboard_x / 2.0);
+            y = (float)(-y * server.coef_y + server.screen_y - (server.keyboard_y / 2.0));
+
+            if (trRander.trailPoints.Count == 1 && server.IsConnected && isGestureValid && !isInputEnd)
+                server.SendToClient($"d;{(int)(x)};{(int)(y)};\r\n");
+            else if (++hoverCounter % 5 == 0 && server.IsConnected && isGestureValid && !isInputEnd)
+                server.SendToClient($"{(int)(x)};{(int)(y)};\r\n");
         }
     }
 
@@ -208,7 +218,9 @@ public class ReticlePointer : GvrBasePointer
         }
 
         if (server.IsConnected && isGestureValid && !isInputEnd)
-            server.SendToClient(data + "\r\n");
+            server.SendToClient($"u;\r\n");
+        //server.SendToClient(data + "\r\n");
+        hoverCounter = 0;
 
         if (isGestureValid && !isInputEnd)
             MeasuringMetrics.EndGesture();
