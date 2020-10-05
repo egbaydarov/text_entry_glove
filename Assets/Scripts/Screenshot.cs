@@ -1,20 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
+using Graphics = System.Drawing.Graphics;
 
 public class Screenshot : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
+
+    public static byte[] makeScreenshot(Point upperLeftSource, Point upperLeftDestination, Size screenSize)
+    {
+        Bitmap keyboardBitmap;
+
+        using (keyboardBitmap = new Bitmap(screenSize.Width, screenSize.Height))
+        {
+            using (Graphics g = Graphics.FromImage(keyboardBitmap))
+            {
+                g.CopyFromScreen(upperLeftSource, upperLeftDestination, screenSize);
+            }
+            ImageConverter converter = new ImageConverter();
+
+            return (byte[])converter.ConvertTo(keyboardBitmap, typeof(byte[]));
+        }
+    }
+
 
     public static Sprite makeSprite(byte[] bytes)
     {

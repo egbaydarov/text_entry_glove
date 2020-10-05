@@ -131,17 +131,19 @@ public class TextHelper : MonoBehaviour
 
     void UpdateTextFieldAndPredictionsButtons(string data)
     {
-        predictions = data.Split(';');
+        TextField.text = data;
 
-        for (int i = 0; i < predictions.Length; ++i)
-            predictions[i] = predictions[i].Trim();
+        //predictions = data.Split(';');
 
-        if (predictions.Length != 3)
-        {
-            Debug.Log("Not text data. Skipping ...");
-        }
-        else
-            shouldUpdate = true;
+        //for (int i = 0; i < predictions.Length; ++i)
+        //    predictions[i] = predictions[i].Trim();
+
+        //if (predictions.Length != 3)
+        //{
+        //    Debug.Log("Not text data. Skipping ...");
+        //}
+        //else
+        //    shouldUpdate = true;
     }
 
     public void ClearPredictions()

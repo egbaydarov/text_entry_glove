@@ -149,7 +149,7 @@ public class ReticlePointer : GvrBasePointer
 
             if (trRander.trailPoints.Count == 1 && server.IsConnected && isGestureValid && !isInputEnd)
                 server.SendToClient($"d;{(int)(x)};{(int)(y)};\r\n");
-            else if (++hoverCounter % 5 == 0 && server.IsConnected && isGestureValid && !isInputEnd)
+            else if (++hoverCounter % 1 == 0 && server.IsConnected && isGestureValid && !isInputEnd)
                 server.SendToClient($"{(int)(x)};{(int)(y)};\r\n");
         }
     }

@@ -19,6 +19,7 @@ using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 using UnityEngine.SceneManagement;
 using System.Diagnostics.Eventing.Reader;
+using System.Runtime.CompilerServices;
 
 public class ServerEvent<T> : UnityEvent<T>
 {
@@ -32,7 +33,7 @@ public class Server : MonoBehaviour
     private Socket Client = null;
 
     string data = "";
-
+    public static Server instance;
     int BROADCAST_PORT = 9876;
     int DATA_PORT = 1488;
 
@@ -288,5 +289,7 @@ public class Server : MonoBehaviour
         }
 
         DontDestroyOnLoad(this.gameObject);
+        instance = this.gameObject.GetComponent<Server>();
     }
+
 }
