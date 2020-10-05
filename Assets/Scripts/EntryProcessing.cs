@@ -156,8 +156,8 @@ public class EntryProcessing : MonoBehaviour
                 
                 OnSentenceInputEnd.Invoke();
                 Debug.Log("On Sentence End");
-               // ResetTime();
-                
+                // ResetTime();
+                server.SendToClient("clear\r\n");
                 ++currentSentence;
                 MeasuringMetrics.SavePrefs();
                 

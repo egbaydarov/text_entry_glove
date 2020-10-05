@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
-using Graphics = System.Drawing.Graphics;
 
 public class Screenshot : MonoBehaviour
 {
@@ -24,7 +23,7 @@ public class Screenshot : MonoBehaviour
 
         using (keyboardBitmap = new Bitmap(screenSize.Width, screenSize.Height))
         {
-            using (Graphics g = Graphics.FromImage(keyboardBitmap))
+            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(keyboardBitmap))
             {
                 g.CopyFromScreen(upperLeftSource, upperLeftDestination, screenSize);
             }

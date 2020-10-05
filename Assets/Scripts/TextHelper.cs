@@ -17,11 +17,12 @@ public class TextHelper : MonoBehaviour
     [SerializeField] private Text prediction1;
     [SerializeField] private Text prediction2;
 
+    volatile bool ShouldUpdate = false;
+
     string[] predictions = { "", "", "" };
     int current;
 
     Server server;
-    volatile bool shouldUpdate;
 
     public static bool isGestureStarted=false;
 
@@ -32,7 +33,7 @@ public class TextHelper : MonoBehaviour
     {
         GameObject objs = GameObject.FindGameObjectWithTag("Server");
         server = objs.GetComponent<Server>();
-        //server = new Server();
+
         prediction0.resizeTextForBestFit = true;
         prediction1.resizeTextForBestFit = true;
         prediction2.resizeTextForBestFit = true;
@@ -57,43 +58,12 @@ public class TextHelper : MonoBehaviour
 
     void Update()
     {
-        if (shouldUpdate)
+        if (ShouldUpdate)
         {
-            if (TextField.text == "")
-            {
-                for (int i = 0; i < predictions.Length; ++i)
-                    if (predictions[i].Length > 0)
-                        predictions[i] = predictions[i].Capitalize();
-
-                TextField.text = predictions[1];
-            }
-            else
-                TextField.text += $" {predictions[1]}";
-
-            prediction0.text = predictions[0];
-            prediction1.text = predictions[1];
-            prediction2.text = predictions[2];
-
-            shouldUpdate = false;
-            current = 1;
-        }
-        text = TextField.text;
-        
-        
-        if (isGestureStarted)
-        {
-            CleanPredictions();
-            isGestureStarted = false;
+            TextField.text = text;
+            ShouldUpdate = false;
         }
 
-        if (prediction0.text == "" && prediction1.text == "" && prediction2.text == "")
-        {
-            isAllNull = true;
-        }
-        else
-        {
-            isAllNull = false;
-        }
     }
 
     public void ChangeOnPrediction0()
@@ -116,7 +86,7 @@ public class TextHelper : MonoBehaviour
 
         current = 1;
         }
-}
+    }
 
     public void ChangeOnPrediction2()
     {
@@ -131,19 +101,10 @@ public class TextHelper : MonoBehaviour
 
     void UpdateTextFieldAndPredictionsButtons(string data)
     {
-        TextField.text = data;
-
-        //predictions = data.Split(';');
-
-        //for (int i = 0; i < predictions.Length; ++i)
-        //    predictions[i] = predictions[i].Trim();
-
-        //if (predictions.Length != 3)
-        //{
-        //    Debug.Log("Not text data. Skipping ...");
-        //}
-        //else
-        //    shouldUpdate = true;
+        string[] data1 = data.Split('#');
+        string clientMessage = data1.Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
+        text = clientMessage.Trim();
+        ShouldUpdate = true;
     }
 
     public void ClearPredictions()

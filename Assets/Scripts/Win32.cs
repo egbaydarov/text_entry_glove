@@ -25,22 +25,16 @@ public class Win32 : MonoBehaviour
     public static void SendUp()
     {
         mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, new System.IntPtr());
-        new Thread(() =>
-       {
-           SocketSwypeHelper.instance.SendToClient("PIPIPUPUCHECK");
-       }).Start();
     }
 
     public static void MoveCursor(int x, int y)
     {
         SetCursorPos(x, y);
-        //Thread.Sleep(10);
     }
 
     public static void SendDown()
     {
         mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, new System.IntPtr());
-        //Thread.Sleep(20);
     }
 
     /// <summary>

@@ -238,17 +238,21 @@ public class Server : MonoBehaviour
 
     public void SendToClient(string message)
     {
-        try
+        new Thread(() =>
         {
-            Client.Send(Encoding.ASCII.GetBytes(message));
-           // Debug.Log($"Sent: {message}");
+            try
+            {
+                Client.Send(Encoding.ASCII.GetBytes(message));
+                Debug.Log($"Sent: {message}");
 
-        }
-        catch (SocketException socketException)
-        {
-            //Debug.Log("SendToClient: " + socketException);
-        }
+            }
+            catch (SocketException socketException)
+            {
+                Debug.Log("SendToClient: " + socketException);
+            }
+        }).Start();
     }
+
 
     private void NetworkSetup()
     {
