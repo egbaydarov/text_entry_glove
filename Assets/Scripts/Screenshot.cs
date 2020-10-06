@@ -1,45 +1,90 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using UnityEngine;
 
 public class Screenshot : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField]
+    Vector2 upperLeftSource = new Vector2(0, 0);
+
+    [SerializeField]
+    Vector2 screenSize = new Vector2(1920, 1080);
+
+    [SerializeField]
+    Vector2 upperLeftDestination = new Vector2(0, 0);
+
+    [SerializeField]
+    UnityEngine.UI.Image img;
+    byte[] bytes;
+
+
+    volatile bool isWaiting = false;
+
+    volatile bool updateTexture = false;
+
+    Texture2D tex;
+
     void Start()
     {
-
+        tex = new Texture2D((int)screenSize.x, (int)screenSize.y);
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (!isWaiting)
+            StartCoroutine(updateImage(0.03f));
+        if (updateTexture)
+        {
+            tex.LoadImage(bytes);
+            img.sprite = Sprite.Create(tex, new Rect(0, 0, 454, 280), new Vector2(0, 0));
+            updateTexture = false;
+        }
     }
 
-    public static byte[] makeScreenshot(Point upperLeftSource, Point upperLeftDestination, Size screenSize)
+    IEnumerator updateImage(float delaySec)
     {
-        Bitmap keyboardBitmap;
+        isWaiting = true;
 
-        using (keyboardBitmap = new Bitmap(screenSize.Width, screenSize.Height))
+        yield return new WaitForSeconds(delaySec);
+        new Thread(() =>
+       {
+           makeScreenshot(
+               new Point((int)upperLeftSource.x, (int)upperLeftSource.y),
+               new Point((int)upperLeftDestination.x, (int)upperLeftDestination.y),
+               new Size((int)screenSize.x, (int)screenSize.y));
+
+           isWaiting = false;
+       }).Start();
+    }
+
+    public void makeScreenshot(Point upperLeftSource, Point upperLeftDestination, Size screenSize)
+    {
+        System.Drawing.Bitmap keyboardBitmap;
+        using (keyboardBitmap = new Bitmap(454, 280))
         {
             using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(keyboardBitmap))
             {
                 g.CopyFromScreen(upperLeftSource, upperLeftDestination, screenSize);
             }
             ImageConverter converter = new ImageConverter();
-
-            return (byte[])converter.ConvertTo(keyboardBitmap, typeof(byte[]));
+            bytes = (byte[])converter.ConvertTo(keyboardBitmap, typeof(byte[]));
+            updateTexture = true;
         }
     }
 
-
-    public static Sprite makeSprite(byte[] bytes)
+    public void updateImageSynchronisly()
     {
-        Sprite sprite = null; //TODO мб
-        //Texture2D tex = new Texture2D(Server.keyboard_x,Server.keyboard_y);
-        //tex.LoadImage(bytes);
-        //sprite = Sprite.Create(tex, new Rect(0,0,tex.width,tex.height), new Vector2(0,0));
-        return sprite;
+        makeScreenshot(
+               new Point((int)upperLeftSource.x, (int)upperLeftSource.y),
+               new Point((int)upperLeftDestination.x, (int)upperLeftDestination.y),
+               new Size((int)screenSize.x, (int)screenSize.y));
+
+        tex.LoadImage(bytes);
+        img.sprite = Sprite.Create(tex, new Rect(0, 0, 454, 280), new Vector2(0, 0));
+        updateTexture = false;
     }
+
 }

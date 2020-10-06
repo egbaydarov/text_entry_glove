@@ -140,7 +140,7 @@ public class EntryProcessing : MonoBehaviour
         // Если нажата кнопка "Ввод завершен" (мб поменять на завершить ввод)
         if (obj != null && obj.name.Equals("NextSentence"))
         {
-            Shift.ToCapital();
+            //Shift.ToCapital();
 
            // full_time.Stop();
             //server.gest_time.Stop();
@@ -204,7 +204,7 @@ public class EntryProcessing : MonoBehaviour
             //First PointerDown after OnNextSentence
             if (!menuButton.activeSelf)
             {
-                Shift.ToSmall();
+                //Shift.ToSmall();
                 //Server.mytext = "";
                 intext.text = "";
 

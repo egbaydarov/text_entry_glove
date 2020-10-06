@@ -56,8 +56,6 @@ public class PinchDetectorDelay : MonoBehaviour
             if (pointerRig != null && leftPinchDetector.gameObject.activeInHierarchy)
                 pointerRig.GetComponent<MeshRenderer>().enabled = true;
         }
-
-
     }
 
     public void DisablePinchForSeconds(float seconds)

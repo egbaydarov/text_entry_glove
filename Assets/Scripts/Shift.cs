@@ -30,48 +30,48 @@ public class Shift : MonoBehaviour
 
     public static void ToCapital()
     {
-        im.sprite = sCapital;
-        i = 1;
+        //im.sprite = sCapital;
+        //i = 1;
 
-        im.GraphicUpdateComplete();
+        //im.GraphicUpdateComplete();
     }
 
     public static void ToSmall()
     {
-        im.sprite = sSmall;
-        i = 0;
+        //im.sprite = sSmall;
+        //i = 0;
     }
 
     public void Swap()
     {
-        if (i == 0)
-        {
-            im.sprite = capital;
-            i++;
-            return;
-        }
+        //if (i == 0)
+        //{
+        //    im.sprite = capital;
+        //    i++;
+        //    return;
+        //}
 
-        if (i == 1)
-        {
-            im.sprite = constCapital;
-            i++;
-            return;
-        }
+        //if (i == 1)
+        //{
+        //    im.sprite = constCapital;
+        //    i++;
+        //    return;
+        //}
 
-        if (i == 2)
-        {
-            im.sprite = small;
-            i = 0;
-            return;
-        }
+        //if (i == 2)
+        //{
+        //    im.sprite = small;
+        //    i = 0;
+        //    return;
+        //}
     }
 
     public static void SizeReset()
     {
-        if (i == 1)
-        {
-            im.sprite = sSmall;
-            i = 0;
-        }
+        //if (i == 1)
+        //{
+        //    im.sprite = sSmall;
+        //    i = 0;
+        //}
     }
 }

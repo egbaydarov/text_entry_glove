@@ -271,7 +271,7 @@ public class TrainTextEntryProcessing : MonoBehaviour
     {
         if (obj != null && obj.name.Equals("NextSentence"))
         {
-            Shift.ToCapital();
+            //Shift.ToCapital();
             if (currentSentence + 1 < SENTENCE_COUNT)
             {
                 OnSentenceEnd.Invoke();
@@ -292,7 +292,7 @@ public class TrainTextEntryProcessing : MonoBehaviour
         {
             if (isFirstTap)
             {
-                Shift.ToSmall();
+                //Shift.ToSmall();
                 server.SendToClient("clear\r\n");
                 isFirstTap = false;
                 intext.text = "";
