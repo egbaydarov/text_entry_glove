@@ -13,6 +13,7 @@ namespace ViveSR.anipal.Eye
         {
             Renderer = GetComponent<Renderer>();
             Focus(Vector3.zero);
+            Debug.Log("transform "+transform.position);
         }
 
         public void Focus(Vector3 focusPoint)
@@ -20,6 +21,7 @@ namespace ViveSR.anipal.Eye
             float maxDist = 0.42f * transform.localScale.x;
             float sectionLength = maxDist / BendCount;
             float dist = Vector3.Distance(focusPoint, transform.position);
+            //Debug.Log("Dist "+ focusPoint.x + "; "+ focusPoint.y+"; "+ focusPoint.z+"; ");
             uint bendIndex = (uint)(dist / sectionLength);
 
             Vector3 axis = (focusPoint - transform.position) / Vector3.Distance(focusPoint, transform.position);
@@ -39,14 +41,14 @@ namespace ViveSR.anipal.Eye
             Renderer.material.SetFloat("_FrameWidth", FrameWidth);
         }
 
-        public float SignedAngle(Vector3 v1, Vector3 v2, Vector3 v_forward)
-        {
-            float dotP = Vector3.Dot(v1, v2);
-            float unsignedAngle = Mathf.Acos(dotP) * (180 / 3.14159f);
+            public float SignedAngle(Vector3 v1, Vector3 v2, Vector3 v_forward)
+            {
+                float dotP = Vector3.Dot(v1, v2);
+                float unsignedAngle = Mathf.Acos(dotP) * (180 / 3.14159f);
 
-            float sign = Vector3.Dot(v_forward, Vector3.Cross(v1, v2));
-            float signedAngle = unsignedAngle * (sign > 0f ? 1f : -1f) + 180f;
-            return signedAngle;
-        }
+                float sign = Vector3.Dot(v_forward, Vector3.Cross(v1, v2));
+                float signedAngle = unsignedAngle * (sign > 0f ? 1f : -1f) + 180f;
+                return signedAngle;
+            }
     }
 }

@@ -204,8 +204,8 @@ public class ReticlePointer : GvrBasePointer
         {
             float x = trLocal.InverseTransformPoint(tp.transform.position).x;
             float y = trLocal.InverseTransformPoint(tp.transform.position).y;
-            x = (float)(x * server.coef_x + server.keyboard_x / 2.0);
-            y = (float)(-y * server.coef_y + server.screen_y - (server.keyboard_y / 2.0));
+//            x = (float)(x * server.coef_x + server.keyboard_x / 2.0);
+    //        y = (float)(-y * server.coef_y + server.screen_y - (server.keyboard_y / 2.0));
             data += $"{x};{y};";
         }
 
@@ -217,8 +217,8 @@ public class ReticlePointer : GvrBasePointer
             //MeasuringMetrics.EndGesture();
         }
 
-        if (server.IsConnected && isGestureValid && !isInputEnd)
-            server.SendToClient($"u;\r\n");
+       // if (server.IsConnected && isGestureValid && !isInputEnd)  //
+           // server.SendToClient($"u;\r\n");                       //
         //server.SendToClient(data + "\r\n");
         hoverCounter = 0;
 
