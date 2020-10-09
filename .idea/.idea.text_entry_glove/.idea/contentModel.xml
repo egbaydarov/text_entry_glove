@@ -264,6 +264,7 @@
             </e>
           </e>
         </e>
+        <e p="Keyboard.cs" t="Include" />
         <e p="Plugins" t="Include">
           <e p="LeapMotion" t="Include">
             <e p="Core" t="Include">
@@ -776,6 +777,8 @@
             </e>
           </e>
         </e>
+        <e p="PointerDirection.cs" t="Include" />
+        <e p="PrintKey.cs" t="Include" />
         <e p="Scripts" t="Include">
           <e p="BallsColission.cs" t="Include" />
           <e p="DoubleClick.cs" t="Include" />
@@ -1161,6 +1164,7 @@
             <e p="Eye" t="Include">
               <e p="Sample" t="Include">
                 <e p="DartBoard.cs" t="Include" />
+                <e p="EyeFocusKeyboard.cs" t="Include" />
                 <e p="SRanipal_AvatarEyeSample.cs" t="Include" />
                 <e p="SRanipal_AvatarEyeSample_v2.cs" t="Include" />
                 <e p="SRanipal_EyeFocusSample.cs" t="Include" />
