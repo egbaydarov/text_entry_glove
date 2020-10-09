@@ -1083,7 +1083,7 @@ GameObject:
   - component: {fileID: 261486489}
   m_Layer: 5
   m_Name: Button0
-  m_TagString: Prediction
+  m_TagString: Key
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5694,7 +5694,7 @@ GameObject:
   - component: {fileID: 1396502400}
   m_Layer: 5
   m_Name: Button1
-  m_TagString: Prediction
+  m_TagString: Key
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7139,7 +7139,7 @@ GameObject:
   - component: {fileID: 1556990669}
   m_Layer: 5
   m_Name: Prediction1
-  m_TagString: Prediction
+  m_TagString: Key
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7775,7 +7775,7 @@ GameObject:
   - component: {fileID: 1713909646}
   m_Layer: 5
   m_Name: Prediction0
-  m_TagString: Prediction
+  m_TagString: Key
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8368,7 +8368,7 @@ GameObject:
   - component: {fileID: 1794193177}
   m_Layer: 5
   m_Name: Prediction2
-  m_TagString: Prediction
+  m_TagString: Key
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8761,7 +8761,7 @@ GameObject:
   - component: {fileID: 1977122868}
   m_Layer: 5
   m_Name: predictionBar
-  m_TagString: Prediction
+  m_TagString: Key
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9116,7 +9116,7 @@ GameObject:
   - component: {fileID: 2133844065}
   m_Layer: 5
   m_Name: Button2
-  m_TagString: Prediction
+  m_TagString: Key
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

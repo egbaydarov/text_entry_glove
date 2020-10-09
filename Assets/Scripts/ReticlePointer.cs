@@ -176,7 +176,7 @@ public class ReticlePointer : GvrBasePointer
 
             // MeasuringMetrics.StartGesture();
         }
-        isGestureValid = enterRaycastObj.tag.Equals("Key");
+        isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction");
 
         if (isGestureValid)
         {
