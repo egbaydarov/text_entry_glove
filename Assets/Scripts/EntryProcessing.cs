@@ -205,7 +205,7 @@ public class EntryProcessing : MonoBehaviour
             if (!menuButton.activeSelf)
             {
                 //Shift.ToSmall();
-                //Server.mytext = "";
+                server.SendToClient("clear\r\n");
                 intext.text = "";
 
                 isFirstTap = false;
@@ -251,7 +251,6 @@ public class EntryProcessing : MonoBehaviour
     {
         if (obj != null && obj.name.Equals("ToMenu"))
         {
-            server.SendToClient("clear\r\n");
             OnMenuClicked.Invoke();
         }
     }

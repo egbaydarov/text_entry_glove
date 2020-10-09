@@ -101,9 +101,10 @@ public class TextHelper : MonoBehaviour
 
     void UpdateTextFieldAndPredictionsButtons(string data)
     {
+        data = data.Trim('\r', '\n');
         string[] data1 = data.Split('#');
         string clientMessage = data1.Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
-        text = clientMessage.Trim();
+        text = clientMessage.Trim('\r', '\n');
         ShouldUpdate = true;
     }
 
