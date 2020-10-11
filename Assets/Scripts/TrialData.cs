@@ -23,7 +23,7 @@ public class TrialData
     
 
     // Instructions were taken from here: https://youtu.be/z9b5aRfrz7M
-    private static readonly string _formURI = "https://docs.google.com/forms/u/0/d/e/1FAIpQLScWlRx70e3SICI3YnnIJSOVPJ3jGoORoAdh-NvsTnuTtVpqkw/formResponse";
+    private static readonly string _formURI = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSddGyMD2Db2wYOQC-Ix-lbYeeWJfT4t-gxE5TUgs9sYhSo5Sg/formResponse";
 
     public static string GetFormURI()
     {
@@ -32,32 +32,33 @@ public class TrialData
 
     public Dictionary<string, string> GetFormFields()
     {
-        if (TextHelper.text.Length > 0)
+        if (TextHelper.text != null && TextHelper.text.Length > 0)
         {
             if (TextHelper.text[TextHelper.text.Length - 1] == ' ')
                 TextHelper.text = TextHelper.text.Remove(TextHelper.text.Length - 1);
         }
         Dictionary<string, string> form = new Dictionary<string, string>();
         
-        form.Add("entry.952386413", Settings.id.ToString()); // Идентификатор испытуемого
-        form.Add("entry.2024755906", SceneManagment.method_id); // Идентификатор техники взаимодействия
-        form.Add("entry.1905100173", (block_num+1).ToString()); // Номер блока предложений
-        form.Add("entry.2130707738", (sent_num+1).ToString()); // Номер попытки
-        form.Add("entry.1405245047", sent_text); // Эталонное предложение
-        form.Add("entry.229951240", resp_text); // Введенное испытуемым предложение
-        form.Add("entry.1830134686", resp_text.Length.ToString()); // Длина введенного испытуемым предложения
-        form.Add("entry.1264763496", all_time.ToString().Replace(".",",")); // Время ввода предложения
-        form.Add("entry.452347986", move_time.ToString().Replace(".",",")); // Суммарное время перемещения курсора
-        form.Add("entry.945161006", gest_time.ToString().Replace(".",",")); // Суммарное время вычерчивания росчерка
-        form.Add("entry.2055613067", choose_time.ToString().Replace(".",",")); // Суммарное время выбора слов из списка подсказок
-        form.Add("entry.824354990", fix_choose_time.ToString().Replace(".",",")); // Скорректированное ремя выбора слов
-        form.Add("entry.254841772", wait_time.ToString().Replace(".",",")); //Время ожидания подсказок
-        form.Add("entry.1730946643", LevenshteinDistance(sent_text, resp_text).ToString()); // Количество неисправленных опечаток  
-        form.Add("entry.1907294220", Math.Round(((float) resp_text.Length) * 12.0 / all_time, 2).ToString().Replace(".",",")); // Скорость набора текста
-        
-        
-        
-        
+        form.Add("entry.507185938", Settings.id.ToString()); // Идентификатор испытуемого
+        form.Add("entry.582005842", SceneManagment.method_id); // Идентификатор техники взаимодействия
+        form.Add("entry.347604535", (block_num+1).ToString()); // Номер блока предложений
+        form.Add("entry.1580984151", (sent_num+1).ToString()); // Номер попытки
+        form.Add("entry.832183268", sent_text); // Эталонное предложение
+        form.Add("entry.1828483782", resp_text); // Введенное испытуемым предложение
+        form.Add("entry.41396143", "11"); // Длина эталонного предложения
+        form.Add("entry.2004966619", resp_text.Length.ToString()); // Длина введенного испытуемым предложения
+        form.Add("entry.202448380", "22"); // сколько раз выбрали подсказку
+        form.Add("entry.887164200", "33"); // количество удаленных символов
+        form.Add("entry.931566926", "44"); // кол-во нажатий backspace
+        form.Add("entry.1363907106", "55"); // кол-во исправленных опечаток
+        form.Add("entry.1922697097", all_time.ToString().Replace(".",",")); // Время ввода предложения
+        form.Add("entry.1279543598", "66"); // Общее время поиска первого символа
+        form.Add("entry.938770484", "77"); // Общее время ввода росчерка/слова
+        form.Add("entry.1875291993", "88"); // Общее время проверки и коррекции
+        form.Add("entry.647338142", "99"); // Общее время удаления слова 
+        form.Add("entry.1673523306", Math.Round(((float) resp_text.Length) * 12.0 / all_time, 2).ToString().Replace(".",",")); // Скорость набора текста
+        form.Add("entry.1347030375", "1010"); // Примечание
+                
         return form;
     }
     

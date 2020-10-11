@@ -1937,6 +1937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b111e8e23fa65654da95b18b8f223021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sentences: {fileID: 4900000, guid: 21ce2bba1bd27c64893878020668442e, type: 3}
   sentenceField: {fileID: 1054363868}
   confirmButton: {fileID: 281008239}
   menuButton: {fileID: 586749331}

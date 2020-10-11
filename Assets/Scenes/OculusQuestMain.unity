@@ -5002,6 +5002,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  sentences: {fileID: 4900000, guid: cc2edd29f68030b468a31515b1b431b4, type: 3}
   disablePinch:
     m_PersistentCalls:
       m_Calls: []

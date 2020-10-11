@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,6 +13,8 @@ using Debug = UnityEngine.Debug;
 public class EntryProcessing : MonoBehaviour
 {
     public static List<string> words;
+
+    static System.Random rnd = new System.Random();
 
     public Text tm;
     public Text blockNumber;
@@ -36,73 +39,15 @@ public class EntryProcessing : MonoBehaviour
     public UnityEvent OnMenuClicked;
 
 
+    [SerializeField]
+    TextAsset sentences;
+
+    int[] SentenceOrder;
+
     Server server;
 
     #region sentences
-    string[] data = {"Раньше ненависти также не испытывала",
-"Формат марки желательно заранее оговорить",
-"Постепенно у нас сложились свои направления",
-"В алтарь они заходить не собирались",
-"Хотя и больных в камерах предостаточно",
-"То есть это будет тоже международная компания",
-"Избирательно проводится исследование текста песни",
-"Переводили точно и добросовестно",
-"Позднее список пополнился живой рыбой",
-"Губернатор смотрел в сторону и молчал",
-"Их оборудование не напрямую зависит от станций",
-"Я была готова идти на любую зарплату",
-"Про мобильные телефоны мне не интересно",
-"Прежде всего это касается следующего",
-"Вскоре размеры гробницы были увеличены",
-"Устройства могут появиться на рынке осенью",
-"Такой запрещенный прием меня просто бесит",
-"А социальной ответственности мы пока не хотим",
-"Этот разрыв несколько увеличился с начала августа",
-"Художественный замысел и его исполнение",
-"К вечеру он немного успокоился и высказал желание уснуть",
-"Они нам теперь нужны как никогда",
-"Вот так мы восстановили мир в семье",
-"Потом материалы будут постепенно добавляться",
-"Часов в десять вечера был доктор",
-"Позиции бывают хорошие и плохие",
-"Занятия философией повели его дальше",
-"И зимой бы цветы бы расцветали",
-"У девушек были распределены функции",
-"Существуют отрицательно влияющие на все вокруг символы",
-"С балкона моего видно немного эту самую деревню",
-"И попросить о содействии в этом деле",
-"Используется при значительном различии по странам",
-"Их часто объединяют в одну группу",
-"Это исследование и является предметом моей работы",
-"Так что в нынешнем тупике виноваты обе стороны",
-"Он валит здесь уже второй день",
-"Но только один сумел развить свой талант",
-"На них тона и фактура отсутствуют",
-"Такую возможность можно использовать раз за игру",
-"Редко ходят в гости и редко приглашают к себе",
-"Документ будет подписан на высшем уровне",
-"Это не будет решением проблемы",
-"Ты знаешь больше и умеешь лучше",
-"При другой системе обучения этого можно было бы избежать",
-"Это снова была любовь с первого взгляда",
-"Мы их предлагаем сделать в качестве основных",
-"Такую возможность можно использовать раз за игру",
-"С балкона моего видно немного эту самую деревню",
-"Это уже третье отдельное понятие",
-"Собрания и общественные мероприятия запрещены",
-"Медицинские учреждения страны переполнены пациентами",
-"Однако местные власти им об этом напомнили",
-"Тем не менее проверки продолжаются",
-"И это уже дает видимые результаты",
-"Такая база встречается чаще всего",
-"Система требует больших расходов",
-"В первые четыре минуты надо завязать контакт",
-"С некоторым опозданием он появился",
-"С чем он справился вполне достойно",
-"И не только с технической стороны",
-"Вы не заслужили такого президента",
-"Русские воспринимают синий цвет не так как американцы",
-"Атмосфера была достаточно спокойной"};
+    string[] data;
     #endregion sentences
 
 
@@ -121,6 +66,28 @@ public class EntryProcessing : MonoBehaviour
 
     void Start()
     {
+        if (sentences == null)
+        {
+            enabled = false;
+            Debug.LogError("sentences txt file should be assigned in inspector");
+            return;
+        }
+
+
+        data = sentences.text.Split('\n');
+
+        SentenceOrder = new int[data.Length];
+
+        for (int i = 0; i < data.Length; ++i)
+            SentenceOrder[i] = i;
+
+        SentenceOrder = SentenceOrder.OrderBy(x => rnd.Next()).ToArray();
+
+        for (int i = 0; i < data.Length; ++i)
+        {
+            PlayerPrefs.SetInt($"SentenceOrder{i}", SentenceOrder[i]);
+        }
+
         words = new List<string>(data);
     }
 
@@ -130,7 +97,7 @@ public class EntryProcessing : MonoBehaviour
         tm.text = words[SENTENCE_COUNT * currentBlock + currentSentence];
         blockNumber.text = $"Блок\n{currentBlock + 1}\\{BLOCKS_COUNT}";
         senNumber.text = $"Предложение\n{currentSentence + 1}\\{SENTENCE_COUNT}";
-        currentSentenceText = words[SENTENCE_COUNT * currentBlock + currentSentence];
+        currentSentenceText = words[SentenceOrder[SENTENCE_COUNT * currentBlock + currentSentence]];
     }
 
     public void OnNextClicked(GameObject obj, PointerEventData pointerData)
@@ -216,7 +183,7 @@ public class EntryProcessing : MonoBehaviour
         }
         else if (obj != null && obj.tag.Equals("Prediction")  && !isFirstTap && !menuButton.activeSelf) 
         {
-            MeasuringMetrics.ChoosePredictions();
+            MeasuringMetrics.ChoosePredictions(); //TODO change smth это блок щас не исполняется
             switch (obj.name)
             {
                 case "Prediction0":
