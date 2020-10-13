@@ -824,7 +824,6 @@
           <e p="Shift.cs" t="Include" />
           <e p="SkipEvents.cs" t="Include" />
           <e p="SocketSwypeHelper.cs" t="Include" />
-          <e p="SoundOnCharacterRemoving.cs" t="Include" />
           <e p="SoundOnHighlight.cs" t="Include" />
           <e p="TextHelper.cs" t="Include" />
           <e p="TorsoReferencedContent.cs" t="Include" />
