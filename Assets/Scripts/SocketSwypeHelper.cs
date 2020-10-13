@@ -64,7 +64,7 @@ public class SocketSwypeHelper : MonoBehaviour
 
     void Start()
     {
-        SocketSwypeHelper prog = new SocketSwypeHelper();
+        SocketSwypeHelper prog = this;
         instance = prog;
         prog.NetworkSetup();
         prog.isProcessing = true;

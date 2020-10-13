@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f007d8982d2f140abaf3a79447db70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentScene: 2
+  currentScene: 1
 --- !u!4 &438944048 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4057968051431532, guid: dae2e2be31c98324eac460f702db97e9,
@@ -743,6 +743,18 @@ PrefabInstance:
       propertyPath: _manager
       value: 
       objectReference: {fileID: 1012758010}
+    - target: {fileID: 2044284348809940, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2044284348809940, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2044284348809940, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.922
+      objectReference: {fileID: 0}
     - target: {fileID: 2044284624789732, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
       propertyPath: _manager
       value: 
@@ -787,6 +799,14 @@ PrefabInstance:
       propertyPath: OnMiddleBigBallEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 438944046}
+    - target: {fileID: 2044285865576863, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.118
+      objectReference: {fileID: 0}
+    - target: {fileID: 2044285865576863, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
     - target: {fileID: 2044286022831886, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

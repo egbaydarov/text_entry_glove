@@ -28,15 +28,17 @@ public class EntryProcessing : MonoBehaviour
     GameObject go;
     static Shift shift;
     static private Image im;
-    
+
     public static bool isPressed;
     [SerializeField] private InputField intext;
-    
+
 
     public UnityEvent OnSentenceInputEnd;
     public UnityEvent OnBlockInputEnd;
     public UnityEvent OnInputEnd;
     public UnityEvent OnMenuClicked;
+    public UnityEvent OnPredictionClicked;
+    public UnityEvent OnBackspaceClicked;
 
 
     [SerializeField]
@@ -60,7 +62,7 @@ public class EntryProcessing : MonoBehaviour
     public UnityEvent disablePinch;
 
     public static Stopwatch full_time = new Stopwatch();
-    
+
 
     bool isFirstTap = true;
 
@@ -73,20 +75,12 @@ public class EntryProcessing : MonoBehaviour
             return;
         }
 
-
         data = sentences.text.Split('\n');
 
         SentenceOrder = new int[data.Length];
 
         for (int i = 0; i < data.Length; ++i)
             SentenceOrder[i] = i;
-
-        SentenceOrder = SentenceOrder.OrderBy(x => rnd.Next()).ToArray();
-
-        for (int i = 0; i < data.Length; ++i)
-        {
-            PlayerPrefs.SetInt($"SentenceOrder{i}", SentenceOrder[i]);
-        }
 
         words = new List<string>(data);
     }
@@ -103,16 +97,10 @@ public class EntryProcessing : MonoBehaviour
     public void OnNextClicked(GameObject obj, PointerEventData pointerData)
     {
         //UnityEngine.Debug.Log(obj == null ? "null" : $"{obj.name} : {obj.tag}");
-        
+
         // Если нажата кнопка "Ввод завершен" (мб поменять на завершить ввод)
         if (obj != null && obj.name.Equals("NextSentence"))
         {
-            //Shift.ToCapital();
-
-           // full_time.Stop();
-            //server.gest_time.Stop();
-            
-            
             isPressed = true;
             confirmButton.SetActive(false);
             sentenceField.SetActive(true);
@@ -120,25 +108,25 @@ public class EntryProcessing : MonoBehaviour
             // Если в блоке еще есть предложения
             if (currentSentence + 1 < SENTENCE_COUNT)
             {
-                
+
                 OnSentenceInputEnd.Invoke();
                 Debug.Log("On Sentence End");
                 // ResetTime();
                 server.SendToClient("clear\r\n");
                 ++currentSentence;
                 MeasuringMetrics.SavePrefs();
-                
-                               
-                
+
+
+
             }
             // Если в блоке больше нет предложений (это последнее предложение блока)
             else if (currentBlock + 1 < BLOCKS_COUNT)
             {
-                
+
                 OnBlockInputEnd.Invoke();
                 Debug.Log("On Block End");
                 //ResetTime();
-                
+
                 currentSentence = 0;
                 ++currentBlock;
                 MeasuringMetrics.SavePrefs();
@@ -147,7 +135,7 @@ public class EntryProcessing : MonoBehaviour
                 confirmButton.SetActive(false);
                 disablePinch.Invoke();
                 StartCoroutine(Wait());
-               // menuButton.SetActive(true);
+                // menuButton.SetActive(true);
             }
             // если ввод полностью закончен
             else
@@ -158,14 +146,11 @@ public class EntryProcessing : MonoBehaviour
                 ResetTime();
                 disablePinch.Invoke();
                 StartCoroutine(Wait());
-               // menuButton.SetActive(true);
+                // menuButton.SetActive(true);
             }
-            
             isFirstTap = true;
-
-            //
         }
-        // если нажатие на клавиатуру
+        // если первое нажатие на клавиатуру
         else if (isFirstTap && obj != null && obj.tag.Equals("Key"))
         {
             //First PointerDown after OnNextSentence
@@ -173,7 +158,7 @@ public class EntryProcessing : MonoBehaviour
             {
                 //Shift.ToSmall();
                 server.SendToClient("clear\r\n");
-                intext.text = "";
+                //intext.text = "";
 
                 isFirstTap = false;
 
@@ -181,32 +166,19 @@ public class EntryProcessing : MonoBehaviour
                 confirmButton.SetActive(true);
             }
         }
-        else if (obj != null && obj.tag.Equals("Prediction")  && !isFirstTap && !menuButton.activeSelf) 
+        else if (obj != null && obj.tag.Equals("Prediction") && !isFirstTap && !menuButton.activeSelf)
         {
-            MeasuringMetrics.ChoosePredictions(); //TODO change smth это блок щас не исполняется
-            switch (obj.name)
-            {
-                case "Prediction0":
-                    th.ChangeOnPrediction0();
-                    break;
-                case "Prediction1":
-                    th.ChangeOnPrediction1();
-                    break;
-                case "Prediction2":
-                    th.ChangeOnPrediction2();
-                    break;
-                default:
-                    break;
-            }
+            OnPredictionClicked.Invoke();
         }
-        
+        else if (obj != null && obj.tag.Equals("Backspace") && !isFirstTap && !menuButton.activeSelf)
+        {
+            OnBackspaceClicked.Invoke();
+        }
+
     }
-    
+
     public void ResetTime()
     {
-        //server.gest_time.Reset();
-        //server.move_time.Reset();
-        //full_time.Reset();
     }
 
     private void Awake()

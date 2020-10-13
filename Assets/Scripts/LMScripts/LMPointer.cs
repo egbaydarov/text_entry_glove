@@ -16,6 +16,9 @@ public class LMPointer : GvrBasePointer
     public bool isGestureValid { get; set; }
     public bool isInputEnd { get; set; } = false;
 
+    int hoverCounter = 0;
+
+
     Server server;
     GameObject enterRaycastObj;
     private Transform trLocal;
@@ -116,7 +119,8 @@ public class LMPointer : GvrBasePointer
         SetPointerTarget(raycastResult.worldPosition, isInteractive);
         LastPointerHoveredResult = raycastResult;
 
-        if (!raycastResult.gameObject.tag.Equals("Key") || !isGestureValid)
+        if ((!raycastResult.gameObject.tag.Equals("Key") && !raycastResult.gameObject.tag.Equals("Prediction"))
+            || !isGestureValid)
             return;
 
 
@@ -127,6 +131,16 @@ public class LMPointer : GvrBasePointer
             trailPoint.transform.SetParent(canvas.transform);
 
             trRander.AddPoint(trailPoint);
+
+            float x = trLocal.InverseTransformPoint(trailPoint.transform.position).x;
+            float y = trLocal.InverseTransformPoint(trailPoint.transform.position).y;
+            x = (float)(x * server.coef_x + server.keyboard_x / 2.0);
+            y = (float)(-y * server.coef_y + server.screen_y - (server.keyboard_y / 2.0));
+
+            if (trRander.trailPoints.Count == 1 && server.IsConnected && isGestureValid && !isInputEnd)
+                server.SendToClient($"d;{(int)(x)};{(int)(y)};\r\n");
+            else if (++hoverCounter % 1 == 0 && server.IsConnected && isGestureValid && !isInputEnd)
+                server.SendToClient($"{(int)(x)};{(int)(y)};\r\n");
         }
 
     }
@@ -155,7 +169,7 @@ public class LMPointer : GvrBasePointer
             //if (!EntryProcessing.full_time.IsRunning)
               //  EntryProcessing.full_time.Start();
         }
-        isGestureValid = enterRaycastObj.tag.Equals("Key");
+        isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction");
         if (isGestureValid)
         {
             MeasuringMetrics.StartGesture();
@@ -165,11 +179,11 @@ public class LMPointer : GvrBasePointer
         Vector3 local = FakePointer.transform.parent.InverseTransformPoint(LastPointerHoveredResult.worldPosition);
         FakePointer.transform.localPosition = new Vector3(local.x, local.y, 0);
 
-        float x_min = -1080 / 2 + 10;
-        float x_max = -1080 / 2 + 10 + (1080 - 120) / 11;
-        float y_min = -660 / 2 + (float)(0.835 * 660 - 45) / 4 + 20;
-        float y_max = -660 / 2 + (float)(0.835 * 660 - 45) / 2 + 20;
-        Debug.Log(x_min + " " + x_max + " " + " " + y_min + y_max);
+        //float x_min = -1080 / 2 + 10;
+        //float x_max = -1080 / 2 + 10 + (1080 - 120) / 11;
+        //float y_min = -660 / 2 + (float)(0.835 * 660 - 45) / 4 + 20;
+        //float y_max = -660 / 2 + (float)(0.835 * 660 - 45) / 2 + 20;
+        //Debug.Log(x_min + " " + x_max + " " + " " + y_min + y_max);
         //if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min) && enterRaycastObj.tag.Equals("Key"))
         //{
         //    Shift.SizeReset();
@@ -190,18 +204,13 @@ public class LMPointer : GvrBasePointer
             data += $"{x};{y};";
         }
 
-        if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
-        {
-            //server.gest_time.Stop();
-            //server.move_time.Start();
-            
-           // MeasuringMetrics.EndGesture();
-        }
-
         if(isGestureValid && !isInputEnd)
             MeasuringMetrics.EndGesture();
+
         if (server.IsConnected && isGestureValid && !isInputEnd)
-            server.SendToClient(data + "\r\n");
+            server.SendToClient($"u;\r\n");
+        //server.SendToClient(data + "\r\n");
+        hoverCounter = 0;
 
         isGestureValid = false;
 
