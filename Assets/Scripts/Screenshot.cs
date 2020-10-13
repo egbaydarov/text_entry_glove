@@ -1,4 +1,4 @@
-﻿/*using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
@@ -39,7 +39,7 @@ public class Screenshot : MonoBehaviour
         if (updateTexture)
         {
             tex.LoadImage(bytes);
-            img.sprite = Sprite.Create(tex, new Rect(0, 0, 454, 280), new Vector2(0, 0));
+            img.sprite = Sprite.Create(tex, new Rect(0, 0, 515, 360), new Vector2(0, 0));
             updateTexture = false;
         }
     }
@@ -63,7 +63,7 @@ public class Screenshot : MonoBehaviour
     public void makeScreenshot(Point upperLeftSource, Point upperLeftDestination, Size screenSize)
     {
         System.Drawing.Bitmap keyboardBitmap;
-        using (keyboardBitmap = new Bitmap(454, 280))
+        using (keyboardBitmap = new Bitmap(515, 360)) // 454 280
         {
             using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(keyboardBitmap))
             {
@@ -83,9 +83,8 @@ public class Screenshot : MonoBehaviour
                new Size((int)screenSize.x, (int)screenSize.y));
 
         tex.LoadImage(bytes);
-        img.sprite = Sprite.Create(tex, new Rect(0, 0, 454, 280), new Vector2(0, 0));
+        img.sprite = Sprite.Create(tex, new Rect(0, 0, 515, 360), new Vector2(0, 0));
         updateTexture = false;
     }
 
 }
-*/

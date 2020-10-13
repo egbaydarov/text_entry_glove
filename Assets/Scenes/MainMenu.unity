@@ -633,14 +633,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsConnected: 0
   offset_x: 0
-  offset_y: 50
+  offset_y: 0
   scale_coef: 0.1
   height: 1920
   width: 1080
   cur_x: 0
   cur_y: 0
   VYSOR_HEIGHT: 970
-  VYSOR_WIDTH: 448
+  VYSOR_WIDTH: 515
 --- !u!1 &2026995027
 GameObject:
   m_ObjectHideFlags: 0
