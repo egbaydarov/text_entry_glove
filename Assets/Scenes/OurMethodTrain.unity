@@ -1825,6 +1825,7 @@ GameObject:
   - component: {fileID: 537619329}
   - component: {fileID: 537619328}
   - component: {fileID: 537619327}
+  - component: {fileID: 537619331}
   m_Layer: 5
   m_Name: keyboard
   m_TagString: Key
@@ -1921,6 +1922,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 537619325}
   m_CullTransparentMesh: 0
+--- !u!114 &537619331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537619325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af9c5accb5141854896dbe6469348982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upperLeftSource: {x: 0, y: 752}
+  screenSize: {x: 454, y: 280}
+  upperLeftDestination: {x: 0, y: 0}
+  img: {fileID: 537619329}
 --- !u!4 &564966381 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7474950737991005225, guid: 56d7649a53fd0ef4f92fbf39e23bd0b3,
@@ -2679,6 +2696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b111e8e23fa65654da95b18b8f223021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sentences: {fileID: 4900000, guid: 21ce2bba1bd27c64893878020668442e, type: 3}
   sentenceField: {fileID: 1102577287}
   confirmButton: {fileID: 1979956552}
   menuButton: {fileID: 773208063}

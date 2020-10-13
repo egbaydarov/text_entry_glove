@@ -2402,6 +2402,7 @@ GameObject:
   - component: {fileID: 623323682}
   - component: {fileID: 623323681}
   - component: {fileID: 623323680}
+  - component: {fileID: 623323684}
   m_Layer: 5
   m_Name: keyboard
   m_TagString: Key
@@ -2498,6 +2499,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 623323678}
   m_CullTransparentMesh: 0
+--- !u!114 &623323684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623323678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af9c5accb5141854896dbe6469348982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upperLeftSource: {x: 0, y: 752}
+  screenSize: {x: 454, y: 280}
+  upperLeftDestination: {x: 0, y: 0}
+  img: {fileID: 623323682}
 --- !u!1 &641337992
 GameObject:
   m_ObjectHideFlags: 0
@@ -2979,6 +2996,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  sentences: {fileID: 4900000, guid: cc2edd29f68030b468a31515b1b431b4, type: 3}
   disablePinch:
     m_PersistentCalls:
       m_Calls:

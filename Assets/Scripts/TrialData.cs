@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -17,11 +18,6 @@ public class TrialData
     public float wait_time;
     public string resp_text = "";
     
-    
-    
-    
-    
-
     // Instructions were taken from here: https://youtu.be/z9b5aRfrz7M
     private static readonly string _formURI = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSddGyMD2Db2wYOQC-Ix-lbYeeWJfT4t-gxE5TUgs9sYhSo5Sg/formResponse";
 
@@ -45,8 +41,8 @@ public class TrialData
         form.Add("entry.1580984151", (sent_num+1).ToString()); // Номер попытки
         form.Add("entry.832183268", sent_text); // Эталонное предложение
         form.Add("entry.1828483782", resp_text); // Введенное испытуемым предложение
-        form.Add("entry.41396143", "11"); // Длина эталонного предложения
-        form.Add("entry.2004966619", resp_text.Length.ToString()); // Длина введенного испытуемым предложения
+        form.Add("entry.41396143", $"{sent_text.Length}:{sent_text.Count((x) => x == ' ') + 1}"); // Длина эталонного предложения
+        form.Add("entry.2004966619", $"{resp_text.Length}:{sent_text.Count((x) => x == ' ') + 1}"); // Длина введенного испытуемым предложения
         form.Add("entry.202448380", "22"); // сколько раз выбрали подсказку
         form.Add("entry.887164200", "33"); // количество удаленных символов
         form.Add("entry.931566926", "44"); // кол-во нажатий backspace
@@ -57,7 +53,7 @@ public class TrialData
         form.Add("entry.1875291993", "88"); // Общее время проверки и коррекции
         form.Add("entry.647338142", "99"); // Общее время удаления слова 
         form.Add("entry.1673523306", Math.Round(((float) resp_text.Length) * 12.0 / all_time, 2).ToString().Replace(".",",")); // Скорость набора текста
-        form.Add("entry.1347030375", "1010"); // Примечание
+        form.Add("entry.1347030375", ""); // Примечание
                 
         return form;
     }

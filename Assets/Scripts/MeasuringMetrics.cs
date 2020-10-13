@@ -12,7 +12,7 @@ public class MeasuringMetrics : MonoBehaviour
 {
 
     [SerializeField] private string FORM_URL =
-        "https://docs.google.com/forms/u/0/d/e/1FAIpQLScWlRx70e3SICI3YnnIJSOVPJ3jGoORoAdh-NvsTnuTtVpqkw/formResponse";
+        "https://docs.google.com/forms/u/0/d/e/1FAIpQLSddGyMD2Db2wYOQC-Ix-lbYeeWJfT4t-gxE5TUgs9sYhSo5Sg/formResponse";
     
     private int block_num;
     private int sent_num;

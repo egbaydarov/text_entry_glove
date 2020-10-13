@@ -12,13 +12,12 @@ public class ReturnToDefaultPlace : MonoBehaviour
 
     void Update()
     {
-        if (transform.position.y < -5)
+        if (transform.position.y < -5 || transform.position.y > 3)
         {
             transform.localPosition = defaultPos;
             transform.localRotation = Quaternion.identity;
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-
         }
     }
 
