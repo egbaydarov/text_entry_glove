@@ -39,8 +39,16 @@ public class Screenshot : MonoBehaviour
         if (updateTexture)
         {
             tex.LoadImage(bytes);
-            img.sprite = Sprite.Create(tex, new Rect(0, 0, 500, 355), new Vector2(0, 0));
-            updateTexture = false;
+            try
+            {
+                img.sprite = Sprite.Create(tex, new Rect(0, 0, 610, 480),
+                    new Vector2(0, 0));
+                updateTexture = false;
+            }
+            catch
+            {
+                Debug.Log($"Wrong SIZE. {screenSize.x}:{screenSize.y}");
+            }
         }
     }
 
@@ -63,7 +71,7 @@ public class Screenshot : MonoBehaviour
     public void makeScreenshot(Point upperLeftSource, Point upperLeftDestination, Size screenSize)
     {
         System.Drawing.Bitmap keyboardBitmap;
-        using (keyboardBitmap = new Bitmap(515, 360)) // 454 280
+        using (keyboardBitmap = new Bitmap(780, 480)) // 454 280
         {
             using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(keyboardBitmap))
             {

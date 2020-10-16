@@ -2429,8 +2429,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1080, y: 660}
+  m_AnchoredPosition: {x: 0, y: -38}
+  m_SizeDelta: {x: 1080, y: 729}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &623323680
 MonoBehaviour:
@@ -2511,8 +2511,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af9c5accb5141854896dbe6469348982, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upperLeftSource: {x: 0, y: 710}
-  screenSize: {x: 500, y: 315}
+  upperLeftSource: {x: 0, y: 600}
+  screenSize: {x: 608, y: 405}
   upperLeftDestination: {x: 0, y: 0}
   img: {fileID: 623323682}
 --- !u!1 &641337992
@@ -5919,6 +5919,7 @@ GameObject:
   - component: {fileID: 1436990162}
   - component: {fileID: 1436990161}
   - component: {fileID: 1436990160}
+  - component: {fileID: 1436990163}
   m_Layer: 5
   m_Name: InputField
   m_TagString: Untagged
@@ -6002,7 +6003,18 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1436990163}
+        m_MethodName: OnValueChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
@@ -6046,6 +6058,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1436990158}
   m_CullTransparentMesh: 0
+--- !u!114 &1436990163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436990158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2ac3cd8838151b4892e2701705b2876, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audio: {fileID: 1922753977}
+  soundToPlay: {fileID: 8300000, guid: 62465974172f35043b94530a597b4fdd, type: 3}
 --- !u!1 &1443840239
 GameObject:
   m_ObjectHideFlags: 0
