@@ -74,7 +74,7 @@ public class EntryProcessing : MonoBehaviour
             Debug.LogError("sentences txt file should be assigned in inspector");
             return;
         }
-
+        
         data = sentences.text.Split('\n');
 
         SentenceOrder = new int[data.Length];
@@ -82,13 +82,32 @@ public class EntryProcessing : MonoBehaviour
         for (int i = 0; i < data.Length; ++i)
             SentenceOrder[i] = i;
 
+        if (PlayerPrefs.HasKey("SentenceOrder0"))
+        {
+            Debug.Log("Load sentences from saved");
+            for (int i = 0; i < data.Length; ++i)
+            {
+                SentenceOrder[i] = PlayerPrefs.GetInt($"SentenceOrder{i}");
+            }
+        }
+        else
+        {
+            Debug.Log("Create new sentences order");
+            SentenceOrder = SentenceOrder.OrderBy(x => rnd.Next()).ToArray();
+            for (int i = 0; i < data.Length; ++i)
+            {
+                PlayerPrefs.SetInt($"SentenceOrder{i}", SentenceOrder[i]);
+            }
+            PlayerPrefs.Save();
+        }
+        
         words = new List<string>(data);
     }
 
     // Update is called once per frame
     void Update()
     {
-        tm.text = words[SENTENCE_COUNT * currentBlock + currentSentence];
+        tm.text =  words[SentenceOrder[SENTENCE_COUNT * currentBlock + currentSentence]];
         blockNumber.text = $"Блок\n{currentBlock + 1}\\{BLOCKS_COUNT}";
         senNumber.text = $"Предложение\n{currentSentence + 1}\\{SENTENCE_COUNT}";
         currentSentenceText = words[SentenceOrder[SENTENCE_COUNT * currentBlock + currentSentence]];
@@ -97,14 +116,13 @@ public class EntryProcessing : MonoBehaviour
     public void OnNextClicked(GameObject obj, PointerEventData pointerData)
     {
         //UnityEngine.Debug.Log(obj == null ? "null" : $"{obj.name} : {obj.tag}");
-
         // Если нажата кнопка "Ввод завершен" (мб поменять на завершить ввод)
         if (obj != null && obj.name.Equals("NextSentence"))
         {
             isPressed = true;
             confirmButton.SetActive(false);
             sentenceField.SetActive(true);
-
+            
             // Если в блоке еще есть предложения
             if (currentSentence + 1 < SENTENCE_COUNT)
             {
@@ -115,9 +133,6 @@ public class EntryProcessing : MonoBehaviour
                 server.SendToClient("clear\r\n");
                 ++currentSentence;
                 MeasuringMetrics.SavePrefs();
-
-
-
             }
             // Если в блоке больше нет предложений (это последнее предложение блока)
             else if (currentBlock + 1 < BLOCKS_COUNT)
@@ -146,6 +161,8 @@ public class EntryProcessing : MonoBehaviour
                 ResetTime();
                 disablePinch.Invoke();
                 StartCoroutine(Wait());
+                
+                
                 // menuButton.SetActive(true);
             }
             isFirstTap = true;

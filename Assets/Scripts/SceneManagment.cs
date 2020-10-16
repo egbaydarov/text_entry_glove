@@ -70,6 +70,15 @@ public class SceneManagment : MonoBehaviour
         
         EntryProcessing.currentBlock = 0;
         EntryProcessing.currentSentence = 0;
+        
+        for (int i = 0; i < 64; ++i) //TODO сделать красиво
+        {
+            PlayerPrefs.DeleteKey($"SentenceOrder{i}");
+        }
+        PlayerPrefs.Save();
+        Debug.Log("Delete saved sentences order");
+
+        
         switch (currentScene)
         {
             case Scenes.OurMethod:

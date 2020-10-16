@@ -1,4 +1,4 @@
-﻿/*using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
@@ -39,7 +39,7 @@ public class Screenshot : MonoBehaviour
         if (updateTexture)
         {
             tex.LoadImage(bytes);
-            img.sprite = Sprite.Create(tex, new Rect(0, 0, 515, 360), new Vector2(0, 0));
+            img.sprite = Sprite.Create(tex, new Rect(0, 0, 500, 355), new Vector2(0, 0));
             updateTexture = false;
         }
     }
@@ -88,4 +88,3 @@ public class Screenshot : MonoBehaviour
     }
 
 }
-*/

@@ -36,6 +36,7 @@ public class MeasuringMetrics : MonoBehaviour
     public static float all_move_time = 0;
     public static float all_choose_time = 0;
     public static float all_fix_choose_time = 0;
+    public static int predictions_clicks = 0;
 
     private static bool wasChosen = false;
 
@@ -135,9 +136,8 @@ public class MeasuringMetrics : MonoBehaviour
         //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
         wait_time.Stop();
         //Debug.Log("wait time stop");
-        
         //Debug.Log("fix choose time restart");
-        
+
         receive_time.Restart();
         Debug.Log("Receive time restart");
         
@@ -206,7 +206,6 @@ public class MeasuringMetrics : MonoBehaviour
         
         Debug.Log("Receive Choose End time reset");
         //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
-        
     }
 
 }

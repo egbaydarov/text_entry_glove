@@ -2511,8 +2511,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af9c5accb5141854896dbe6469348982, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upperLeftSource: {x: 0, y: 752}
-  screenSize: {x: 454, y: 280}
+  upperLeftSource: {x: 0, y: 710}
+  screenSize: {x: 500, y: 315}
   upperLeftDestination: {x: 0, y: 0}
   img: {fileID: 623323682}
 --- !u!1 &641337992
@@ -2996,6 +2996,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnPredictionClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBackspaceClicked:
+    m_PersistentCalls:
+      m_Calls: []
   sentences: {fileID: 4900000, guid: cc2edd29f68030b468a31515b1b431b4, type: 3}
   disablePinch:
     m_PersistentCalls:

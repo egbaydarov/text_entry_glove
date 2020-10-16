@@ -28,7 +28,7 @@ public class TrialData
 
     public Dictionary<string, string> GetFormFields()
     {
-        if (TextHelper.text != null && TextHelper.text.Length > 0)
+        if (!string.IsNullOrEmpty(TextHelper.text))
         {
             if (TextHelper.text[TextHelper.text.Length - 1] == ' ')
                 TextHelper.text = TextHelper.text.Remove(TextHelper.text.Length - 1);
@@ -43,17 +43,17 @@ public class TrialData
         form.Add("entry.1828483782", resp_text); // Введенное испытуемым предложение
         form.Add("entry.41396143", $"{sent_text.Length}:{sent_text.Count((x) => x == ' ') + 1}"); // Длина эталонного предложения
         form.Add("entry.2004966619", $"{resp_text.Length}:{sent_text.Count((x) => x == ' ') + 1}"); // Длина введенного испытуемым предложения
-        form.Add("entry.202448380", "22"); // сколько раз выбрали подсказку
-        form.Add("entry.887164200", "33"); // количество удаленных символов
-        form.Add("entry.931566926", "44"); // кол-во нажатий backspace
+        form.Add("entry.202448380", "22");  // сколько раз выбрали подсказку
+        form.Add("entry.887164200", "33");  // количество удаленных символов
+        form.Add("entry.931566926", "44");  // кол-во нажатий backspace
         form.Add("entry.1363907106", "55"); // кол-во исправленных опечаток
         form.Add("entry.1922697097", all_time.ToString().Replace(".",",")); // Время ввода предложения
         form.Add("entry.1279543598", "66"); // Общее время поиска первого символа
-        form.Add("entry.938770484", "77"); // Общее время ввода росчерка/слова
+        form.Add("entry.938770484", "77");  // Общее время ввода росчерка/слова
         form.Add("entry.1875291993", "88"); // Общее время проверки и коррекции
-        form.Add("entry.647338142", "99"); // Общее время удаления слова 
+        form.Add("entry.647338142", "99");  // Общее время удаления слова 
         form.Add("entry.1673523306", Math.Round(((float) resp_text.Length) * 12.0 / all_time, 2).ToString().Replace(".",",")); // Скорость набора текста
-        form.Add("entry.1347030375", ""); // Примечание
+        form.Add("entry.1347030375", "");   // Примечание
                 
         return form;
     }
