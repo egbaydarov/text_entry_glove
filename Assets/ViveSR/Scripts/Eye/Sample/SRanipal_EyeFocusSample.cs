@@ -13,7 +13,7 @@ namespace ViveSR.anipal.Eye
         private static EyeData eyeData = new EyeData();
         private bool eye_callback_registered = false;
 
-        [SerializeField] private ReticlePointer pointer;
+        [SerializeField] private LMPointer pointer;
         private void Start()
         {
             if (!SRanipal_Eye_Framework.Instance.EnableEye)

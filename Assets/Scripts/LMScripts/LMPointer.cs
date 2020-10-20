@@ -176,7 +176,9 @@ public class LMPointer : GvrBasePointer
             TextHelper.isGestureStarted = true;
         }
 
-        Vector3 local = FakePointer.transform.parent.InverseTransformPoint(LastPointerHoveredResult.worldPosition);
+        //Vector3 local = FakePointer.transform.parent.InverseTransformPoint(LastPointerHoveredResult.worldPosition);
+        Vector3 local = FakePointer.transform.parent.InverseTransformPoint
+            (LastPointerHoveredResult.gameObject.GetComponent<Transform>().position);
         FakePointer.transform.localPosition = new Vector3(local.x, local.y, 0);
 
         //float x_min = -1080 / 2 + 10;
