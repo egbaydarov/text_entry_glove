@@ -17,6 +17,8 @@ public class TrialData
     public float fix_choose_time;
     public float wait_time;
     public string resp_text = "";
+
+    bool InputTypeFlag;
     
     // Instructions were taken from here: https://youtu.be/z9b5aRfrz7M
     private static readonly string _formURI = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSddGyMD2Db2wYOQC-Ix-lbYeeWJfT4t-gxE5TUgs9sYhSo5Sg/formResponse";
@@ -41,20 +43,37 @@ public class TrialData
         form.Add("entry.1580984151", (sent_num+1).ToString()); // Номер попытки
         form.Add("entry.832183268", sent_text); // Эталонное предложение
         form.Add("entry.1828483782", resp_text); // Введенное испытуемым предложение
-        form.Add("entry.41396143", $"{sent_text.Length}:{sent_text.Count((x) => x == ' ') + 1}"); // Длина эталонного предложения
-        form.Add("entry.2004966619", $"{resp_text.Length}:{sent_text.Count((x) => x == ' ') + 1}"); // Длина введенного испытуемым предложения
-        form.Add("entry.202448380", "22");  // сколько раз выбрали подсказку
-        form.Add("entry.887164200", "33");  // количество удаленных символов
-        form.Add("entry.931566926", "44");  // кол-во нажатий backspace
-        form.Add("entry.1363907106", "55"); // кол-во исправленных опечаток
+        form.Add("entry.41396143", $"{sent_text.Length}"); // Длина эталонного предложения (символов)
+        form.Add("entry.1171184478", $"{sent_text.Count((x) => x == ' ') + 1}"); // Длина эталонного предложения (слов)
+        form.Add("entry.2004966619", $"{resp_text.Length}"); // Длина введенного испытуемым предложения (символов)
+        form.Add("entry.208575183", $"{sent_text.Count((x) => x == ' ') + 1}"); // Длина введенного испытуемым предложения (слов)
+        form.Add("entry.202448380", EntryProcessing.GetPredictionClicked().ToString());  // сколько раз выбрали подсказку
+        form.Add("entry.887164200", SoundOnCharacterRemoving.GetCharCountRemoved().ToString());  // количество удаленных символов
+        form.Add("entry.931566926", EntryProcessing.GetBakspaceClicked().ToString());  // кол-во нажатий backspace
+        form.Add("entry.1363907106", LevenshteinDistance(sent_text, resp_text).ToString()); // кол-во неисправленных опечаток
         form.Add("entry.1922697097", all_time.ToString().Replace(".",",")); // Время ввода предложения
-        form.Add("entry.1279543598", "66"); // Общее время поиска первого символа
-        form.Add("entry.938770484", "77");  // Общее время ввода росчерка/слова
-        form.Add("entry.1875291993", "88"); // Общее время проверки и коррекции
-        form.Add("entry.647338142", "99");  // Общее время удаления слова 
+
+        if (InputTypeFlag)
+        { 
+            form.Add("entry.1279543598", "66"); // Общее время поиска первого символа
+            form.Add("entry.938770484", "77");  // Общее время ввода росчерка/слова
+            form.Add("entry.1875291993", "88"); // Общее время проверки и коррекции
+            form.Add("entry.647338142", "99");  // Общее время удаления слова 
+        }
+        else
+        {
+            form.Add("entry.1279543598", "66"); // Общее время поиска первого символа
+            form.Add("entry.938770484", "77");  // Общее время ввода росчерка/слова
+            form.Add("entry.1875291993", "88"); // Общее время проверки и коррекции
+            form.Add("entry.647338142", "99");  // Общее время удаления слова 
+        }
+
+
         form.Add("entry.1673523306", Math.Round(((float) resp_text.Length) * 12.0 / all_time, 2).ToString().Replace(".",",")); // Скорость набора текста
-        form.Add("entry.1347030375", "");   // Примечание
-                
+        if(SoundOnCharacterRemoving.IsWrongClickToBackspace)
+            form.Add("entry.1347030375", "Ошибка при удалении слова");   // Примечание
+
+        SoundOnCharacterRemoving.IsWrongClickToBackspace = false;
         return form;
     }
     

@@ -66,6 +66,31 @@ public class EntryProcessing : MonoBehaviour
 
     bool isFirstTap = true;
 
+    static public int BackspaceClicked;
+    public static int LastSentenceBackspaceClicked { get; set; }
+
+    static public int PredictionClicked;
+    public static int LastSentencePredictionClicked { get; set; }
+
+    public static bool IsLastClickPrediction;
+
+    public static int GetBakspaceClicked()
+    {
+        int res = BackspaceClicked - LastSentenceBackspaceClicked;
+        LastSentenceBackspaceClicked = BackspaceClicked;
+
+        return res;
+    }
+
+    public static int GetPredictionClicked()
+    {
+        int res = PredictionClicked - LastSentencePredictionClicked;
+        LastSentencePredictionClicked = PredictionClicked;
+
+        return res;
+    }
+
+
     void Start()
     {
         if (sentences == null)
@@ -74,7 +99,7 @@ public class EntryProcessing : MonoBehaviour
             Debug.LogError("sentences txt file should be assigned in inspector");
             return;
         }
-        
+
         data = sentences.text.Split('\n');
 
         SentenceOrder = new int[data.Length];
@@ -115,6 +140,7 @@ public class EntryProcessing : MonoBehaviour
 
     public void OnNextClicked(GameObject obj, PointerEventData pointerData)
     {
+        IsLastClickPrediction = false;
         //UnityEngine.Debug.Log(obj == null ? "null" : $"{obj.name} : {obj.tag}");
         // Если нажата кнопка "Ввод завершен" (мб поменять на завершить ввод)
         if (obj != null && obj.name.Equals("NextSentence"))
@@ -186,10 +212,14 @@ public class EntryProcessing : MonoBehaviour
         else if (obj != null && obj.tag.Equals("Prediction") && !isFirstTap && !menuButton.activeSelf)
         {
             OnPredictionClicked.Invoke();
+            IsLastClickPrediction = true;
+            ++PredictionClicked;
+
         }
         else if (obj != null && obj.tag.Equals("Backspace") && !isFirstTap && !menuButton.activeSelf)
         {
             OnBackspaceClicked.Invoke();
+            ++BackspaceClicked;
         }
 
     }
