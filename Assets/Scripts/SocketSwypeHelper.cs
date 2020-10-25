@@ -31,7 +31,7 @@ public class SocketSwypeHelper : MonoBehaviour
     [SerializeField]
     int offset_x = 0;
     [SerializeField]
-    int offset_y = 55;
+    int offset_y = 0;
     [SerializeField]
     float scale_coef = 1;
 
@@ -50,7 +50,7 @@ public class SocketSwypeHelper : MonoBehaviour
     [SerializeField]
     int VYSOR_HEIGHT = 970;
     [SerializeField]
-    int VYSOR_WIDTH = 448;
+    int VYSOR_WIDTH = 515;
 
     private void Update()
     {

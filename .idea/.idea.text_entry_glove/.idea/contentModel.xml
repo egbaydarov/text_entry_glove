@@ -9,6 +9,7 @@
       <e p="Assembly-CSharp-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="csc.rsp" t="Include" />
         <e p="GoogleVR" t="Include">
           <e p="Beta" t="Include">
             <e p="Demos" t="Include">
@@ -264,6 +265,7 @@
             </e>
           </e>
         </e>
+        <e p="Keyboard.cs" t="Include" />
         <e p="Plugins" t="Include">
           <e p="LeapMotion" t="Include">
             <e p="Core" t="Include">
@@ -776,6 +778,12 @@
             </e>
           </e>
         </e>
+        <e p="PointerDirection.cs" t="Include" />
+        <e p="PrintKey.cs" t="Include" />
+        <e p="Resources" t="Include">
+          <e p="result215_2.txt" t="Include" />
+          <e p="result64_2.txt" t="Include" />
+        </e>
         <e p="Scripts" t="Include">
           <e p="BallsColission.cs" t="Include" />
           <e p="DoubleClick.cs" t="Include" />
@@ -804,6 +812,9 @@
           <e p="Overlay.cs" t="Include" />
           <e p="PinchWithReticle.cs" t="Include" />
           <e p="PointGesture.cs" t="Include" />
+          <e p="PointMethod" t="Include">
+            <e p="GestureDetector.cs" t="Include" />
+          </e>
           <e p="ReticlePointer.cs" t="Include" />
           <e p="ReturnToDefaultPlace.cs" t="Include" />
           <e p="SceneManagment.cs" t="Include" />
@@ -812,6 +823,8 @@
           <e p="Settings.cs" t="Include" />
           <e p="Shift.cs" t="Include" />
           <e p="SkipEvents.cs" t="Include" />
+          <e p="SocketSwypeHelper.cs" t="Include" />
+          <e p="SoundOnCharacterRemoving.cs" t="Include" />
           <e p="SoundOnHighlight.cs" t="Include" />
           <e p="TextHelper.cs" t="Include" />
           <e p="TorsoReferencedContent.cs" t="Include" />
@@ -820,6 +833,7 @@
           <e p="TrialData.cs" t="Include" />
           <e p="TrialDataStorage.cs" t="Include" />
           <e p="UILayout.cs" t="Include" />
+          <e p="Win32.cs" t="Include" />
         </e>
         <e p="SteamVR" t="Include">
           <e p="Editor" t="Include">
@@ -1149,6 +1163,56 @@
           </e>
           <e p="Sprites" t="Include">
             <e p="EmojiOne Attribution.txt" t="Include" />
+          </e>
+        </e>
+        <e p="ViveSR" t="Include">
+          <e p="Scripts" t="Include">
+            <e p="Eye" t="Include">
+              <e p="Sample" t="Include">
+                <e p="DartBoard.cs" t="Include" />
+                <e p="EyeFocusKeyboard.cs" t="Include" />
+                <e p="SRanipal_AvatarEyeSample.cs" t="Include" />
+                <e p="SRanipal_AvatarEyeSample_v2.cs" t="Include" />
+                <e p="SRanipal_EyeFocusSample.cs" t="Include" />
+                <e p="SRanipal_EyeFocusSample_v2.cs" t="Include" />
+                <e p="SRanipal_EyeSettingSample.cs" t="Include" />
+                <e p="SRanipal_GazeRaySample.cs" t="Include" />
+                <e p="SRanipal_GazeRaySample_v2.cs" t="Include" />
+                <e p="SRanipal_MirrorCameraSample_Eye.cs" t="Include" />
+                <e p="SRanipal_MirrorCameraSample_Eye_v2.cs" t="Include" />
+              </e>
+              <e p="SRanipal_Eye.cs" t="Include" />
+              <e p="SRanipal_Eye_API.cs" t="Include" />
+              <e p="SRanipal_Eye_Enums.cs" t="Include" />
+              <e p="SRanipal_Eye_Framework.cs" t="Include" />
+              <e p="SRanipal_Eye_v2.cs" t="Include" />
+              <e p="SRanipal_EyeData.cs" t="Include" />
+              <e p="SRanipal_EyeDataType_v1.cs" t="Include" />
+              <e p="SRanipal_EyeDataType_v2.cs" t="Include" />
+              <e p="SRanipal_EyeShapeTableDrawer.cs" t="Include" />
+            </e>
+            <e p="Lip" t="Include">
+              <e p="Sample" t="Include">
+                <e p="SRanipal_AvatarLipSample.cs" t="Include" />
+                <e p="SRanipal_AvatarLipSample_v2.cs" t="Include" />
+                <e p="SRanipal_MirrorCameraSample_Lip.cs" t="Include" />
+              </e>
+              <e p="SRanipal_Lip.cs" t="Include" />
+              <e p="SRanipal_Lip_API.cs" t="Include" />
+              <e p="SRanipal_Lip_Framework.cs" t="Include" />
+              <e p="SRanipal_Lip_v2.cs" t="Include" />
+              <e p="SRanipal_LipData_v1.cs" t="Include" />
+              <e p="SRanipal_LipData_v2.cs" t="Include" />
+              <e p="SRanipal_LipShapeTableDrawer.cs" t="Include" />
+              <e p="SRanipal_LipShapeTableDrawer_v2.cs" t="Include" />
+            </e>
+            <e p="SRanipal_API.cs" t="Include" />
+            <e p="SRanipal_Enums.cs" t="Include" />
+            <e p="SRWorks_Enums.cs" t="Include" />
+          </e>
+          <e p="Shaders" t="Include">
+            <e p="DartBoardShader.shader" t="Include" />
+            <e p="Unlit-Alpha2Gray.shader" t="Include" />
           </e>
         </e>
       </e>

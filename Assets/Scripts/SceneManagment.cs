@@ -56,6 +56,22 @@ public class SceneManagment : MonoBehaviour
             case Scenes.PointMethod:
                 SceneManager.LoadSceneAsync("PointMethodTrain");
                 break;
+            case Scenes.GazeCharacter:
+                SceneManager.LoadSceneAsync("GazeCharacter");
+                method_id = "GazeCharacter";
+                break;
+            case Scenes.GazeGesture:
+                SceneManager.LoadSceneAsync("GazeGesture");
+                method_id = "GazeGesture";
+                break;
+            case Scenes.ReticleCharacter:
+                SceneManager.LoadSceneAsync("ReticleCharacter");
+                method_id = "ReticleCharacter";
+                break;
+            case Scenes.ReticleGesture:
+                SceneManager.LoadSceneAsync("ReticleGesture");
+                method_id = "ReticleGesture";
+                break;
         }
 
     }
@@ -70,6 +86,15 @@ public class SceneManagment : MonoBehaviour
         
         EntryProcessing.currentBlock = 0;
         EntryProcessing.currentSentence = 0;
+        
+        for (int i = 0; i < 64; ++i) //TODO сделать красиво
+        {
+            PlayerPrefs.DeleteKey($"SentenceOrder{i}");
+        }
+        PlayerPrefs.Save();
+        Debug.Log("Delete saved sentences order");
+
+        
         switch (currentScene)
         {
             case Scenes.OurMethod:
@@ -87,6 +112,22 @@ public class SceneManagment : MonoBehaviour
             case Scenes.PointMethod:
                 SceneManager.LoadSceneAsync("PointMethodMain");
                 method_id = "PontMethod";
+                break;
+            case Scenes.GazeCharacter:
+                SceneManager.LoadSceneAsync("GazeCharacter");
+                method_id = "GazeCharacter";
+                break;
+            case Scenes.GazeGesture:
+                SceneManager.LoadSceneAsync("GazeGesture");
+                method_id = "GazeGesture";
+                break;
+            case Scenes.ReticleCharacter:
+                SceneManager.LoadSceneAsync("ReticleCharacter");
+                method_id = "ReticleCharacter";
+                break;
+            case Scenes.ReticleGesture:
+                SceneManager.LoadSceneAsync("ReticleGesture");
+                method_id = "ReticleGesture";
                 break;
         }
     }
@@ -114,6 +155,22 @@ public class SceneManagment : MonoBehaviour
                 SceneManager.LoadSceneAsync("PointMethodMain");
                 method_id = "PontMethod";
                 break;
+            case Scenes.GazeCharacter:
+                SceneManager.LoadSceneAsync("GazeCharacter");
+                method_id = "GazeCharacter";
+                break;
+            case Scenes.GazeGesture:
+                SceneManager.LoadSceneAsync("GazeGesture");
+                method_id = "GazeGesture";
+                break;
+            case Scenes.ReticleCharacter:
+                SceneManager.LoadSceneAsync("ReticleCharacter");
+                method_id = "ReticleCharacter";
+                break;
+            case Scenes.ReticleGesture:
+                SceneManager.LoadSceneAsync("ReticleGesture");
+                method_id = "ReticleGesture";
+                break;
         }
     }
 
@@ -136,6 +193,10 @@ public class SceneManagment : MonoBehaviour
         GestureType,
         OurMethod,
         OculusQuest,
-        PointMethod
+        PointMethod,
+        GazeCharacter,
+        GazeGesture,
+        ReticleCharacter,
+        ReticleGesture
     }
 }
