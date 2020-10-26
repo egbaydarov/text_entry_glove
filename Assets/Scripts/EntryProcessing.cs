@@ -73,6 +73,7 @@ public class EntryProcessing : MonoBehaviour
     public static int LastSentencePredictionClicked { get; set; }
 
     public static bool IsLastClickPrediction;
+    public static bool IsLastClickBackspace;
 
     public static int GetBakspaceClicked()
     {
@@ -141,6 +142,7 @@ public class EntryProcessing : MonoBehaviour
     public void OnNextClicked(GameObject obj, PointerEventData pointerData)
     {
         IsLastClickPrediction = false;
+        IsLastClickBackspace = false;
         //UnityEngine.Debug.Log(obj == null ? "null" : $"{obj.name} : {obj.tag}");
         // Если нажата кнопка "Ввод завершен" (мб поменять на завершить ввод)
         if (obj != null && obj.name.Equals("NextSentence"))
@@ -152,7 +154,6 @@ public class EntryProcessing : MonoBehaviour
             // Если в блоке еще есть предложения
             if (currentSentence + 1 < SENTENCE_COUNT)
             {
-
                 OnSentenceInputEnd.Invoke();
                 Debug.Log("On Sentence End");
                 // ResetTime();
@@ -167,7 +168,6 @@ public class EntryProcessing : MonoBehaviour
                 OnBlockInputEnd.Invoke();
                 Debug.Log("On Block End");
                 //ResetTime();
-
                 currentSentence = 0;
                 ++currentBlock;
                 MeasuringMetrics.SavePrefs();
@@ -200,6 +200,7 @@ public class EntryProcessing : MonoBehaviour
             if (!menuButton.activeSelf)
             {
                 //Shift.ToSmall();
+                MeasuringMetrics.backspace_time.Reset();
                 server.SendToClient("clear\r\n");
                 //intext.text = "";
 
@@ -219,7 +220,9 @@ public class EntryProcessing : MonoBehaviour
         else if (obj != null && obj.tag.Equals("Backspace") && !isFirstTap && !menuButton.activeSelf)
         {
             OnBackspaceClicked.Invoke();
+            IsLastClickBackspace = true;
             ++BackspaceClicked;
+            MeasuringMetrics.backspace_time.Start();
         }
 
     }
@@ -239,6 +242,8 @@ public class EntryProcessing : MonoBehaviour
         {
             OnMenuClicked.Invoke();
         }
+        MeasuringMetrics.backspace_time.Stop();
+
     }
 
     public IEnumerator Wait()

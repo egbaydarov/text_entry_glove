@@ -47,6 +47,9 @@ public class SoundOnCharacterRemoving : MonoBehaviour
         if (!enabled)
             return;
 
+        if (EntryProcessing.IsLastClickBackspace || EntryProcessing.IsLastClickPrediction)
+            MeasuringMetrics.firstcharsearch_time.Start();
+
         if (!EntryProcessing.IsLastClickPrediction && prevValue.Length > value.Length)
         {
             audio.PlayOneShot(soundToPlay);
@@ -57,4 +60,6 @@ public class SoundOnCharacterRemoving : MonoBehaviour
 
         prevValue = value;
     }
+
+  
 }

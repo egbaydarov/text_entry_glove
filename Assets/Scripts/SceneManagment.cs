@@ -58,19 +58,19 @@ public class SceneManagment : MonoBehaviour
                 break;
             case Scenes.GazeCharacter:
                 SceneManager.LoadSceneAsync("GazeCharacter");
-                method_id = "GazeCharacter";
+                method_id = "CHARACTER_GAZE";
                 break;
             case Scenes.GazeGesture:
                 SceneManager.LoadSceneAsync("GazeGesture");
-                method_id = "GazeGesture";
+                method_id = "GESTURE_GAZE";
                 break;
             case Scenes.ReticleCharacter:
                 SceneManager.LoadSceneAsync("ReticleCharacter");
-                method_id = "ReticleCharacter";
+                method_id = "CHARACTER_RETICLE";
                 break;
             case Scenes.ReticleGesture:
                 SceneManager.LoadSceneAsync("ReticleGesture");
-                method_id = "ReticleGesture";
+                method_id = "GESTURE_RETICLE";
                 break;
         }
 

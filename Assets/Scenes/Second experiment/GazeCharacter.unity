@@ -7105,7 +7105,7 @@ GameObject:
   - component: {fileID: 1461830173}
   m_Layer: 5
   m_Name: Button (32)
-  m_TagString: Key
+  m_TagString: Backspace
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

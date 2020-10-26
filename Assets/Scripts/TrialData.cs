@@ -55,18 +55,19 @@ public class TrialData
 
         if (InputTypeFlag)
         { 
-            form.Add("entry.1279543598", "66"); // Общее время поиска первого символа
+            form.Add("entry.1279543598", MeasuringMetrics.firstcharsearch_time.Elapsed.ToString()); // Общее время поиска первого символа
             form.Add("entry.938770484", "77");  // Общее время ввода росчерка/слова
             form.Add("entry.1875291993", "88"); // Общее время проверки и коррекции
-            form.Add("entry.647338142", "99");  // Общее время удаления слова 
         }
         else
         {
             form.Add("entry.1279543598", "66"); // Общее время поиска первого символа
             form.Add("entry.938770484", "77");  // Общее время ввода росчерка/слова
             form.Add("entry.1875291993", "88"); // Общее время проверки и коррекции
-            form.Add("entry.647338142", "99");  // Общее время удаления слова 
         }
+
+        if(EntryProcessing.GetBakspaceClicked() != 0)
+            form.Add("entry.647338142", MeasuringMetrics.backspace_time.Elapsed.ToString());  // Общее время удаления слова 
 
 
         form.Add("entry.1673523306", Math.Round(((float) resp_text.Length) * 12.0 / all_time, 2).ToString().Replace(".",",")); // Скорость набора текста

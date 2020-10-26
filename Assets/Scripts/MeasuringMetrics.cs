@@ -33,6 +33,8 @@ public class MeasuringMetrics : MonoBehaviour
     public static Stopwatch wait_time = new Stopwatch();
     public static Stopwatch receive_time = new Stopwatch();
     public static Stopwatch end_time = new Stopwatch();
+    public static Stopwatch backspace_time = new Stopwatch();
+    public static Stopwatch firstcharsearch_time = new Stopwatch();
     public static float all_move_time = 0;
     public static float all_choose_time = 0;
     public static float all_fix_choose_time = 0;
@@ -168,6 +170,7 @@ public class MeasuringMetrics : MonoBehaviour
         //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
          all_move_time += ((float) move_time.ElapsedMilliseconds) / 1000;
         move_time.Reset();
+        backspace_time.Reset();
         //Debug.Log("move time added and reset");
         if (wasChosen)
         {
