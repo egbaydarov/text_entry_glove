@@ -1108,7 +1108,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0.001, z: -0.056}
   m_AnchorMin: {x: 0.5, y: 0.5201301}
   m_AnchorMax: {x: 0.5, y: 0.5201301}
-  m_AnchoredPosition: {x: 0, y: 25}
+  m_AnchoredPosition: {x: -7, y: 33}
   m_SizeDelta: {x: 1080, y: 430}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &317292374
@@ -1147,8 +1147,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 87.2727, y: 115}
-  m_Spacing: {x: 10, y: 10}
+  m_CellSize: {x: 97.2727, y: 125}
+  m_Spacing: {x: 0, y: 0}
   m_Constraint: 2
   m_ConstraintCount: 3
 --- !u!114 &317292376
@@ -4048,7 +4048,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 1960954532}
-  distanceFromCamera: 2.5
+  distanceFromCamera: 1.5
   pitch: 0
 --- !u!4 &885768148
 Transform:
