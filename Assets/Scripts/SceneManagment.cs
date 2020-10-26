@@ -14,20 +14,18 @@ public class SceneManagment : MonoBehaviour
 
     public void Start()
     {
-        MeasuringMetrics.ResetTime();
-        if(method_id==null)
+        if (method_id == null)
             method_id = "test";
-
         if (!PlayerPrefs.HasKey("Respondent_ID"))
         {
             Settings.id = 0;
-            PlayerPrefs.SetInt("Respondent_ID", (int) Settings.id);
+            PlayerPrefs.SetInt("Respondent_ID", (int)Settings.id);
         }
-
         else
         {
-            Settings.id = (uint) PlayerPrefs.GetInt("Respondent_ID");
+            Settings.id = (uint)PlayerPrefs.GetInt("Respondent_ID");
         }
+        PlayerPrefs.Save();
     }
 
     public void Exit()
@@ -78,23 +76,20 @@ public class SceneManagment : MonoBehaviour
 
     public void StartExperiment()
     {
-        //EntryProcessing.ResetTime(); //TODO сделац отдеьный компонент для замера времени
-        //isMain = true;
-        MeasuringMetrics.LoadPrefs();
-        Settings.id++;
-        PlayerPrefs.SetInt("Respondent_ID", (int)Settings.id);
-        
-        EntryProcessing.currentBlock = 0;
-        EntryProcessing.currentSentence = 0;
-        
+        Settings.id = (uint)PlayerPrefs.GetInt("Respondent_ID");
+
+        PlayerPrefs.SetInt("Respondent_ID", (int)(Settings.id + 1));
+
+
         for (int i = 0; i < 64; ++i) //TODO сделать красиво
         {
             PlayerPrefs.DeleteKey($"SentenceOrder{i}");
         }
+
         PlayerPrefs.Save();
         Debug.Log("Delete saved sentences order");
 
-        
+
         switch (currentScene)
         {
             case Scenes.OurMethod:
@@ -134,9 +129,6 @@ public class SceneManagment : MonoBehaviour
 
     public void ContinueExperiment()
     {
-        //EntryProcessing.ResetTime(); //TODO сделац отдеьный компонент для замера времени
-        //isMain = true;
-        MeasuringMetrics.LoadPrefs();
         switch (currentScene)
         {
             case Scenes.OurMethod:

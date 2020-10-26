@@ -118,23 +118,7 @@ public class TrainTextEntryProcessing : MonoBehaviour
                 confirmButton.SetActive(true);
             }
         }
-        else if (obj != null && obj.tag.Equals("Prediction") && !isFirstTap && !menuButton.activeSelf)
-        {
-            switch (obj.name)
-            {
-                case "Prediction0":
-                    th.ChangeOnPrediction0();
-                    break;
-                case "Prediction1":
-                    th.ChangeOnPrediction1();
-                    break;
-                case "Prediction2":
-                    th.ChangeOnPrediction2();
-                    break;
-                default:
-                    break;
-            }
-        }
+       
     }
 
     public void OnPointerUpMenu(GameObject obj, PointerEventData pointerData)

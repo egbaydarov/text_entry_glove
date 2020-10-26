@@ -224,8 +224,6 @@ public class Server : MonoBehaviour
                         Debug.Log("Recieved text: " + data);
 
                         OnMessageRecieved.Invoke(data);
-                        
-                        MeasuringMetrics.ReceivePredictions();
                     }
                 }
                 catch (SocketException socketException)

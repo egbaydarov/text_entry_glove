@@ -12,19 +12,6 @@ public class SoundOnCharacterRemoving : MonoBehaviour
     [SerializeField]
     private AudioClip soundToPlay;
 
-    public static bool IsWrongClickToBackspace = false;
-
-    public static int LastCharCountRemoved { get; set; }
-
-    static int CharCountRemoved;
-    public static int GetCharCountRemoved()
-    {
-        int res = CharCountRemoved - LastCharCountRemoved;
-        LastCharCountRemoved = CharCountRemoved;
-
-        return res;
-    }
-
     void Start()
     {
         if (audio == null)
@@ -47,15 +34,10 @@ public class SoundOnCharacterRemoving : MonoBehaviour
         if (!enabled)
             return;
 
-        if (EntryProcessing.IsLastClickBackspace || EntryProcessing.IsLastClickPrediction)
-            MeasuringMetrics.firstcharsearch_time.Start();
 
-        if (!EntryProcessing.IsLastClickPrediction && prevValue.Length > value.Length)
+        if (prevValue.Length > value.Length)
         {
             audio.PlayOneShot(soundToPlay);
-            CharCountRemoved += prevValue.Length - value.Length;
-            if (value.Length != 0 || value[value.Length - 1] != ' ')
-                IsWrongClickToBackspace = true;
         }
 
         prevValue = value;

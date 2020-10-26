@@ -11,74 +11,81 @@ using Debug = UnityEngine.Debug;
 public class MeasuringMetrics : MonoBehaviour
 {
 
-    [SerializeField] private string FORM_URL =
-        "https://docs.google.com/forms/u/0/d/e/1FAIpQLSddGyMD2Db2wYOQC-Ix-lbYeeWJfT4t-gxE5TUgs9sYhSo5Sg/formResponse";
-    
-    private int block_num;
-    private int sent_num;
+    [SerializeField]
+    private string FORM_URL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSddGyMD2Db2wYOQC-Ix-lbYeeWJfT4t-gxE5TUgs9sYhSo5Sg/formResponse";
 
-    private string sent_text;
+    [SerializeField]
+    private EntryProcessing _currentEntryProcessing;
 
-    // private float all_time;
-    // private float gest_time;
-    // private float move_time;
-    private int text_length;
+    public Stopwatch full_time { get; set; } = new Stopwatch();
+    public Stopwatch search_time_sw { get; set; } = new Stopwatch();
+    public Stopwatch entry_time_sw { get; set; } = new Stopwatch();
+    public Stopwatch remove_time_sw { get; set; } = new Stopwatch();
+    public Stopwatch check_time_sw { get; set; } = new Stopwatch();
+    public int prediction_choose { get; set; }
+    public int backspace_choose { get; set; }
+    public int removed_count { get; set; }
+    public bool HasWrong { get; set; }
+    public long search_time { get; set; }
+    public long entry_time { get; set; }
+    public long remove_time { get; set; }
+    public long check_time  => full_time.ElapsedMilliseconds - check_time - remove_time - search_time; //TODO неверно
+    public bool isRemoves { get; set; } = false;
 
 
-    public static Stopwatch all_time = new Stopwatch();
-    public static Stopwatch move_time = new Stopwatch();
-    public static Stopwatch gest_time = new Stopwatch();
-    public static Stopwatch choose_time = new Stopwatch();
-    public static Stopwatch fix_choose_time = new Stopwatch();
-    public static Stopwatch wait_time = new Stopwatch();
-    public static Stopwatch receive_time = new Stopwatch();
-    public static Stopwatch end_time = new Stopwatch();
-    public static Stopwatch backspace_time = new Stopwatch();
-    public static Stopwatch firstcharsearch_time = new Stopwatch();
-    public static float all_move_time = 0;
-    public static float all_choose_time = 0;
-    public static float all_fix_choose_time = 0;
-    public static int predictions_clicks = 0;
-
-    private static bool wasChosen = false;
+    private string _prevValue;
 
     Server server;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        //Thread.CurrentThread.CurrentCulture = new CultureInfo("ru-RU");
+        LoadPrefs();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnApplicationQuit()
     {
+        SavePrefs();
     }
 
-    public static void SavePrefs()
+    private void OnDestroy()
     {
-        PlayerPrefs.SetInt("Respondent_ID", (int) Settings.id); // Идентификатор испытуемого
+        SavePrefs();
+    }
+
+    private void Awake()
+    {
+        server = FindObjectOfType<Server>();
+    }
+
+    public void SavePrefs()
+    {
+        PlayerPrefs.SetInt("Respondent_ID", (int)Settings.id); // Идентификатор испытуемого
         PlayerPrefs.SetString("InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
-        PlayerPrefs.SetInt("Attempt_number", EntryProcessing.currentBlock); // Номер блока предложений
-        PlayerPrefs.SetInt("Session_number", EntryProcessing.currentSentence); // Номер попытки
+        PlayerPrefs.SetInt("Attempt_number", _currentEntryProcessing.currentBlock); //Номер блока предложений
+        PlayerPrefs.SetInt("Session_number", _currentEntryProcessing.currentSentence); //Номер попытки
 
-        Debug.Log("Saved");
+        Debug.Log("Session Saved.");
     }
 
-    public static void LoadPrefs()
+    public void LoadPrefs()
     {
         if (PlayerPrefs.HasKey("InputMethod_ID"))
         {
-            Settings.id = (uint) PlayerPrefs.GetInt("Respondent_ID");
+            Settings.id = (uint)PlayerPrefs.GetInt("Respondent_ID");
             SceneManagment.method_id = PlayerPrefs.GetString("InputMethod_ID");
-            EntryProcessing.currentBlock = PlayerPrefs.GetInt("Attempt_number");
-            EntryProcessing.currentSentence = PlayerPrefs.GetInt("Session_number");
+            _currentEntryProcessing.currentBlock = PlayerPrefs.GetInt("Attempt_number");
+            _currentEntryProcessing.currentSentence = PlayerPrefs.GetInt("Session_number");
 
             Debug.Log(
-                $"Loaded : id {Settings.id}, method  {SceneManagment.method_id}, block {EntryProcessing.currentBlock}, sentence {EntryProcessing.currentSentence}");
+                $"Loaded: id {Settings.id}" +
+                $", method  {SceneManagment.method_id}" +
+                $", block {_currentEntryProcessing.currentBlock}" +
+                $", sentence {_currentEntryProcessing.currentSentence}");
         }
         else
-            Debug.Log("No saved prefs");
+        {
+            Debug.Log("No saved sessions.");
+        }
     }
 
     public void DeletePrefs()
@@ -88,127 +95,40 @@ public class MeasuringMetrics : MonoBehaviour
         PlayerPrefs.DeleteKey("Session_number");
     }
 
-    public static void StartGesture()
+    public void StartSentenceInput()
     {
-        
-       //Debug.Log("Start Gesture");
-       //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
-        if (!all_time.IsRunning)
-            all_time.Start();
-        gest_time.Start();
-       //Debug.Log("gest time start");
-        all_move_time += ((float) move_time.ElapsedMilliseconds) / 1000;
-        move_time.Reset();
-        //Debug.Log("move time added and reset");
-        if (wasChosen)
+        ResetAll();
+        full_time.Start();
+    }
+
+    public void ResetAll()
+    {
+        full_time.Reset();
+        prediction_choose = 0;
+        backspace_choose = 0;
+        removed_count = 0;
+        isRemoves = false;
+        entry_time = 0;
+        search_time = 0;
+        HasWrong = false;
+    }
+
+    public void EndSentenceInput()
+    {
+        full_time.Stop();
+    }
+
+    public void OnCharacterRemoving(string value)
+    {
+        if (!_currentEntryProcessing.LastTagDown.Equals("Prediction") && _prevValue.Length > value.Length)
         {
-            all_choose_time += (float)end_time.ElapsedMilliseconds/1000 - ((float) choose_time.ElapsedMilliseconds) / 1000;
-            all_fix_choose_time += (float)receive_time.ElapsedMilliseconds/1000 - ((float) choose_time.ElapsedMilliseconds) / 1000;
-            choose_time.Reset();
-            receive_time.Reset();
-            end_time.Reset();
-            //Debug.Log("choose time added and reset");
-            //Debug.Log("fix choose time added and reset");
-            wasChosen = false;
-            Debug.Log("Receive Choose End time reset");
+            if (value.Length != 0 && value[value.Length - 1] != ' ')
+                HasWrong = true;
+            isRemoves = true;
+            removed_count += _prevValue.Length - value.Length;
+            
         }
-        
-        Debug.Log($"all choose time: {(float)all_choose_time}\n all fix choose time: {all_fix_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000}, \n one end time: {(float)end_time.ElapsedMilliseconds/1000} \n");
+
+        _prevValue = value;
     }
-
-    public static void EndGesture()
-    {
-        //Debug.Log("End Gesture");
-        //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
-        move_time.Start();
-        //Debug.Log("move time start");
-        wait_time.Start();
-        //Debug.Log("wait time start");
-        gest_time.Stop();
-        //Debug.Log("gest time stop");
-        end_time.Restart();
-        Debug.Log("End time restart");
-        
-        //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
-    }
-
-    public static void ReceivePredictions()
-    {
-        Debug.Log("Receive Predictions");
-        //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
-        wait_time.Stop();
-        //Debug.Log("wait time stop");
-        //Debug.Log("fix choose time restart");
-
-        receive_time.Restart();
-        Debug.Log("Receive time restart");
-        
-        //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
-           }
-
-    public static void ChoosePredictions()
-    {
-        if (!TextHelper.isAllNull)
-        {
-            Debug.Log("Choose Prediction");
-            //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
-            move_time.Restart();
-            //Debug.Log("move time restart");
-            choose_time.Restart();
-            Debug.Log("Choose time restart");
-            //Debug.Log("choose time stop");
-
-            wasChosen = true;
-
-            //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
-        }
-    }
-
-    public static void Finish()
-    {
-        //Debug.Log("Finish block");
-        //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
-         all_move_time += ((float) move_time.ElapsedMilliseconds) / 1000;
-        move_time.Reset();
-        backspace_time.Reset();
-        //Debug.Log("move time added and reset");
-        if (wasChosen)
-        {
-            all_choose_time += (float)end_time.ElapsedMilliseconds/1000 - ((float) choose_time.ElapsedMilliseconds) / 1000;
-            all_fix_choose_time += (float)receive_time.ElapsedMilliseconds/1000 - ((float) choose_time.ElapsedMilliseconds) / 1000;
-            receive_time.Restart();
-            Debug.Log("Receive time restart");
-            choose_time.Reset();
-            Debug.Log("Choose time reset");
-            end_time.Reset();
-            Debug.Log("End time reset");
-        //    Debug.Log("fix time added and reset");
-        //    Debug.Log("all fix time added and reset");
-            wasChosen = false;
-        //    Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
-
-        }
-    }
-
-    public static void ResetTime()
-    {
-        //Debug.Log("Reset Time");
-        
-        //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
-        all_time.Reset();
-        move_time.Reset();
-        gest_time.Reset();
-        choose_time.Reset();
-        fix_choose_time.Reset();
-        wait_time.Reset();
-        receive_time.Reset();
-        end_time.Reset();
-        all_move_time = 0;
-        all_choose_time = 0;
-        all_fix_choose_time = 0;
-        
-        Debug.Log("Receive Choose End time reset");
-        //Debug.Log($"all time: {(float)all_time.ElapsedMilliseconds/1000}\n all move time: {all_move_time}, one move time: {(float)move_time.ElapsedMilliseconds/1000} \n all choose time: {all_choose_time}, one choose time: {(float)choose_time.ElapsedMilliseconds/1000} \n all fix choose time: {all_fix_choose_time}, one fix choose time: {(float)fix_choose_time.ElapsedMilliseconds/1000} \n gest time: {(float)gest_time.ElapsedMilliseconds/1000}\n wait time: {(float)wait_time.ElapsedMilliseconds/1000}");
-    }
-
 }

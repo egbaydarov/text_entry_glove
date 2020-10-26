@@ -166,33 +166,14 @@ public class ReticlePointer : GvrBasePointer
     public override void OnPointerClickDown()
     {
 
-
-        if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
-        {
-            //server.gest_time.Start();
-            //server.move_time.Stop();
-            //if (!EntryProcessing.full_time.IsRunning)
-            //    EntryProcessing.full_time.Start();
-
-            // MeasuringMetrics.StartGesture();
-        }
         isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction");
 
-        if (isGestureValid)
-        {
-            MeasuringMetrics.StartGesture();
-            TextHelper.isGestureStarted = true;
-        }
+        
 
         float x_min = -1080 / 2 + 10;
         float x_max = -1080 / 2 + 10 + (1080 - 120) / 11;
         float y_min = -660 / 2 + (float)(0.835 * 660 - 45) / 4 + 20;
         float y_max = -660 / 2 + (float)(0.835 * 660 - 45) / 2 + 20;
-        //Debug.Log(x_min + " " + x_max + " " + " " + y_min + y_max);
-        //if (!(Server.x > x_min && Server.y < y_max && Server.x < x_max && Server.y > y_min) && enterRaycastObj.tag.Equals("Key"))
-        //{
-        //    Shift.SizeReset();
-        //}
     }
 
     /// <inheritdoc/>
@@ -222,8 +203,6 @@ public class ReticlePointer : GvrBasePointer
         //server.SendToClient(data + "\r\n");
         hoverCounter = 0;
 
-        if (isGestureValid && !isInputEnd)
-            MeasuringMetrics.EndGesture();
 
         isGestureValid = false;
 
