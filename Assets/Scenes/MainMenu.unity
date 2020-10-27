@@ -141,7 +141,7 @@ MonoBehaviour:
   OnActivate:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 438944046}
+      - m_Target: {fileID: 2026602162}
         m_MethodName: Setup
         m_Mode: 1
         m_Arguments:
@@ -155,25 +155,6 @@ MonoBehaviour:
   OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &438944045 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1339460489974520, guid: dae2e2be31c98324eac460f702db97e9,
-    type: 3}
-  m_PrefabInstance: {fileID: 1275168609}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &438944046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 438944045}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07f007d8982d2f140abaf3a79447db70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentScene: 5
 --- !u!4 &438944048 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4057968051431532, guid: dae2e2be31c98324eac460f702db97e9,
@@ -373,7 +354,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1275168609}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 438944045}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: abb0e8dd6c809854f8fea5e0976884f8, type: 3}
@@ -576,6 +557,7 @@ GameObject:
   - component: {fileID: 2026602160}
   - component: {fileID: 2026602159}
   - component: {fileID: 2026602161}
+  - component: {fileID: 2026602162}
   m_Layer: 0
   m_Name: Server
   m_TagString: Server
@@ -641,6 +623,19 @@ MonoBehaviour:
   cur_y: 0
   VYSOR_HEIGHT: 1080
   VYSOR_WIDTH: 608
+--- !u!114 &2026602162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2026602158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07f007d8982d2f140abaf3a79447db70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentScene: 1
 --- !u!1 &2026995027
 GameObject:
   m_ObjectHideFlags: 0
@@ -786,19 +781,35 @@ PrefabInstance:
     - target: {fileID: 2044285865576862, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
       propertyPath: OnSmallBallEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 438944046}
+      objectReference: {fileID: 2026602162}
     - target: {fileID: 2044285865576862, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
       propertyPath: OnBigBallEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 438944046}
+      objectReference: {fileID: 2026602162}
     - target: {fileID: 2044285865576862, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
       propertyPath: OnMiddleSmallBallEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 438944046}
+      objectReference: {fileID: 2026602162}
     - target: {fileID: 2044285865576862, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
       propertyPath: OnMiddleBigBallEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 438944046}
+      objectReference: {fileID: 2026602162}
+    - target: {fileID: 2044285865576862, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
+      propertyPath: OnSmallBallEnter.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartExperiment
+      objectReference: {fileID: 0}
+    - target: {fileID: 2044285865576862, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
+      propertyPath: OnBigBallEnter.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ContinueExperiment
+      objectReference: {fileID: 0}
+    - target: {fileID: 2044285865576862, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
+      propertyPath: OnMiddleSmallBallEnter.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Exit
+      objectReference: {fileID: 0}
+    - target: {fileID: 2044285865576862, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
+      propertyPath: OnMiddleBigBallEnter.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Train
+      objectReference: {fileID: 0}
     - target: {fileID: 2044285865576863, guid: d873b92d7fcdab84c8bd1b410fd6ade8, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.118

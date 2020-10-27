@@ -38,13 +38,13 @@ public class TrialData
 
         form.Add("entry.507185938", Settings.id.ToString()); // Идентификатор испытуемого
         form.Add("entry.582005842", SceneManagment.method_id); // Идентификатор техники взаимодействия
-        form.Add("entry.347604535", (block_num + 1).ToString()); // Номер блока предложений
-        form.Add("entry.1580984151", (sent_num + 1).ToString()); // Номер попытки
+        form.Add("entry.347604535", block_num); // Номер блока предложений
+        form.Add("entry.1580984151", sent_num); // Номер попытки
         form.Add("entry.832183268", sent_text); // Эталонное предложение
         form.Add("entry.1828483782", resp_text); // Введенное испытуемым предложение
         form.Add("entry.41396143", $"{sent_text.Length}"); // Длина эталонного предложения (символов)
         form.Add("entry.1171184478", $"{sent_text.Count((x) => x == ' ') + 1}"); // Длина эталонного предложения (слов)
-        form.Add("entry.2004966619", $"{resp_text.Length}"); // Длина введенного испытуемым предложения (символов)
+        form.Add("entry.2004966619", resp_text == null ? "" : resp_text.Length.ToString()); // Длина введенного испытуемым предложения (символов)
         form.Add("entry.208575183", $"{sent_text.Count((x) => x == ' ') + 1}"); // Длина введенного испытуемым предложения (слов)
         form.Add("entry.202448380", prediction_count);  // сколько раз выбрали подсказку
         form.Add("entry.887164200", removed_count);  // количество удаленных символов
@@ -53,7 +53,7 @@ public class TrialData
         form.Add("entry.1922697097", all_time.ToString().Replace(".", ",")); // Время ввода предложения
         form.Add("entry.1279543598", search_time); // Общее время поиска первого символа
         form.Add("entry.938770484", entry_time);  // Общее время ввода росчерка/слова
-        form.Add("entry.1875291993", check_time); // Общее время проверки и 
+        form.Add("entry.1875291993", check_time); // Общее время проверки и   BUG
         form.Add("entry.647338142", removing_time);  // Общее время удаления слова 
         form.Add("entry.1673523306", Math.Round(((float)resp_text.Length) * 12.0 / all_time, 2).ToString().Replace(".", ",")); // Скорость набора текста
 

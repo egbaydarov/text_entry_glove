@@ -10,10 +10,12 @@ public class SceneManagment : MonoBehaviour
     Scenes currentScene = Scenes.OurMethod;
 
     public static bool isMain = false;
+    public static bool isNew = false;
     public static string method_id = null;
 
     public void Start()
     {
+
         if (method_id == null)
             method_id = "test";
         if (!PlayerPrefs.HasKey("Respondent_ID"))
@@ -77,8 +79,9 @@ public class SceneManagment : MonoBehaviour
     public void StartExperiment()
     {
         Settings.id = (uint)PlayerPrefs.GetInt("Respondent_ID");
-
-        PlayerPrefs.SetInt("Respondent_ID", (int)(Settings.id + 1));
+        isMain = true;
+        isNew = true;
+        PlayerPrefs.SetInt("Respondent_ID", (int)(++Settings.id));
 
 
         for (int i = 0; i < 64; ++i) //TODO сделать красиво
@@ -110,25 +113,26 @@ public class SceneManagment : MonoBehaviour
                 break;
             case Scenes.GazeCharacter:
                 SceneManager.LoadSceneAsync("GazeCharacter");
-                method_id = "GazeCharacter";
+                method_id = "CHARACTER_GAZE";
                 break;
             case Scenes.GazeGesture:
                 SceneManager.LoadSceneAsync("GazeGesture");
-                method_id = "GazeGesture";
+                method_id = "GESTURE_GAZE";
                 break;
             case Scenes.ReticleCharacter:
                 SceneManager.LoadSceneAsync("ReticleCharacter");
-                method_id = "ReticleCharacter";
+                method_id = "CHARACTER_RETICLE";
                 break;
             case Scenes.ReticleGesture:
                 SceneManager.LoadSceneAsync("ReticleGesture");
-                method_id = "ReticleGesture";
+                method_id = "GESTURE_RETICLE";
                 break;
         }
     }
 
     public void ContinueExperiment()
     {
+        isMain = true;
         switch (currentScene)
         {
             case Scenes.OurMethod:
@@ -149,19 +153,19 @@ public class SceneManagment : MonoBehaviour
                 break;
             case Scenes.GazeCharacter:
                 SceneManager.LoadSceneAsync("GazeCharacter");
-                method_id = "GazeCharacter";
+                method_id = "CHARACTER_GAZE";
                 break;
             case Scenes.GazeGesture:
                 SceneManager.LoadSceneAsync("GazeGesture");
-                method_id = "GazeGesture";
+                method_id = "GESTURE_GAZE";
                 break;
             case Scenes.ReticleCharacter:
                 SceneManager.LoadSceneAsync("ReticleCharacter");
-                method_id = "ReticleCharacter";
+                method_id = "CHARACTER_RETICLE";
                 break;
             case Scenes.ReticleGesture:
                 SceneManager.LoadSceneAsync("ReticleGesture");
-                method_id = "ReticleGesture";
+                method_id = "GESTURE_RETICLE";
                 break;
         }
     }
@@ -172,6 +176,16 @@ public class SceneManagment : MonoBehaviour
         Scene current = SceneManager.GetActiveScene();
         SceneManager.LoadSceneAsync("MainMenu");
         SceneManager.UnloadSceneAsync(current);
+    }
+
+    private void Awake()
+    {
+
+        SceneManagment[] objs = FindObjectsOfType<SceneManagment>();
+        if (objs.Length > 1)
+        {
+            enabled = false;
+        }
     }
 
     public void Setup()

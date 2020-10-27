@@ -24,6 +24,7 @@ public class TrialDataStorage : MonoBehaviour
     private Queue<TrialData> _storedTrialData { get; set; }
     private TrialData _currentTrialData;
 
+    [SerializeField]
     TextHelper TextHelper;
 
     [SerializeField]
@@ -87,22 +88,23 @@ public class TrialDataStorage : MonoBehaviour
         if (_currentTrialData != null)
             _storedTrialData.Enqueue(_currentTrialData);
 
-        _currentTrialData = new TrialData();
-        _currentTrialData.block_num = _currentEntryProcess.currentBlock.ToString();
-        _currentTrialData.sent_num = _currentEntryProcess.currentSentence.ToString();
-        _currentTrialData.sent_text = _currentEntryProcess.currentSentenceText.ToString();
-        _currentTrialData.all_time = _measuringMetrics.full_time.ElapsedMilliseconds / 1000f;
-        _currentTrialData.removed_count = _measuringMetrics.removed_count.ToString();
-        _currentTrialData.backspace_count = _measuringMetrics.backspace_choose.ToString();
-        _currentTrialData.prediction_count = _measuringMetrics.prediction_choose.ToString();
-        _currentTrialData.search_time = (_measuringMetrics.search_time / 1000).ToString();
-        _currentTrialData.entry_time = (_measuringMetrics.entry_time / 1000).ToString();
-        _currentTrialData.removing_time = _measuringMetrics.isRemoves ? (_measuringMetrics.remove_time / 1000).ToString() : "";
-        _currentTrialData.HasError = _measuringMetrics.HasWrong;
-        _currentTrialData.search_time = (_measuringMetrics.search_time / 1000).ToString();
+        _currentTrialData = new TrialData()
+        {
+            block_num = (_currentEntryProcess.currentBlock + 1).ToString(),
+            sent_num = (_currentEntryProcess.currentSentence + 1).ToString(),
+            sent_text = _measuringMetrics.sent_text,
+            all_time = _measuringMetrics.full_time.ElapsedMilliseconds / 1000f,
+            removed_count = _measuringMetrics.removed_count.ToString(),
+            backspace_count = _measuringMetrics.backspace_choose.ToString(),
+            prediction_count = _measuringMetrics.prediction_choose.ToString(),
+            search_time = (_measuringMetrics.search_time / 1000).ToString(),
+            entry_time = (_measuringMetrics.entry_time / 1000).ToString(),
+            removing_time = _measuringMetrics.isRemoves ? (_measuringMetrics.remove_time / 1000).ToString() : "",
+            HasError = _measuringMetrics.HasWrong,
+            resp_text = TextHelper.text,
+            check_time = (_measuringMetrics.check_time / 1000).ToString()
+        };
 
-
-        _currentTrialData.resp_text = TextHelper.text;
     }
 
 

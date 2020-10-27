@@ -29,7 +29,7 @@ public class EntryProcessing : MonoBehaviour
 
     [SerializeField]
     private InputField intext;
-    
+
     public string LastTagDown { get; private set; }
 
     public UnityEvent OnSentenceInputEnd;
@@ -113,7 +113,6 @@ public class EntryProcessing : MonoBehaviour
         OnSentenceInputEnd.AddListener(() =>
         {
             Debug.Log("OnSentenceInputEnd: INVOKED");
-            server.SendToClient("clear\r\n");
 
             if (currentSentence + 1 < SENTENCE_COUNT)
                 ++currentSentence;
@@ -148,6 +147,8 @@ public class EntryProcessing : MonoBehaviour
         if (obj != null && obj.name.Equals("NextSentence"))
         {
             LastTagDown = "NextSentence";
+
+            measuringMetrics.EndSentenceInput();
 
             confirmButton.SetActive(false);
             sentenceField.SetActive(true);
@@ -185,7 +186,7 @@ public class EntryProcessing : MonoBehaviour
 
             //начало поиска первого
             measuringMetrics.search_time_sw.Restart();
-            
+
             //конец росчерка
             measuringMetrics.entry_time_sw.Stop();
             measuringMetrics.entry_time += measuringMetrics.search_time_sw.ElapsedMilliseconds;
@@ -247,11 +248,13 @@ public class EntryProcessing : MonoBehaviour
             measuringMetrics.entry_time_sw.Restart();
 
             //Первое нажатие после заучивания предложения
-            if (!menuButton.activeSelf)
+            if (!confirmButton.activeSelf)
             {
-                server.SendToClient("clear\r\n");
+                if (!String.IsNullOrEmpty(th.text))
+                    server.SendToClient("clear\r\n");
 
-                measuringMetrics.EndSentenceInput();
+                measuringMetrics.StartSentenceInput();
+                measuringMetrics.sent_text = (string)currentSentenceText.Clone();
 
                 sentenceField.SetActive(false);
                 confirmButton.SetActive(true);

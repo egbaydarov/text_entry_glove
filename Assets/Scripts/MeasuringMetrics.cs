@@ -29,17 +29,20 @@ public class MeasuringMetrics : MonoBehaviour
     public long search_time { get; set; }
     public long entry_time { get; set; }
     public long remove_time { get; set; }
-    public long check_time  => full_time.ElapsedMilliseconds - check_time - remove_time - search_time; //TODO неверно
+    public long check_time => full_time.ElapsedMilliseconds - remove_time - search_time; //TODO неверно
     public bool isRemoves { get; set; } = false;
+    public string sent_text { get; set; }
 
 
-    private string _prevValue;
+    private string _prevValue = "";
+
 
     Server server;
 
     private void Start()
     {
-        LoadPrefs();
+        if (!SceneManagment.isNew)
+            LoadPrefs();
     }
 
     private void OnApplicationQuit()
@@ -126,7 +129,7 @@ public class MeasuringMetrics : MonoBehaviour
                 HasWrong = true;
             isRemoves = true;
             removed_count += _prevValue.Length - value.Length;
-            
+
         }
 
         _prevValue = value;

@@ -159,7 +159,7 @@ public class LMPointer : GvrBasePointer
     public override void OnPointerClickDown()
     {
         
-        isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction");
+        isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction") || enterRaycastObj.tag.Equals("Backspace");
         
         Vector3 local = FakePointer.transform.parent.InverseTransformPoint
             (LastPointerHoveredResult.gameObject.GetComponent<Transform>().position);
