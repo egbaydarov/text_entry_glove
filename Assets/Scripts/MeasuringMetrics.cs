@@ -129,7 +129,6 @@ public class MeasuringMetrics : MonoBehaviour
                 HasWrong = true;
             isRemoves = true;
             removed_count += _prevValue.Length - value.Length;
-
         }
 
         _prevValue = value;

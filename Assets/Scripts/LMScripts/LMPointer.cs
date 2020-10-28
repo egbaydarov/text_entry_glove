@@ -121,7 +121,7 @@ public class LMPointer : GvrBasePointer
         SetPointerTarget(raycastResult.worldPosition, isInteractive);
         LastPointerHoveredResult = raycastResult;
 
-        if ((!raycastResult.gameObject.tag.Equals("Key") && !raycastResult.gameObject.tag.Equals("Prediction"))
+        if ((!raycastResult.gameObject.tag.Equals("Key") && !raycastResult.gameObject.tag.Equals("Prediction") && !raycastResult.gameObject.tag.Equals("Backspace"))
             || !isGestureValid)
             return;
 

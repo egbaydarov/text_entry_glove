@@ -45,16 +45,16 @@ public class TrialData
         form.Add("entry.41396143", $"{sent_text.Length}"); // Длина эталонного предложения (символов)
         form.Add("entry.1171184478", $"{sent_text.Count((x) => x == ' ') + 1}"); // Длина эталонного предложения (слов)
         form.Add("entry.2004966619", resp_text == null ? "" : resp_text.Length.ToString()); // Длина введенного испытуемым предложения (символов)
-        form.Add("entry.208575183", $"{sent_text.Count((x) => x == ' ') + 1}"); // Длина введенного испытуемым предложения (слов)
+        form.Add("entry.208575183", $"{resp_text.Count((x) => x == ' ') + 1}"); // Длина введенного испытуемым предложения (слов)
         form.Add("entry.202448380", prediction_count);  // сколько раз выбрали подсказку
         form.Add("entry.887164200", removed_count);  // количество удаленных символов
         form.Add("entry.931566926", backspace_count);  // кол-во нажатий backspace
         form.Add("entry.1363907106", LevenshteinDistance(sent_text, resp_text).ToString()); // кол-во неисправленных опечаток
         form.Add("entry.1922697097", all_time.ToString().Replace(".", ",")); // Время ввода предложения
-        form.Add("entry.1279543598", search_time); // Общее время поиска первого символа
-        form.Add("entry.938770484", entry_time);  // Общее время ввода росчерка/слова
-        form.Add("entry.1875291993", check_time); // Общее время проверки и   BUG
-        form.Add("entry.647338142", removing_time);  // Общее время удаления слова 
+        form.Add("entry.1279543598", search_time.Replace(".", ",")); // Общее время поиска первого символа
+        form.Add("entry.938770484", entry_time.Replace(".", ","));  // Общее время ввода росчерка/слова
+        form.Add("entry.1875291993", check_time.Replace(".", ",")); // Общее время проверки  //TODO BUG
+        form.Add("entry.647338142", removing_time.Replace(".", ","));  // Общее время удаления слова 
         form.Add("entry.1673523306", Math.Round(((float)resp_text.Length) * 12.0 / all_time, 2).ToString().Replace(".", ",")); // Скорость набора текста
 
         if (HasError)
