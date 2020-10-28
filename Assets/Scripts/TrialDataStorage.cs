@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class TrialDataStorage : MonoBehaviour
 {
-    
+
     [Serializable]
     private struct SerializableWrapper
     {
@@ -19,10 +19,19 @@ public class TrialDataStorage : MonoBehaviour
 
         public TrialData[] AllTrialsData;
     }
-    
 
-    private Queue<TrialData> _storedTrialData;
+
+    private Queue<TrialData> _storedTrialData { get; set; }
     private TrialData _currentTrialData;
+
+    [SerializeField]
+    TextHelper TextHelper;
+
+    [SerializeField]
+    private EntryProcessing _currentEntryProcess;
+
+    [SerializeField]
+    private MeasuringMetrics _measuringMetrics;
 
     private const string FILE_NAME = "/AllTrialData.json";
 
@@ -36,7 +45,7 @@ public class TrialDataStorage : MonoBehaviour
     void Awake()
     {
         try
-        { 
+        {
             StreamReader reader = new StreamReader(Application.persistentDataPath + FILE_NAME, System.Text.Encoding.UTF8);
             string json = reader.ReadToEnd();
             if (json.Length > 0)
@@ -46,6 +55,8 @@ public class TrialDataStorage : MonoBehaviour
             }
             else
                 _storedTrialData = new Queue<TrialData>();
+
+            TextHelper = FindObjectOfType<TextHelper>();
 
         }
         catch (Exception e)
@@ -72,32 +83,30 @@ public class TrialDataStorage : MonoBehaviour
     }
 
     public void NextTrial()
-    {MeasuringMetrics.Finish();
-        
+    {
         // Fool proffing
         if (_currentTrialData != null)
             _storedTrialData.Enqueue(_currentTrialData);
 
-        _currentTrialData = new TrialData();
-        _currentTrialData.block_num = EntryProcessing.currentBlock;
-        _currentTrialData.sent_num = EntryProcessing.currentSentence;
-        _currentTrialData.sent_text = EntryProcessing.currentSentenceText;
-        _currentTrialData.all_time = ((float) MeasuringMetrics.all_time.ElapsedMilliseconds / 1000);
-        _currentTrialData.gest_time = (((float) MeasuringMetrics.gest_time.ElapsedMilliseconds) / 1000);
-        _currentTrialData.move_time = MeasuringMetrics.all_move_time;
-        _currentTrialData.choose_time = MeasuringMetrics.all_choose_time;
-        _currentTrialData.fix_choose_time = MeasuringMetrics.all_fix_choose_time;
-        _currentTrialData.wait_time = (((float) MeasuringMetrics.wait_time.ElapsedMilliseconds) / 1000);
-        StartCoroutine(OnlyWait());
-        _currentTrialData.resp_text = TextHelper.text;
-        
-        MeasuringMetrics.ResetTime();
+        _currentTrialData = new TrialData()
+        {
+            block_num = (_currentEntryProcess.currentBlock + 1).ToString(),
+            sent_num = (_currentEntryProcess.currentSentence + 1).ToString(),
+            sent_text = _measuringMetrics.sent_text,
+            all_time = _measuringMetrics.full_time.ElapsedMilliseconds / 1000f,
+            removed_count = _measuringMetrics.removed_count.ToString(),
+            backspace_count = _measuringMetrics.backspace_choose.ToString(),
+            prediction_count = _measuringMetrics.prediction_choose.ToString(),
+            search_time = (_measuringMetrics.search_time / 1000).ToString(),
+            entry_time = (_measuringMetrics.entry_time / 1000).ToString(),
+            removing_time = _measuringMetrics.isRemoves ? (_measuringMetrics.remove_time / 1000).ToString() : "",
+            HasError = _measuringMetrics.HasWrong,
+            resp_text = TextHelper.text,
+            check_time = (_measuringMetrics.check_time / 1000).ToString()
+        };
+
     }
 
-    public IEnumerator OnlyWait()
-    {
-        yield return new WaitForSeconds(2);
-    }
 
     public IEnumerator Wait()
     {
@@ -108,12 +117,12 @@ public class TrialDataStorage : MonoBehaviour
             _currentTrialData = null;
             Debug.Log("Saved current Trial Data");
         }
-        
+
         //Debug.Log("NOT saved current Trial Data");
         if (IsThereUnsavedData())
             StartCoroutine(TryToSaveToGoogleSheets());
     }
-    
+
     public void Save()
     {
         StartCoroutine(Wait());
@@ -122,8 +131,8 @@ public class TrialDataStorage : MonoBehaviour
     private IEnumerator TryToSaveToGoogleSheets()
     {
         TrialData earliestData = _storedTrialData.Peek();
-        
-        if(earliestData==null)
+
+        if (earliestData == null)
             Debug.Log("Null in earliestdata");
 
         using (UnityWebRequest www = UnityWebRequest.Post(TrialData.GetFormURI(), earliestData.GetFormFields()))

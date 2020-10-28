@@ -13,6 +13,7 @@ TagManager:
   - Prediction
   - MiddleFinger
   - ThumbFinger
+  - Backspace
   layers:
   - Default
   - TransparentFX

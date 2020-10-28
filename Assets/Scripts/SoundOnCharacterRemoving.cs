@@ -34,9 +34,14 @@ public class SoundOnCharacterRemoving : MonoBehaviour
         if (!enabled)
             return;
 
+
         if (prevValue.Length > value.Length)
+        {
             audio.PlayOneShot(soundToPlay);
+        }
 
         prevValue = value;
     }
+
+  
 }
