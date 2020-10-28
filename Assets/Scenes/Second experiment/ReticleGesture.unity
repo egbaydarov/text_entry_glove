@@ -1468,7 +1468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed7d71f7d326514ca87212ee0faac88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: {fileID: 0}
+  audio: {fileID: 1922753977}
   soundToPlay: {fileID: 8300000, guid: c06c368f193269d458a52422f062d171, type: 3}
 --- !u!114 &352458878
 MonoBehaviour:
@@ -2706,28 +2706,6 @@ MonoBehaviour:
   OnBlockInputEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 885768150}
-        m_MethodName: NextTrial
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 885768150}
-        m_MethodName: Save
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 2037215425}
         m_MethodName: set_isInputEnd
         m_Mode: 6
@@ -2753,39 +2731,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 885768150}
-        m_MethodName: NextTrial
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 885768150}
-        m_MethodName: Save
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2037215425}
-        m_MethodName: set_isInputEnd
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
   OnMenuClicked:
     m_PersistentCalls:
       m_Calls:
@@ -2807,6 +2752,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   sentences: {fileID: 4900000, guid: cc2edd29f68030b468a31515b1b431b4, type: 3}
+  currentBlock: 0
+  currentSentence: 0
+  currentSentenceText: 
   disablePinch:
     m_PersistentCalls:
       m_Calls:
@@ -2925,7 +2873,40 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 728724463}
-        m_MethodName: OnNextClicked
+        m_MethodName: OnBackspaceDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 728724463}
+        m_MethodName: OnKeyboardDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 728724463}
+        m_MethodName: OnNextDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 728724463}
+        m_MethodName: OnPredictionDown
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2940,6 +2921,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 728724463}
         m_MethodName: OnMenuClickedUp
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 728724463}
+        m_MethodName: OnBackspaceUp
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3086,7 +3078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed7d71f7d326514ca87212ee0faac88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: {fileID: 0}
+  audio: {fileID: 1922753977}
   soundToPlay: {fileID: 8300000, guid: c06c368f193269d458a52422f062d171, type: 3}
 --- !u!114 &782081942
 MonoBehaviour:
@@ -3617,6 +3609,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FORM_URL: https://docs.google.com/forms/u/0/d/e/1FAIpQLScWlRx70e3SICI3YnnIJSOVPJ3jGoORoAdh-NvsTnuTtVpqkw/formResponse
+  _currentEntryProcessing: {fileID: 728724463}
 --- !u!114 &885768150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3629,6 +3622,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bc176523d1e66a46811728cfd488c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TextHelper: {fileID: 1559849406}
+  _currentEntryProcess: {fileID: 728724463}
+  _measuringMetrics: {fileID: 885768149}
 --- !u!1 &930367739
 GameObject:
   m_ObjectHideFlags: 0
@@ -5836,6 +5832,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 885768149}
+        m_MethodName: OnCharacterRemoving
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
@@ -7047,9 +7054,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TextField: {fileID: 1436990160}
-  prediction0: {fileID: 1451259412}
-  prediction1: {fileID: 1283810376}
-  prediction2: {fileID: 189232286}
 --- !u!114 &1559849407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8618,7 +8622,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed7d71f7d326514ca87212ee0faac88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: {fileID: 0}
+  audio: {fileID: 1922753977}
   soundToPlay: {fileID: 8300000, guid: c06c368f193269d458a52422f062d171, type: 3}
 --- !u!114 &1939111457
 MonoBehaviour:
@@ -9834,7 +9838,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed7d71f7d326514ca87212ee0faac88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: {fileID: 0}
+  audio: {fileID: 1922753977}
   soundToPlay: {fileID: 8300000, guid: c06c368f193269d458a52422f062d171, type: 3}
 --- !u!114 &2101088506
 MonoBehaviour:
