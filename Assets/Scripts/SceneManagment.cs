@@ -12,6 +12,7 @@ public class SceneManagment : MonoBehaviour
     public static bool isMain = false;
     public static bool isNew = false;
     public static string method_id = null;
+    public static bool IsSingleCharacterInput;
 
     public void Start()
     {
@@ -39,6 +40,8 @@ public class SceneManagment : MonoBehaviour
 #endif
     }
 
+
+
     public void Train()
     {
         isMain = false;
@@ -59,18 +62,22 @@ public class SceneManagment : MonoBehaviour
             case Scenes.GazeCharacter:
                 SceneManager.LoadSceneAsync("GazeCharacter");
                 method_id = "CHARACTER_GAZE";
+                IsSingleCharacterInput = true;
                 break;
             case Scenes.GazeGesture:
                 SceneManager.LoadSceneAsync("GazeGesture");
+                IsSingleCharacterInput = false;
                 method_id = "GESTURE_GAZE";
                 break;
             case Scenes.ReticleCharacter:
                 SceneManager.LoadSceneAsync("ReticleCharacter");
                 method_id = "CHARACTER_RETICLE";
+                IsSingleCharacterInput = true;
                 break;
             case Scenes.ReticleGesture:
                 SceneManager.LoadSceneAsync("ReticleGesture");
                 method_id = "GESTURE_RETICLE";
+                IsSingleCharacterInput = false;
                 break;
         }
 
@@ -114,18 +121,22 @@ public class SceneManagment : MonoBehaviour
             case Scenes.GazeCharacter:
                 SceneManager.LoadSceneAsync("GazeCharacter");
                 method_id = "CHARACTER_GAZE";
+                IsSingleCharacterInput = true;
                 break;
             case Scenes.GazeGesture:
                 SceneManager.LoadSceneAsync("GazeGesture");
+                IsSingleCharacterInput = false;
                 method_id = "GESTURE_GAZE";
                 break;
             case Scenes.ReticleCharacter:
                 SceneManager.LoadSceneAsync("ReticleCharacter");
                 method_id = "CHARACTER_RETICLE";
+                IsSingleCharacterInput = true;
                 break;
             case Scenes.ReticleGesture:
                 SceneManager.LoadSceneAsync("ReticleGesture");
                 method_id = "GESTURE_RETICLE";
+                IsSingleCharacterInput = false;
                 break;
         }
     }

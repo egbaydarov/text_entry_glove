@@ -19,7 +19,9 @@ public class MeasuringMetrics : MonoBehaviour
 
     public Stopwatch full_time { get; set; } = new Stopwatch();
     public Stopwatch search_time_sw { get; set; } = new Stopwatch();
+    public Stopwatch search_time_sw_single { get; set; } = new Stopwatch();
     public Stopwatch entry_time_sw { get; set; } = new Stopwatch();
+    public Stopwatch entry_time_sw_single { get; set; } = new Stopwatch();
     public Stopwatch remove_time_sw { get; set; } = new Stopwatch();
     public Stopwatch check_time_sw { get; set; } = new Stopwatch();
     public int prediction_choose { get; set; }
@@ -27,9 +29,11 @@ public class MeasuringMetrics : MonoBehaviour
     public int removed_count { get; set; }
     public bool HasWrong { get; set; }
     public long search_time { get; set; }
+    public long search_time_single { get; set; }
     public long entry_time { get; set; }
+    public long entry_time_single { get; set; }
     public long remove_time { get; set; }
-    public long check_time => full_time.ElapsedMilliseconds - remove_time - search_time; //TODO неверно
+    public long check_time { get; set; }
     public bool isRemoves { get; set; } = false;
     public string sent_text { get; set; }
 
@@ -107,12 +111,19 @@ public class MeasuringMetrics : MonoBehaviour
     public void ResetAll()
     {
         full_time.Reset();
+        search_time_sw.Reset();
+        entry_time_sw.Reset();
+        remove_time_sw.Reset();
+        check_time_sw.Reset();
         prediction_choose = 0;
         backspace_choose = 0;
         removed_count = 0;
-        isRemoves = false;
         entry_time = 0;
         search_time = 0;
+        remove_time = 0;
+
+        //check_time = 0; //TODO
+        isRemoves = false;
         HasWrong = false;
     }
 
@@ -123,7 +134,7 @@ public class MeasuringMetrics : MonoBehaviour
 
     public void OnCharacterRemoving(string value)
     {
-        if (!_currentEntryProcessing.LastTagDown.Equals("Prediction") && _prevValue.Length > value.Length)
+        if (_currentEntryProcessing.LastTagDown.Equals("Backspace") && _prevValue.Length > value.Length)
         {
             if (value.Length != 0 && value[value.Length - 1] != ' ')
                 HasWrong = true;
