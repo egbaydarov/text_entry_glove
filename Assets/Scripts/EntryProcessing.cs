@@ -151,6 +151,7 @@ public class EntryProcessing : MonoBehaviour
             measuringMetrics.EndSentenceInput();
             measuringMetrics.check_time = measuringMetrics.check_time_sw.ElapsedMilliseconds;
 
+
             confirmButton.SetActive(false);
             sentenceField.SetActive(true);
 
@@ -195,6 +196,7 @@ public class EntryProcessing : MonoBehaviour
             measuringMetrics.entry_time_sw.Stop();
             measuringMetrics.entry_time += measuringMetrics.search_time_sw.ElapsedMilliseconds;
             measuringMetrics.entry_time_sw.Reset();
+
 
             //для посимвольного, завершение ввода
             measuringMetrics.entry_time_sw_single.Stop();
@@ -247,6 +249,7 @@ public class EntryProcessing : MonoBehaviour
 
             //начало поиска первого (посимвольный)
             measuringMetrics.search_time_sw_single.Restart();
+
         }
     }
 
@@ -271,6 +274,7 @@ public class EntryProcessing : MonoBehaviour
             measuringMetrics.entry_time_sw.Restart();
             measuringMetrics.entry_time_sw_single.Start();
 
+
             //Первое нажатие после заучивания предложения
             if (!confirmButton.activeSelf)
             {
@@ -286,6 +290,7 @@ public class EntryProcessing : MonoBehaviour
         }
     }
 
+
     public void OnSpaceDown(GameObject obj, PointerEventData pointerData)
     {
         if (obj != null && obj.name.Equals("Space") && !menuButton.activeSelf)
@@ -299,6 +304,7 @@ public class EntryProcessing : MonoBehaviour
             measuringMetrics.entry_time_sw_single.Reset();
         }
     }
+
     private void Awake()
     {
         server = FindObjectOfType<Server>();
@@ -319,6 +325,7 @@ public class EntryProcessing : MonoBehaviour
         menuButton.SetActive(true);
     }
 
+
     public void OnPointerEnter(GameObject obj, PointerEventData pointerData)
     {
         if (obj.name.Equals("CanvasInputField") || obj.name.Equals("NextSentence") || obj.CompareTag("Prediction"))
@@ -334,4 +341,5 @@ public class EntryProcessing : MonoBehaviour
             measuringMetrics.check_time_sw.Stop();
         }
     }
+
 }

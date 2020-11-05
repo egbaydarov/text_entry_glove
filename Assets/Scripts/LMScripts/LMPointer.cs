@@ -1,6 +1,9 @@
-﻿using Boo.Lang;
-using Leap.Unity;
+﻿using Leap.Unity;
 using LeapMotionGesture;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using TextEntry;
 using TMPro;
 using UnityEngine;
@@ -8,6 +11,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using Valve.VR.InteractionSystem;
+using Debug = UnityEngine.Debug;
 
 [RequireComponent(typeof(TrailRender))]
 [HelpURL("https://developers.google.com/vr/unity/reference/class/GvrReticlePointer")]
@@ -20,10 +24,17 @@ public class LMPointer : GvrBasePointer
 
 
     Server server;
+    Stopwatch pressTime = new Stopwatch();
     GameObject enterRaycastObj;
     private Transform trLocal;
     private GameObject canvas;
     TrailRender trRander;
+
+    [SerializeField]
+    int delay = 100;
+
+
+
 
     /// <summary>
     /// The constants below are expsed for testing. Minimum inner angle of the reticle (in degrees).
@@ -96,6 +107,30 @@ public class LMPointer : GvrBasePointer
 
     public GameObject FakePointer;
     RaycastResult LastPointerHoveredResult;
+    List<KeyValuePair<float, RaycastResult>> LastPointersHovered = new List<KeyValuePair<float, RaycastResult>>();
+
+    public void AddRaycastPoint(float seconds, RaycastResult raycastResult)
+    {
+        if (LastPointersHovered.Count > 240)
+            LastPointersHovered.RemoveRange(0, 120);
+        LastPointersHovered.Add(new KeyValuePair<float, RaycastResult>(seconds, raycastResult));
+    }
+
+    public RaycastResult GetClosestRaycast(int delay)
+    {
+        int index = -1;
+        float border = LastPointersHovered.Last().Key - delay / 1000.0f;
+        for (int i = 0; i < LastPointersHovered.Count; i++)
+        {
+            if (LastPointersHovered[i].Key >= border)
+            {
+                index = i;
+                break;
+            }
+        }
+        return LastPointersHovered[index].Value;
+    }
+
     public ReticleMode mReticleMode = ReticleMode.StaticDot;
 
 
@@ -117,11 +152,13 @@ public class LMPointer : GvrBasePointer
     /// <inheritdoc/>
     public override void OnPointerHover(RaycastResult raycastResult, bool isInteractive)
     {
+        //Debug.Log("rEticle name:" + gameObject.name);
 
         SetPointerTarget(raycastResult.worldPosition, isInteractive);
         LastPointerHoveredResult = raycastResult;
+        AddRaycastPoint(Time.time, raycastResult);
 
-        if ((!raycastResult.gameObject.tag.Equals("Key") && !raycastResult.gameObject.tag.Equals("Prediction") && !raycastResult.gameObject.tag.Equals("Backspace"))
+        if ((!raycastResult.gameObject.tag.Equals("Key") && !raycastResult.gameObject.tag.Equals("Prediction"))
             || !isGestureValid)
             return;
 
@@ -138,6 +175,7 @@ public class LMPointer : GvrBasePointer
             float y = trLocal.InverseTransformPoint(trailPoint.transform.position).y;
             x = (float)(x * server.coef_x + server.keyboard_x / 2.0);
             y = (float)(-y * server.coef_y + server.screen_y - (server.keyboard_y / 2.0));
+            UnityEngine.Debug.Log("SEND X:" + x + " Y:" + y);
 
             if (trRander.trailPoints.Count == 1 && server.IsConnected && isGestureValid && !isInputEnd)
                 server.SendToClient($"d;{(int)(x)};{(int)(y)};\r\n");
@@ -158,17 +196,35 @@ public class LMPointer : GvrBasePointer
     /// <inheritdoc/>
     public override void OnPointerClickDown()
     {
-        
+        if (enterRaycastObj.tag.Equals("Backspace"))
+            pressTime.Restart();
         isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction") || enterRaycastObj.tag.Equals("Backspace");
+        Vector3 local;
+        if (SceneManager.GetActiveScene().name == "GazeGesture" || SceneManager.GetActiveScene().name == "GazeCharacter")
+        {
+            local = FakePointer.transform.parent.InverseTransformPoint
+                                                                                    //(LastPointerHoveredResult.gameObject.GetComponent<Transform>().position); // - centre
+                                                                                    (GetClosestRaycast(delay).gameObject.GetComponent<Transform>().position);
+        }
+        else
+        {
+            local = FakePointer.transform.parent.InverseTransformPoint
+                                                                                         //(LastPointerHoveredResult.gameObject.GetComponent<Transform>().position); // - centre
+                                                                                         //(GetClosestRaycast(delay).gameObject.GetComponent<Transform>().position);
+            (LastPointerHoveredResult.worldPosition);
+        }
 
-        Vector3 local = FakePointer.transform.parent.InverseTransformPoint
-            (LastPointerHoveredResult.gameObject.GetComponent<Transform>().position);
         FakePointer.transform.localPosition = new Vector3(local.x, local.y, 0);
+
+      
+
     }
 
     /// <inheritdoc/>
     public override void OnPointerClickUp()
     {
+
+        pressTime.Reset();
         string data = "";
 
         foreach (var tp in trRander.trailPoints)
@@ -260,7 +316,7 @@ public class LMPointer : GvrBasePointer
     {
         base.Start();
 
-        if(FakePointer == null)
+        if (FakePointer == null)
         {
             enabled = false;
             Debug.LogError("FakePointer doesn't set");
@@ -294,6 +350,24 @@ public class LMPointer : GvrBasePointer
     private void Update()
     {
         UpdateDiameters();
+        if (enterRaycastObj.tag.Equals("Backspace") && pressTime.ElapsedMilliseconds>2000)
+        {
+            Debug.Log("BACKSPACE");
+            int y = 1545;
+            int x = 1050;
+            server.SendToClient($"d;{(int)(x)};{(int)(y)};\r\n");
+            for (int i = 0; i < 200; i++)
+            {
+                x = 1050 - i;
+                //if (trRander.trailPoints.Count == 1 && server.IsConnected && isGestureValid && !isInputEnd)
+                // server.SendToClient($"d;{(int)(x)};{(int)(y)};\r\n");
+                // else if (++hoverCounter % 1 == 0 && server.IsConnected && isGestureValid && !isInputEnd)
+                server.SendToClient($"{(int)(x)};{(int)(y)};\r\n");
+                StartCoroutine(Wait());
+            }
+            pressTime.Reset();
+            server.SendToClient($"u;\r\n");
+        }
     }
 
     /// @endcond
@@ -394,4 +468,11 @@ public class LMPointer : GvrBasePointer
         StaticDot,
         DynamicDot
     }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds((float)0.02);
+    }
+
+
 }
