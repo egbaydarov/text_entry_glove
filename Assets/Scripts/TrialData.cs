@@ -36,6 +36,12 @@ public class TrialData
     {
         Dictionary<string, string> form = new Dictionary<string, string>();
 
+        if(sent_text == null)
+        {
+            Debug.LogWarning("Wrong state of TrialData");
+            return form;
+        }
+
         form.Add("entry.507185938", Settings.id.ToString()); // Идентификатор испытуемого
         form.Add("entry.582005842", SceneManagment.method_id); // Идентификатор техники взаимодействия
         form.Add("entry.347604535", block_num); // Номер блока предложений
@@ -53,7 +59,7 @@ public class TrialData
         form.Add("entry.1922697097", all_time.ToString().Replace(".", ",")); // Время ввода предложения
         form.Add("entry.1279543598", search_time.Replace(".", ",")); // Общее время поиска первого символа
         form.Add("entry.938770484", entry_time.Replace(".", ","));  // Общее время ввода росчерка/слова
-        form.Add("entry.1875291993", check_time.Replace(".", ",")); // Общее время проверки  //TODO BUG
+        form.Add("entry.1875291993", check_time.Replace(".", ",")); // Общее время проверки
         form.Add("entry.647338142", removing_time.Replace(".", ","));  // Общее время удаления слова 
         form.Add("entry.1673523306", Math.Round(((float)resp_text.Length) * 12.0 / all_time, 2).ToString().Replace(".", ",")); // Скорость набора текста
 
