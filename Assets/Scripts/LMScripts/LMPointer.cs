@@ -350,7 +350,13 @@ public class LMPointer : GvrBasePointer
     private void Update()
     {
         UpdateDiameters();
-        if (enterRaycastObj.tag.Equals("Backspace") && pressTime.ElapsedMilliseconds>2000)
+        //Backspace();
+    }
+
+    public void Backspace()
+    {
+   
+        if (enterRaycastObj.tag.Equals("Backspace") && pressTime.ElapsedMilliseconds > 2000)
         {
             Debug.Log("BACKSPACE");
             int y = 1545;

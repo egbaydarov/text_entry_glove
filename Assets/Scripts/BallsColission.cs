@@ -9,6 +9,7 @@ public class BallsColission : MonoBehaviour
     public UnityEvent OnBigBallEnter;
     public UnityEvent OnMiddleSmallBallEnter;
     public UnityEvent OnMiddleBigBallEnter;
+    SceneManagment sm;
 
     void Start()
     {
@@ -20,22 +21,26 @@ public class BallsColission : MonoBehaviour
     {
         
     }
+    private void Awake()
+    {
+        sm = FindObjectOfType<SceneManagment>();
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
         switch (collision.gameObject.name)
         {
             case "big":
-                OnBigBallEnter.Invoke();
+                sm.ContinueExperiment();
                 break;
             case "small":
-                OnSmallBallEnter.Invoke();
+                sm.StartExperiment();
                 break;
             case "middlesmall":
-                OnMiddleSmallBallEnter.Invoke();
+                sm.Exit();
                 break;
             case "middlebig":
-                OnMiddleBigBallEnter.Invoke();
+                sm.Train();
                 break;
             default:
                 break;

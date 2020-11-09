@@ -194,13 +194,12 @@ public class EntryProcessing : MonoBehaviour
 
             //конец росчерка
             measuringMetrics.entry_time_sw.Stop();
-            measuringMetrics.entry_time += measuringMetrics.search_time_sw.ElapsedMilliseconds;
+            measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;
             measuringMetrics.entry_time_sw.Reset();
-
 
             //для посимвольного, завершение ввода
             measuringMetrics.entry_time_sw_single.Stop();
-            measuringMetrics.entry_time_single += measuringMetrics.search_time_sw_single.ElapsedMilliseconds;
+            measuringMetrics.entry_time_single += measuringMetrics.entry_time_sw_single.ElapsedMilliseconds;
             measuringMetrics.entry_time_sw_single.Reset();
 
             OnPredictionClicked.Invoke();
@@ -219,12 +218,12 @@ public class EntryProcessing : MonoBehaviour
 
             //конец росчерка
             measuringMetrics.entry_time_sw.Stop();
-            measuringMetrics.entry_time += measuringMetrics.search_time_sw.ElapsedMilliseconds;
+            measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;
             measuringMetrics.entry_time_sw.Reset();
 
             //для посимвольного, завершение ввода
             measuringMetrics.entry_time_sw_single.Stop();
-            measuringMetrics.entry_time_single += measuringMetrics.search_time_sw_single.ElapsedMilliseconds;
+            measuringMetrics.entry_time_single += measuringMetrics.entry_time_sw_single.ElapsedMilliseconds;
             measuringMetrics.entry_time_sw_single.Reset();
 
             //начало нажатия на backspace
@@ -249,7 +248,6 @@ public class EntryProcessing : MonoBehaviour
 
             //начало поиска первого (посимвольный)
             measuringMetrics.search_time_sw_single.Restart();
-
         }
     }
 
@@ -300,7 +298,7 @@ public class EntryProcessing : MonoBehaviour
 
             //для посимвольного, завершение ввода
             measuringMetrics.entry_time_sw_single.Stop();
-            measuringMetrics.entry_time_single += measuringMetrics.search_time_sw_single.ElapsedMilliseconds;
+            measuringMetrics.entry_time_single += measuringMetrics.entry_time_sw_single.ElapsedMilliseconds;
             measuringMetrics.entry_time_sw_single.Reset();
         }
     }
