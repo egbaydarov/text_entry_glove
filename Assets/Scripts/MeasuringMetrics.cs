@@ -112,8 +112,11 @@ public class MeasuringMetrics : MonoBehaviour
     {
         full_time.Reset();
         search_time_sw.Reset();
+        search_time_sw_single.Reset();
+        entry_time_sw_single.Reset();
         entry_time_sw.Reset();
         remove_time_sw.Reset();
+        check_time_sw.Reset();
         check_time_sw.Reset();
         prediction_choose = 0;
         backspace_choose = 0;

@@ -84,9 +84,9 @@ public class TrialDataStorage : MonoBehaviour
 
     public void NextTrial()
     {
-        // Fool proffing
-        if (_currentTrialData != null)
-            _storedTrialData.Enqueue(_currentTrialData);
+        //// Fool proffing
+        //if (_currentTrialData != null)
+        //    _storedTrialData.Enqueue(_currentTrialData);
 
         _currentTrialData = new TrialData()
         {
@@ -109,8 +109,6 @@ public class TrialDataStorage : MonoBehaviour
         {
             _currentTrialData.search_time = (_measuringMetrics.search_time_single / 1000f).ToString();
             _currentTrialData.entry_time = (_measuringMetrics.entry_time_single / 1000f).ToString();
-
-
         }
 
     }

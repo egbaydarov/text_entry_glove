@@ -31,6 +31,7 @@ public class EntryProcessing : MonoBehaviour
     private InputField intext;
 
     public string LastTagDown { get; private set; }
+    bool isFirstSingleKeyDown { get; set; }
 
     public UnityEvent OnSentenceInputEnd;
     public UnityEvent OnBlockInputEnd;
@@ -151,6 +152,10 @@ public class EntryProcessing : MonoBehaviour
             measuringMetrics.EndSentenceInput();
             measuringMetrics.check_time = measuringMetrics.check_time_sw.ElapsedMilliseconds;
 
+            //для посимвольного, завершение ввода
+            measuringMetrics.entry_time_sw_single.Stop();
+            measuringMetrics.entry_time_single += measuringMetrics.entry_time_sw_single.ElapsedMilliseconds;
+            measuringMetrics.entry_time_sw_single.Restart();
 
             confirmButton.SetActive(false);
             sentenceField.SetActive(true);
@@ -192,17 +197,18 @@ public class EntryProcessing : MonoBehaviour
             //начало поиска первого (посимвольный)
             measuringMetrics.search_time_sw_single.Restart();
 
-            //конец росчерка
+            //mmetrics end gesture(2)
             measuringMetrics.entry_time_sw.Stop();
             measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;
-            measuringMetrics.entry_time_sw.Reset();
+            measuringMetrics.entry_time_sw.Restart();
 
             //для посимвольного, завершение ввода
             measuringMetrics.entry_time_sw_single.Stop();
             measuringMetrics.entry_time_single += measuringMetrics.entry_time_sw_single.ElapsedMilliseconds;
-            measuringMetrics.entry_time_sw_single.Reset();
+            measuringMetrics.entry_time_sw_single.Restart();
 
             OnPredictionClicked.Invoke();
+            isFirstSingleKeyDown = true;
         }
     }
 
@@ -216,20 +222,11 @@ public class EntryProcessing : MonoBehaviour
             //счетчик нажатий на подсказку
             ++measuringMetrics.backspace_choose;
 
-            //конец росчерка
-            measuringMetrics.entry_time_sw.Stop();
-            measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;
-            measuringMetrics.entry_time_sw.Reset();
-
-            //для посимвольного, завершение ввода
-            measuringMetrics.entry_time_sw_single.Stop();
-            measuringMetrics.entry_time_single += measuringMetrics.entry_time_sw_single.ElapsedMilliseconds;
-            measuringMetrics.entry_time_sw_single.Reset();
-
             //начало нажатия на backspace
             measuringMetrics.remove_time_sw.Start();
 
             OnBackspaceClicked.Invoke();
+            isFirstSingleKeyDown = true;
         }
     }
 
@@ -246,8 +243,20 @@ public class EntryProcessing : MonoBehaviour
             // начало поиска первого
             measuringMetrics.search_time_sw.Restart();
 
+            //mmetrics end gesture(3)
+            measuringMetrics.entry_time_sw.Stop();
+            measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;
+            measuringMetrics.entry_time_sw.Restart();
+
             //начало поиска первого (посимвольный)
             measuringMetrics.search_time_sw_single.Restart();
+
+            //для посимвольного, завершение ввода
+            measuringMetrics.entry_time_sw_single.Stop();
+            measuringMetrics.entry_time_single += measuringMetrics.entry_time_sw_single.ElapsedMilliseconds;
+            measuringMetrics.entry_time_sw_single.Restart();
+
+            isFirstSingleKeyDown = true;
         }
     }
 
@@ -259,18 +268,18 @@ public class EntryProcessing : MonoBehaviour
         {
             LastTagDown = "Key";
 
-            //конец поиска первого
-            measuringMetrics.search_time_sw.Stop();
-            measuringMetrics.search_time += measuringMetrics.search_time_sw.ElapsedMilliseconds;
-            measuringMetrics.search_time_sw.Reset();
+            
 
-            //конец поиска первого (посимвольный)
-            measuringMetrics.search_time_sw_single.Stop();
-            measuringMetrics.search_time_single += measuringMetrics.search_time_sw_single.ElapsedMilliseconds;
-            measuringMetrics.search_time_sw_single.Reset();
+            if (isFirstSingleKeyDown)
+            {
+                measuringMetrics.entry_time_sw_single.Restart();
 
-            measuringMetrics.entry_time_sw.Restart();
-            measuringMetrics.entry_time_sw_single.Start();
+                //конец поиска первого (посимвольный)
+                measuringMetrics.search_time_sw_single.Stop();
+                measuringMetrics.search_time_single += measuringMetrics.search_time_sw_single.ElapsedMilliseconds;
+                measuringMetrics.search_time_sw_single.Reset();
+                isFirstSingleKeyDown = false;
+            }
 
 
             //Первое нажатие после заучивания предложения
@@ -278,6 +287,8 @@ public class EntryProcessing : MonoBehaviour
             {
                 if (!String.IsNullOrEmpty(th.text))
                     server.SendToClient("clear\r\n");
+
+                measuringMetrics.entry_time_sw_single.Restart();
 
                 measuringMetrics.StartSentenceInput();
                 measuringMetrics.sent_text = (string)currentSentenceText.Clone();
@@ -299,7 +310,9 @@ public class EntryProcessing : MonoBehaviour
             //для посимвольного, завершение ввода
             measuringMetrics.entry_time_sw_single.Stop();
             measuringMetrics.entry_time_single += measuringMetrics.entry_time_sw_single.ElapsedMilliseconds;
-            measuringMetrics.entry_time_sw_single.Reset();
+            measuringMetrics.entry_time_sw_single.Restart();
+
+            isFirstSingleKeyDown = true;
         }
     }
 
@@ -326,17 +339,23 @@ public class EntryProcessing : MonoBehaviour
 
     public void OnPointerEnter(GameObject obj, PointerEventData pointerData)
     {
+        Debug.Log($"HIGHLIGHT TAG {obj.tag} NAME: {obj.name}");
         if (obj.name.Equals("CanvasInputField") || obj.name.Equals("NextSentence") || obj.CompareTag("Prediction"))
         {
             measuringMetrics.check_time_sw.Start();
+            Debug.Log("HIGHLIGHT CHECK TIME MEASURING STARTED");
         }
     }
 
     public void OnPointerExit(GameObject obj, PointerEventData pointerData)
     {
-        if (obj.name.Equals("CanvasKeyboard"))
+        Debug.Log($"HIGHLIGHT TAG {obj.tag} NAME: {obj.name}");
+        if (obj.name.Equals("CanvasInputField") || obj.name.Equals("NextSentence") || obj.CompareTag("Prediction"))
         {
             measuringMetrics.check_time_sw.Stop();
+            Debug.Log("HIGHLIGHT CHECK TIME MEASURING ENDED");
+            // начало поиска первого
+            measuringMetrics.search_time_sw.Restart();
         }
     }
 

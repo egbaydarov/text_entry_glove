@@ -165,18 +165,22 @@ public class SceneManagment : MonoBehaviour
             case Scenes.GazeCharacter:
                 SceneManager.LoadSceneAsync("GazeCharacter");
                 method_id = "CHARACTER_GAZE";
+                IsSingleCharacterInput = true;
                 break;
             case Scenes.GazeGesture:
                 SceneManager.LoadSceneAsync("GazeGesture");
+                IsSingleCharacterInput = false;
                 method_id = "GESTURE_GAZE";
                 break;
             case Scenes.ReticleCharacter:
                 SceneManager.LoadSceneAsync("ReticleCharacter");
                 method_id = "CHARACTER_RETICLE";
+                IsSingleCharacterInput = true;
                 break;
             case Scenes.ReticleGesture:
                 SceneManager.LoadSceneAsync("ReticleGesture");
                 method_id = "GESTURE_RETICLE";
+                IsSingleCharacterInput = false;
                 break;
         }
     }
