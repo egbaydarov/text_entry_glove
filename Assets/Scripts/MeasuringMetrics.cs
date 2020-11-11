@@ -122,7 +122,9 @@ public class MeasuringMetrics : MonoBehaviour
         backspace_choose = 0;
         removed_count = 0;
         entry_time = 0;
+        entry_time_single = 0;
         search_time = 0;
+        search_time_single = 0;
         remove_time = 0;
 
         //check_time = 0; //TODO
@@ -137,6 +139,9 @@ public class MeasuringMetrics : MonoBehaviour
 
     public void OnCharacterRemoving(string value)
     {
+        if (value == null)
+            return;
+
         if (_currentEntryProcessing.LastTagDown.Equals("Backspace") && _prevValue.Length > value.Length)
         {
             if (value.Length != 0 && value[value.Length - 1] != ' ')

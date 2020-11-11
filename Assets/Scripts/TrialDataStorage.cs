@@ -105,7 +105,7 @@ public class TrialDataStorage : MonoBehaviour
             check_time = (_measuringMetrics.check_time / 1000f).ToString()
         };
 
-        if(SceneManagment.IsSingleCharacterInput)
+        if (SceneManagment.IsSingleCharacterInput)
         {
             _currentTrialData.search_time = (_measuringMetrics.search_time_single / 1000f).ToString();
             _currentTrialData.entry_time = (_measuringMetrics.entry_time_single / 1000f).ToString();
@@ -138,28 +138,38 @@ public class TrialDataStorage : MonoBehaviour
     {
         TrialData earliestData = _storedTrialData.Peek();
 
-        if (earliestData == null)
-            Debug.Log("Null in earliestdata");
-
-        using (UnityWebRequest www = UnityWebRequest.Post(TrialData.GetFormURI(), earliestData.GetFormFields()))
+        if (earliestData == null || earliestData.all_time == 0)
         {
-            yield return www.SendWebRequest();
+            yield return new WaitForSeconds(0);
+            _storedTrialData.Dequeue();
+            if (IsThereUnsavedData())
+                StartCoroutine(TryToSaveToGoogleSheets());
+            Debug.Log("Null in earliestdata");
+        }
+        else
+        {
+            Debug.Log($"alltime: {earliestData.all_time} Sent_text {earliestData.sent_text}");
+            using (UnityWebRequest www = UnityWebRequest.Post(TrialData.GetFormURI(), earliestData.GetFormFields()))
+            {
+                yield return www.SendWebRequest();
 
-            if (www.isNetworkError || www.isHttpError)
-            {
-                Debug.LogError(www.error);
-                SaveEverythingToLocalStorage();
-            }
-            else
-            {
-                // Yepp, we will do this one by one
-                _storedTrialData.Dequeue();
-                if (IsThereUnsavedData())
-                    StartCoroutine(TryToSaveToGoogleSheets());
+                if (www.isNetworkError || www.isHttpError)
+                {
+                    Debug.LogError(www.error);
+                    SaveEverythingToLocalStorage();
+                }
                 else
-                    ClearLocalStorage();
+                {
+                    // Yepp, we will do this one by one
+                    _storedTrialData.Dequeue();
+                    if (IsThereUnsavedData())
+                        StartCoroutine(TryToSaveToGoogleSheets());
+                    else
+                        ClearLocalStorage();
+                }
             }
         }
+
     }
 
     private void SaveEverythingToLocalStorage()

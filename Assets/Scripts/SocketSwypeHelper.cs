@@ -112,7 +112,7 @@ public class SocketSwypeHelper : MonoBehaviour
                     {
                         data = Encoding.UTF8.GetString(bytes, 0, length);
 
-                        Debug.Log($"Recieved text ({length}): {data} (2)");
+                        Debug.Log($"Recieved text(SocketSwypeHelper)({length}): {data} (2)");
 
                         string[] lines = data.Split('\n');
 
@@ -123,14 +123,15 @@ public class SocketSwypeHelper : MonoBehaviour
                             float coef_x = VYSOR_WIDTH / (float)Server.instance.keyboard_x;
                             float coef_y = VYSOR_HEIGHT / (float)Server.instance.screen_y;
 
+
                             if (coords.Length == 3)
                             {
 
                                 int x = Mathf.RoundToInt(int.Parse(coords[0]) * coef_x);
                                 int y = Mathf.RoundToInt(int.Parse(coords[1]) * coef_y) + offset_y;
 
-                                Win32.MoveCursor(x, y);
-                                Debug.Log($"MOVE: {x} {y}");
+                                Win32.MoveCursor(x, y); 
+                                Debug.Log($"MOVE: x:{x} y:{y} coef_x:{coef_x} coef_y:{coef_y} coord_0{coords[0]} coord_1{coords[0]}");
                             }
                             else if (coords[0].Equals("d"))
                             {
@@ -138,7 +139,8 @@ public class SocketSwypeHelper : MonoBehaviour
                                 int y = Mathf.RoundToInt(int.Parse(coords[2]) * coef_y) + offset_y;
 
                                 Win32.MoveCursor(x, y);
-                                Debug.Log($"MOVE: {x} {y}");
+                                Debug.Log($"MOVE: x:{x} y:{y} coef_x:{coef_x} coef_y:{coef_y} coord_0{coords[0]} coord_1{coords[0]}");
+
                                 Win32.SendDown();
                             }
                             else if (coords[0].Equals("u"))
@@ -266,7 +268,7 @@ public class SocketSwypeHelper : MonoBehaviour
         try
         {
             Client.Send(Encoding.ASCII.GetBytes(message));
-            // Debug.Log($"Sent: {message}");
+            //Debug.Log($"Sent: {message}");
         }
         catch (SocketException socketException)
         {

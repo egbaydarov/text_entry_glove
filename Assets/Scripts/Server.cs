@@ -241,7 +241,7 @@ public class Server : MonoBehaviour
             try
             {
                 Client.Send(Encoding.ASCII.GetBytes(message));
-                Debug.Log($"Sent: {message}");
+                Debug.Log($"Sent(Server): {message}");
 
             }
             catch (SocketException socketException)
@@ -289,9 +289,11 @@ public class Server : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-
-        DontDestroyOnLoad(this.gameObject);
-        instance = this.gameObject.GetComponent<Server>();
+        else
+        {
+            DontDestroyOnLoad(this.gameObject);
+            instance = this.gameObject.GetComponent<Server>();
+        }
     }
 
 }

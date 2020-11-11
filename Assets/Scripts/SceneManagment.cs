@@ -11,7 +11,7 @@ public class SceneManagment : MonoBehaviour
 
     public static bool isMain = false;
     public static bool isNew = false;
-    public static string method_id = null;
+    public static string method_id { get; set; }
     public static bool IsSingleCharacterInput;
 
     public void Start()
@@ -139,11 +139,13 @@ public class SceneManagment : MonoBehaviour
                 IsSingleCharacterInput = false;
                 break;
         }
+        PlayerPrefs.SetString("InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
     }
 
     public void ContinueExperiment()
     {
         isMain = true;
+        isNew = false;
         switch (currentScene)
         {
             case Scenes.OurMethod:
@@ -183,6 +185,7 @@ public class SceneManagment : MonoBehaviour
                 IsSingleCharacterInput = false;
                 break;
         }
+        PlayerPrefs.SetString("InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
     }
 
     public void LoadMenu()
@@ -195,7 +198,6 @@ public class SceneManagment : MonoBehaviour
 
     private void Awake()
     {
-
         SceneManagment[] objs = FindObjectsOfType<SceneManagment>();
         if (objs.Length > 1)
         {

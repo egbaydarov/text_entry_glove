@@ -33,9 +33,9 @@ public class SoundOnCharacterRemoving : MonoBehaviour
     {
         if (!enabled)
             return;
+        EntryProcessing ep = FindObjectOfType<EntryProcessing>();
 
-
-        if (prevValue.Length > value.Length)
+        if (prevValue.Length > value.Length && ep.LastTagDown.Equals("Backspace"))
         {
             audio.PlayOneShot(soundToPlay);
         }

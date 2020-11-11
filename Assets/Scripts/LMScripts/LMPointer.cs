@@ -176,7 +176,7 @@ public class LMPointer : GvrBasePointer
             float y = trLocal.InverseTransformPoint(trailPoint.transform.position).y;
             x = (float)(x * server.coef_x + server.keyboard_x / 2.0);
             y = (float)(-y * server.coef_y + server.screen_y - (server.keyboard_y / 2.0));
-            UnityEngine.Debug.Log("SEND X:" + x + " Y:" + y);
+            //UnityEngine.Debug.Log("SEND X:" + x + " Y:" + y);
 
             if (trRander.trailPoints.Count == 1 && server.IsConnected && isGestureValid && !isInputEnd)
             {

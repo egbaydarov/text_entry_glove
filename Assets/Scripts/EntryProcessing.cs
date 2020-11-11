@@ -30,7 +30,7 @@ public class EntryProcessing : MonoBehaviour
     [SerializeField]
     private InputField intext;
 
-    public string LastTagDown { get; private set; }
+    public string LastTagDown { get; private set; } = "";
     bool isFirstSingleKeyDown { get; set; }
 
     public UnityEvent OnSentenceInputEnd;
@@ -219,11 +219,11 @@ public class EntryProcessing : MonoBehaviour
         {
             LastTagDown = "Backspace";
 
-            //счетчик нажатий на подсказку
+            //счетчик нажатий на backspace
             ++measuringMetrics.backspace_choose;
 
             //начало нажатия на backspace
-            measuringMetrics.remove_time_sw.Start();
+            measuringMetrics.remove_time_sw.Restart();
 
             OnBackspaceClicked.Invoke();
             isFirstSingleKeyDown = true;
@@ -326,6 +326,7 @@ public class EntryProcessing : MonoBehaviour
     {
         if (obj != null && obj.name.Equals("ToMenu"))
         {
+            server.SendToClient("clear\r\n");
             OnMenuClicked.Invoke();
         }
     }
@@ -339,21 +340,21 @@ public class EntryProcessing : MonoBehaviour
 
     public void OnPointerEnter(GameObject obj, PointerEventData pointerData)
     {
-        Debug.Log($"HIGHLIGHT TAG {obj.tag} NAME: {obj.name}");
+        //Debug.Log($"HIGHLIGHT TAG {obj.tag} NAME: {obj.name}");
         if (obj.name.Equals("CanvasInputField") || obj.name.Equals("NextSentence") || obj.CompareTag("Prediction"))
         {
             measuringMetrics.check_time_sw.Start();
-            Debug.Log("HIGHLIGHT CHECK TIME MEASURING STARTED");
+            //Debug.Log("HIGHLIGHT CHECK TIME MEASURING STARTED");
         }
     }
 
     public void OnPointerExit(GameObject obj, PointerEventData pointerData)
     {
-        Debug.Log($"HIGHLIGHT TAG {obj.tag} NAME: {obj.name}");
+        //Debug.Log($"HIGHLIGHT TAG {obj.tag} NAME: {obj.name}");
         if (obj.name.Equals("CanvasInputField") || obj.name.Equals("NextSentence") || obj.CompareTag("Prediction"))
         {
             measuringMetrics.check_time_sw.Stop();
-            Debug.Log("HIGHLIGHT CHECK TIME MEASURING ENDED");
+            //Debug.Log("HIGHLIGHT CHECK TIME MEASURING ENDED");
             // начало поиска первого
             measuringMetrics.search_time_sw.Restart();
         }
