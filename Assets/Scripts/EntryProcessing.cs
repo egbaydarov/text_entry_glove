@@ -144,7 +144,6 @@ public class EntryProcessing : MonoBehaviour
     public void OnNextDown(GameObject obj, PointerEventData pointerData)
     {
         //UnityEngine.Debug.Log(obj == null ? "null" : $"{obj.name} : {obj.tag}");
-        LastTagDown = "null";
         if (obj != null && obj.name.Equals("NextSentence"))
         {
             LastTagDown = "NextSentence";
@@ -264,11 +263,10 @@ public class EntryProcessing : MonoBehaviour
     public void OnKeyboardDown(GameObject obj, PointerEventData pointerData)
     {
         //check valid
-        if (obj != null && obj.tag.Equals("Key"))
+        if (obj != null && obj.tag.Equals("Key") && !menuButton.activeSelf)
         {
             LastTagDown = "Key";
 
-            
 
             if (isFirstSingleKeyDown)
             {

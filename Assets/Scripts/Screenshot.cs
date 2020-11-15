@@ -19,6 +19,8 @@ public class Screenshot : MonoBehaviour
     UnityEngine.UI.Image img;
     byte[] bytes;
 
+    [SerializeField]
+    float updatesPerSercond = 25f;
 
     volatile bool isWaiting = false;
 
@@ -35,7 +37,7 @@ public class Screenshot : MonoBehaviour
     void Update()
     {
         if (!isWaiting)
-            StartCoroutine(updateImage(0.03f));
+            StartCoroutine(updateImage(1 / updatesPerSercond));
         if (updateTexture)
         {
             tex.LoadImage(bytes);
@@ -63,7 +65,6 @@ public class Screenshot : MonoBehaviour
                new Point((int)upperLeftSource.x, (int)upperLeftSource.y),
                new Point((int)upperLeftDestination.x, (int)upperLeftDestination.y),
                new Size((int)screenSize.x, (int)screenSize.y));
-
            isWaiting = false;
        }).Start();
     }

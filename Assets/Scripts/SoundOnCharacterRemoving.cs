@@ -12,6 +12,8 @@ public class SoundOnCharacterRemoving : MonoBehaviour
     [SerializeField]
     private AudioClip soundToPlay;
 
+    EntryProcessing ep;
+
     void Start()
     {
         if (audio == null)
@@ -33,9 +35,11 @@ public class SoundOnCharacterRemoving : MonoBehaviour
     {
         if (!enabled)
             return;
-        EntryProcessing ep = FindObjectOfType<EntryProcessing>();
 
-        if (prevValue.Length > value.Length && ep.LastTagDown.Equals("Backspace"))
+
+        if (prevValue.Length > value.Length
+            && ep.LastTagDown.Equals("Backspace")
+            )
         {
             audio.PlayOneShot(soundToPlay);
         }
@@ -43,5 +47,9 @@ public class SoundOnCharacterRemoving : MonoBehaviour
         prevValue = value;
     }
 
-  
+    private void Awake()
+    {
+        ep = FindObjectOfType<EntryProcessing>();
+    }
+
 }

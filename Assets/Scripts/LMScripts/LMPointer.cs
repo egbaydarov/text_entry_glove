@@ -371,7 +371,7 @@ public class LMPointer : GvrBasePointer
     private void Update()
     {
         UpdateDiameters();
-        //Backspace();
+        Backspace();
     }
 
     public void Backspace()
