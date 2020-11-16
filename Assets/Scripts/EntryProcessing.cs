@@ -30,6 +30,9 @@ public class EntryProcessing : MonoBehaviour
     [SerializeField]
     private InputField intext;
 
+    [SerializeField]
+    GameObject icons;
+
     public string LastTagDown { get; private set; } = "";
     bool isFirstSingleKeyDown { get; set; }
 
@@ -143,9 +146,12 @@ public class EntryProcessing : MonoBehaviour
 
     public void OnNextDown(GameObject obj, PointerEventData pointerData)
     {
+        
         //UnityEngine.Debug.Log(obj == null ? "null" : $"{obj.name} : {obj.tag}");
         if (obj != null && obj.name.Equals("NextSentence"))
         {
+            icons.SetActive(true);
+
             LastTagDown = "NextSentence";
 
             measuringMetrics.EndSentenceInput();
@@ -262,6 +268,7 @@ public class EntryProcessing : MonoBehaviour
 
     public void OnKeyboardDown(GameObject obj, PointerEventData pointerData)
     {
+  
         //check valid
         if (obj != null && obj.tag.Equals("Key") && !menuButton.activeSelf)
         {
@@ -294,12 +301,18 @@ public class EntryProcessing : MonoBehaviour
                 sentenceField.SetActive(false);
                 confirmButton.SetActive(true);
             }
+
+             icons.SetActive(false);
+        Debug.Log("ICONS OFF");
         }
     }
 
 
     public void OnSpaceDown(GameObject obj, PointerEventData pointerData)
     {
+
+   
+
         if (obj != null && obj.name.Equals("Space") && !menuButton.activeSelf)
         {
             //начало поиска первого (посимвольный)
@@ -316,6 +329,8 @@ public class EntryProcessing : MonoBehaviour
 
     private void Awake()
     {
+      //  icons.SetActive(true);
+
         server = FindObjectOfType<Server>();
         th = FindObjectOfType<TextHelper>();
         measuringMetrics = FindObjectOfType<MeasuringMetrics>();
