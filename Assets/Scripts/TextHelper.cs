@@ -40,7 +40,7 @@ public class TextHelper : MonoBehaviour
     {
         if (ShouldUpdate)
         {
-            TextField.text = text;
+            TextField.text = text.Capitalize();
             ShouldUpdate = false;
         }
     }
