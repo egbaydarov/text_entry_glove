@@ -10695,7 +10695,7 @@ MonoBehaviour:
   raycastMode: 1
   overridePointerCamera: {fileID: 0}
   drawDebugRays: 0
-  delay: 100
+  delay: 0
   StaticReticleOuterDiameter: 0
   maxReticleDistance: 20
   reticleSegments: 20

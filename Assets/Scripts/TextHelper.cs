@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,7 +41,13 @@ public class TextHelper : MonoBehaviour
     {
         if (ShouldUpdate)
         {
-            TextField.text = text.Capitalize();
+            try
+            {
+                TextField.text = text.Capitalize();
+            }catch(Exception ex)
+            {
+                
+            }
             ShouldUpdate = false;
         }
     }

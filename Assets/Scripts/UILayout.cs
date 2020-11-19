@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UILayout : MonoBehaviour
 {
-    [SerializeField]
+  /*  [SerializeField]
     private GameObject keyboard;
     [SerializeField]
     private GameObject keys;
@@ -27,7 +27,7 @@ public class UILayout : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gridLayoutGroup = keys.GetComponent<GridLayoutGroup>();
+        //gridLayoutGroup = keys.GetComponent<GridLayoutGroup>();
         keyboardTransform = keyboard.GetComponent<RectTransform>();
         keysTransform = keys.GetComponent<RectTransform>();
             //    spaceBarTransform = spaceBar.GetComponent<RectTransform>();
@@ -85,5 +85,6 @@ public class UILayout : MonoBehaviour
         Debug.Log(objs.name);
         server = objs.GetComponent<Server>();
     }
+  */
     
 }
