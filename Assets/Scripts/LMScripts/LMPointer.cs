@@ -1,5 +1,6 @@
 ﻿using Leap.Unity;
 using LeapMotionGesture;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -376,24 +377,30 @@ public class LMPointer : GvrBasePointer
 
     public void Backspace()
     {
-   
-        if (enterRaycastObj.tag.Equals("Backspace") && pressTime.ElapsedMilliseconds > 500)
+
+        try
         {
-            Debug.Log("BACKSPACE");
-            int y = 1545;
-            int x = 1050;
-            server.SendToClient($"d;{(int)(x)};{(int)(y)};\r\n");
-            for (int i = 0; i < 200; i++)
+            if (enterRaycastObj.tag.Equals("Backspace") && pressTime.ElapsedMilliseconds > 500)
             {
-                x = 1050 - i;
-                //if (trRander.trailPoints.Count == 1 && server.IsConnected && isGestureValid && !isInputEnd)
-                // server.SendToClient($"d;{(int)(x)};{(int)(y)};\r\n");
-                // else if (++hoverCounter % 1 == 0 && server.IsConnected && isGestureValid && !isInputEnd)
-                server.SendToClient($"{(int)(x)};{(int)(y)};\r\n");
-                StartCoroutine(Wait());
+                Debug.Log("BACKSPACE");
+                int y = 1545;
+                int x = 1050;
+                server.SendToClient($"d;{(int)(x)};{(int)(y)};\r\n");
+                for (int i = 0; i < 200; i++)
+                {
+                    x = 1050 - i;
+                    //if (trRander.trailPoints.Count == 1 && server.IsConnected && isGestureValid && !isInputEnd)
+                    // server.SendToClient($"d;{(int)(x)};{(int)(y)};\r\n");
+                    // else if (++hoverCounter % 1 == 0 && server.IsConnected && isGestureValid && !isInputEnd)
+                    server.SendToClient($"{(int)(x)};{(int)(y)};\r\n");
+                    StartCoroutine(Wait());
+                }
+                pressTime.Reset();
+                server.SendToClient($"u;\r\n");
             }
-            pressTime.Reset();
-            server.SendToClient($"u;\r\n");
+        }catch(Exception ex)
+        {
+
         }
     }
 
