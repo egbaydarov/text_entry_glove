@@ -377,7 +377,7 @@ public class LMPointer : GvrBasePointer
     public void Backspace()
     {
    
-        if (enterRaycastObj.tag.Equals("Backspace") && pressTime.ElapsedMilliseconds > 2000)
+        if (enterRaycastObj.tag.Equals("Backspace") && pressTime.ElapsedMilliseconds > 500)
         {
             Debug.Log("BACKSPACE");
             int y = 1545;
@@ -498,7 +498,7 @@ public class LMPointer : GvrBasePointer
 
     IEnumerator Wait()
     {
-        yield return new WaitForSeconds((float)0.02);
+        yield return new WaitForSeconds((float)0.006);
     }
 
 

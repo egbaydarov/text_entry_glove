@@ -302,7 +302,7 @@ public class EntryProcessing : MonoBehaviour
                 confirmButton.SetActive(true);
             }
 
-             icons.SetActive(false);
+            StartCoroutine(WaitForSec());
         Debug.Log("ICONS OFF");
         }
     }
@@ -348,6 +348,12 @@ public class EntryProcessing : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         menuButton.SetActive(true);
+    }
+
+    IEnumerator WaitForSec()
+    {
+        yield return new WaitForSeconds((float)0.5);
+        icons.SetActive(false);
     }
 
 
