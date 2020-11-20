@@ -12,7 +12,7 @@ public class SceneManagment : MonoBehaviour
     public static bool isMain = false;
     public static bool isNew = false;
     public static string method_id { get; set; }
-    public static bool IsSingleCharacterInput;
+    public static bool IsSingleCharacterInput { get; set; }
 
     public void Start()
     {

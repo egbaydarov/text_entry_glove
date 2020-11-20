@@ -141,7 +141,6 @@ public class Server : MonoBehaviour
                     Debug.Log("Client connected!");
 
 
-
                     byte[] bytes = new byte[1024];
                     int length = Client.Receive(bytes);
                     var client_xy = Encoding.UTF8.GetString(bytes, 0, length).Split(' ');

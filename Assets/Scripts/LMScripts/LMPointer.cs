@@ -209,25 +209,28 @@ public class LMPointer : GvrBasePointer
     {
         if (enterRaycastObj.tag.Equals("Backspace"))
             pressTime.Restart();
+
         isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction") || enterRaycastObj.tag.Equals("Backspace");
         Vector3 local;
         if (SceneManager.GetActiveScene().name == "GazeGesture" || SceneManager.GetActiveScene().name == "GazeCharacter")
         {
-            local = FakePointer.transform.parent.InverseTransformPoint
-                                                                                    //(LastPointerHoveredResult.gameObject.GetComponent<Transform>().position); // - centre
-                                                                                    (GetClosestRaycast(delay).gameObject.GetComponent<Transform>().position);
+            local = FakePointer.
+                transform.
+                parent.
+                InverseTransformPoint(GetClosestRaycast(delay).gameObject.GetComponent<Transform>().position);
+            //(LastPointerHoveredResult.gameObject.GetComponent<Transform>().position); // - centre
         }
         else
         {
             local = FakePointer.transform.parent.InverseTransformPoint
-                                                                                         //(LastPointerHoveredResult.gameObject.GetComponent<Transform>().position); // - centre
-                                                                                         //(GetClosestRaycast(delay).gameObject.GetComponent<Transform>().position);
+            //(LastPointerHoveredResult.gameObject.GetComponent<Transform>().position); // - centre
+            //(GetClosestRaycast(delay).gameObject.GetComponent<Transform>().position);
             (LastPointerHoveredResult.worldPosition);
         }
 
         FakePointer.transform.localPosition = new Vector3(local.x, local.y, 0);
 
-      
+
 
     }
 
@@ -372,7 +375,7 @@ public class LMPointer : GvrBasePointer
     private void Update()
     {
         UpdateDiameters();
-        Backspace();
+        //Backspace();
     }
 
     public void Backspace()
@@ -398,7 +401,8 @@ public class LMPointer : GvrBasePointer
                 pressTime.Reset();
                 server.SendToClient($"u;\r\n");
             }
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
 
         }

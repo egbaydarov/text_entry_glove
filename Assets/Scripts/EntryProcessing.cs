@@ -155,12 +155,10 @@ public class EntryProcessing : MonoBehaviour
             LastTagDown = "NextSentence";
 
             measuringMetrics.EndSentenceInput();
-            measuringMetrics.check_time = measuringMetrics.check_time_sw.ElapsedMilliseconds;
 
             //для посимвольного, завершение ввода
-            measuringMetrics.entry_time_sw_single.Stop();
             measuringMetrics.entry_time_single += measuringMetrics.entry_time_sw_single.ElapsedMilliseconds;
-            measuringMetrics.entry_time_sw_single.Restart();
+            measuringMetrics.entry_time_sw_single.Stop();
 
             confirmButton.SetActive(false);
             sentenceField.SetActive(true);
@@ -223,6 +221,8 @@ public class EntryProcessing : MonoBehaviour
         if (obj != null && obj.tag.Equals("Backspace") && !menuButton.activeSelf)
         {
             LastTagDown = "Backspace";
+
+            server.SendToClient("backspace\r\n");
 
             //счетчик нажатий на backspace
             ++measuringMetrics.backspace_choose;
@@ -293,7 +293,6 @@ public class EntryProcessing : MonoBehaviour
                 if (!String.IsNullOrEmpty(th.text))
                     server.SendToClient("clear\r\n");
 
-                measuringMetrics.entry_time_sw_single.Restart();
 
                 measuringMetrics.StartSentenceInput();
                 measuringMetrics.sent_text = (string)currentSentenceText.Clone();
@@ -310,9 +309,6 @@ public class EntryProcessing : MonoBehaviour
 
     public void OnSpaceDown(GameObject obj, PointerEventData pointerData)
     {
-
-   
-
         if (obj != null && obj.name.Equals("Space") && !menuButton.activeSelf)
         {
             //начало поиска первого (посимвольный)
@@ -330,7 +326,6 @@ public class EntryProcessing : MonoBehaviour
     private void Awake()
     {
       //  icons.SetActive(true);
-
         server = FindObjectOfType<Server>();
         th = FindObjectOfType<TextHelper>();
         measuringMetrics = FindObjectOfType<MeasuringMetrics>();
@@ -362,7 +357,12 @@ public class EntryProcessing : MonoBehaviour
         //Debug.Log($"HIGHLIGHT TAG {obj.tag} NAME: {obj.name}");
         if (obj.name.Equals("CanvasInputField") || obj.name.Equals("NextSentence") || obj.CompareTag("Prediction"))
         {
-            measuringMetrics.check_time_sw.Start();
+            measuringMetrics.check_time_sw.Restart();
+            measuringMetrics.entry_time_sw_single.Stop();
+            measuringMetrics.entry_time_sw.Stop();
+            measuringMetrics.search_time_sw_single.Stop();
+            measuringMetrics.search_time_sw.Stop();
+
             //Debug.Log("HIGHLIGHT CHECK TIME MEASURING STARTED");
         }
     }
@@ -372,10 +372,16 @@ public class EntryProcessing : MonoBehaviour
         //Debug.Log($"HIGHLIGHT TAG {obj.tag} NAME: {obj.name}");
         if (obj.name.Equals("CanvasInputField") || obj.name.Equals("NextSentence") || obj.CompareTag("Prediction"))
         {
-            measuringMetrics.check_time_sw.Stop();
+            measuringMetrics.check_time += measuringMetrics.check_time_sw.ElapsedMilliseconds;
+            measuringMetrics.check_time_sw.Reset();
+            measuringMetrics.entry_time_sw_single.Start();
+            measuringMetrics.entry_time_sw.Start();
+            measuringMetrics.search_time_sw_single.Start();
+            measuringMetrics.search_time_sw.Start();
+
+
             //Debug.Log("HIGHLIGHT CHECK TIME MEASURING ENDED");
             // начало поиска первого
-            measuringMetrics.search_time_sw.Restart();
         }
     }
 

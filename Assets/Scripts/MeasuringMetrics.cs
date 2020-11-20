@@ -106,6 +106,8 @@ public class MeasuringMetrics : MonoBehaviour
     {
         ResetAll();
         full_time.Start();
+        entry_time_sw_single.Start();
+
     }
 
     public void ResetAll()
@@ -117,7 +119,6 @@ public class MeasuringMetrics : MonoBehaviour
         entry_time_sw.Reset();
         remove_time_sw.Reset();
         check_time_sw.Reset();
-        check_time_sw.Reset();
         prediction_choose = 0;
         backspace_choose = 0;
         removed_count = 0;
@@ -126,6 +127,7 @@ public class MeasuringMetrics : MonoBehaviour
         search_time = 0;
         search_time_single = 0;
         remove_time = 0;
+        check_time = 0;
 
         //check_time = 0; //TODO
         isRemoves = false;

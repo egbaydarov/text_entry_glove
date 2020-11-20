@@ -63,7 +63,7 @@ public class TextHelper : MonoBehaviour
 
         //конец росчерка
         measuringMetrics.entry_time_sw.Stop();
-        measuringMetrics.entry_time += measuringMetrics.search_time_sw.ElapsedMilliseconds;
+        measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;
         measuringMetrics.entry_time_sw.Restart();
 
         // начало поиска первого
