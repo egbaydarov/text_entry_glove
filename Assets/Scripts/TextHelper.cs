@@ -35,28 +35,33 @@ public class TextHelper : MonoBehaviour
     {
         server.OnMessageRecieved.RemoveListener(UpdateTextFieldAndPredictionsButtons);
     }
-    
-  
+
+
     void Update()
     {
         if (ShouldUpdate)
         {
             try
             {
-                TextField.text = text.Capitalize();
-            }catch(Exception ex)
+                if (!string.IsNullOrEmpty(text))
+                    text = text.Capitalize();
+                TextField.text = text;
+            }
+            catch (Exception ex)
             {
-                
+
             }
             ShouldUpdate = false;
         }
     }
 
-    
+
     void UpdateTextFieldAndPredictionsButtons(string data)
     {
         data = data.Trim('\r', '\n');
         string[] data1 = data.Split('#');
+        foreach (var i in data1)
+            Debug.Log(i);
         string clientMessage = data1.Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
         text = clientMessage.Trim('\r', '\n');
 

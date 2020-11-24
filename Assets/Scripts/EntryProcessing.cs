@@ -62,6 +62,10 @@ public class EntryProcessing : MonoBehaviour
 
     MeasuringMetrics measuringMetrics;
 
+    Stopwatch BackspaceDownTime = new Stopwatch();
+
+    bool BackspacePressed { get; set; } = false;
+
     //TODO Change storing to serialization
     void Start()
     {
@@ -110,6 +114,12 @@ public class EntryProcessing : MonoBehaviour
         blockNumber.text = $"Блок\n{currentBlock + 1}\\{BLOCKS_COUNT}";
         senNumber.text = $"Предложение\n{currentSentence + 1}\\{SENTENCE_COUNT}";
         currentSentenceText = words[SentenceOrder[SENTENCE_COUNT * currentBlock + currentSentence]];
+
+        if (BackspacePressed && BackspaceDownTime.ElapsedMilliseconds > 600)
+        {
+            server.SendToClient("backspace\r\n");
+            BackspaceDownTime.Restart();
+        }
     }
 
     void AssignListners()
@@ -146,7 +156,7 @@ public class EntryProcessing : MonoBehaviour
 
     public void OnNextDown(GameObject obj, PointerEventData pointerData)
     {
-        
+
         //UnityEngine.Debug.Log(obj == null ? "null" : $"{obj.name} : {obj.tag}");
         if (obj != null && obj.name.Equals("NextSentence"))
         {
@@ -220,9 +230,9 @@ public class EntryProcessing : MonoBehaviour
         //check valid
         if (obj != null && obj.tag.Equals("Backspace") && !menuButton.activeSelf)
         {
+            BackspacePressed = true;
             LastTagDown = "Backspace";
-
-            server.SendToClient("backspace\r\n");
+            BackspaceDownTime.Restart();
 
             //счетчик нажатий на backspace
             ++measuringMetrics.backspace_choose;
@@ -240,6 +250,8 @@ public class EntryProcessing : MonoBehaviour
         //check valid
         if (obj != null && obj.tag.Equals("Backspace") && !menuButton.activeSelf)
         {
+            BackspacePressed = false;
+
             //конец нажатия на backspace
             measuringMetrics.remove_time_sw.Stop();
             measuringMetrics.remove_time += measuringMetrics.remove_time_sw.ElapsedMilliseconds;
@@ -268,7 +280,7 @@ public class EntryProcessing : MonoBehaviour
 
     public void OnKeyboardDown(GameObject obj, PointerEventData pointerData)
     {
-  
+
         //check valid
         if (obj != null && obj.tag.Equals("Key") && !menuButton.activeSelf)
         {
@@ -302,7 +314,7 @@ public class EntryProcessing : MonoBehaviour
             }
 
             StartCoroutine(WaitForSec());
-        Debug.Log("ICONS OFF");
+            Debug.Log("ICONS OFF");
         }
     }
 
@@ -325,7 +337,7 @@ public class EntryProcessing : MonoBehaviour
 
     private void Awake()
     {
-      //  icons.SetActive(true);
+        //  icons.SetActive(true);
         server = FindObjectOfType<Server>();
         th = FindObjectOfType<TextHelper>();
         measuringMetrics = FindObjectOfType<MeasuringMetrics>();
