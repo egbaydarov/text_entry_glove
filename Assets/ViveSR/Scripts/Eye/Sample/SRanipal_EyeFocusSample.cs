@@ -13,7 +13,7 @@ namespace ViveSR.anipal.Eye
         private static EyeData eyeData = new EyeData();
         private bool eye_callback_registered = false;
 
-        [SerializeField] private LMPointer pointer;
+        [SerializeField] private Transform pointer;
         private void Start()
         {
             if (!SRanipal_Eye_Framework.Instance.EnableEye)
@@ -45,6 +45,7 @@ namespace ViveSR.anipal.Eye
 
             foreach (GazeIndex index in GazePriority)
             {
+
                 Ray GazeRay;
                 //int dart_board_layer_id = LayerMask.NameToLayer("NoReflection");
                     // Debug.Log(dart_board_layer_id);
@@ -54,14 +55,17 @@ namespace ViveSR.anipal.Eye
                 else
                     eye_focus = SRanipal_Eye.Focus(index, out GazeRay, out FocusInfo, 0, MaxDistance);
 
+
+
                 if (eye_focus)
                 {
-                   // Debug.Log("Catch focus");
-                   //DartBoard dartBoard = FocusInfo.transform.GetComponent<DartBoard>();
-                   // if (dartBoard != null) dartBoard.Focus(FocusInfo.point);
-                   // Debug.Log(FocusInfo.point);
- //                  Debug.Log(GazeRay.direction);
-                  pointer.transform.localRotation = Quaternion.LookRotation(GazeRay.direction);
+                    //Debug.Log("Catch focus");
+                    //DartBoard dartBoard = FocusInfo.transform.GetComponent<DartBoard>();
+                    // if (dartBoard != null) dartBoard.Focus(FocusInfo.point);
+                    // Debug.Log(FocusInfo.point);
+                    //Debug.Log(GazeRay.direction);
+
+                    pointer.transform.localRotation = Quaternion.LookRotation(GazeRay.direction);
                    break;
                 }
             }

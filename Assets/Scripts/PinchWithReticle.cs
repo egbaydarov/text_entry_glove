@@ -14,7 +14,7 @@ public class PinchWithReticle : MonoBehaviour
     public bool HideReticleWhileGesturing = true;
     void Start()
     {
-        
+
     }
 
 
@@ -22,20 +22,21 @@ public class PinchWithReticle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(AirStrokeMapper.pinchIsOn)
-        {
-            keyCanvas.worldCamera = LMPointer.GetComponent<Camera>();
-            LMPointer.SetActive(true);
-            if (HideReticleWhileGesturing)
-                reticlePointer.GetComponent<MeshRenderer>().enabled  = false;
-        }
-        else
-        {
-            keyCanvas.worldCamera = reticlePointer.GetComponent<Camera>();
-            LMPointer.SetActive(false);
-            if (HideReticleWhileGesturing)
-                reticlePointer.GetComponent<MeshRenderer>().enabled  = true;
-        }
+        if (LMPointer != null)
+            if (AirStrokeMapper.pinchIsOn)
+            {
+                keyCanvas.worldCamera = LMPointer.GetComponent<Camera>();
+                LMPointer.SetActive(true);
+                if (HideReticleWhileGesturing)
+                    reticlePointer.GetComponent<MeshRenderer>().enabled = false;
+            }
+            else
+            {
+                keyCanvas.worldCamera = reticlePointer.GetComponent<Camera>();
+                LMPointer.SetActive(false);
+                if (HideReticleWhileGesturing)
+                    reticlePointer.GetComponent<MeshRenderer>().enabled = true;
+            }
 
     }
 

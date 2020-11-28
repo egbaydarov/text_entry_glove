@@ -10944,10 +10944,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d5c25a245e5ced4d865301c5049c986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keyboard: {fileID: 1233818188}
-  keys: {fileID: 0}
-  spaceBar: {fileID: 0}
-  predictionBar: {fileID: 0}
 --- !u!114 &2105982878
 MonoBehaviour:
   m_ObjectHideFlags: 0
