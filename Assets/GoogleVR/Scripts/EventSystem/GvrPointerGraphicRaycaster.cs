@@ -252,7 +252,7 @@ public class GvrPointerGraphicRaycaster : GvrBasePointerRaycaster
         for (int i = 0; i < foundGraphics.Count; ++i)
         {
             Graphic graphic = foundGraphics[i];
-
+            
             // -1 means it hasn't been processed by the canvas, which means it isn't actually drawn
             if (graphic.depth == -1 || !graphic.raycastTarget)
             {
@@ -265,7 +265,6 @@ public class GvrPointerGraphicRaycaster : GvrBasePointerRaycaster
             {
                 continue;
             }
-
             if (graphic.Raycast(screenPoint, cam))
             {
                 sortedGraphics.Add(graphic);

@@ -366,7 +366,6 @@ public class EntryProcessing : MonoBehaviour
 
     public void OnPointerEnter(GameObject obj, PointerEventData pointerData)
     {
-        //Debug.Log($"HIGHLIGHT TAG {obj.tag} NAME: {obj.name}");
         if (obj.name.Equals("CanvasInputField") || obj.name.Equals("NextSentence") || obj.CompareTag("Prediction"))
         {
             measuringMetrics.check_time_sw.Restart();
@@ -374,7 +373,6 @@ public class EntryProcessing : MonoBehaviour
             measuringMetrics.entry_time_sw.Stop();
             measuringMetrics.search_time_sw_single.Stop();
             measuringMetrics.search_time_sw.Stop();
-
             //Debug.Log("HIGHLIGHT CHECK TIME MEASURING STARTED");
         }
     }
@@ -390,7 +388,6 @@ public class EntryProcessing : MonoBehaviour
             measuringMetrics.entry_time_sw.Start();
             measuringMetrics.search_time_sw_single.Start();
             measuringMetrics.search_time_sw.Start();
-
 
             //Debug.Log("HIGHLIGHT CHECK TIME MEASURING ENDED");
             // начало поиска первого

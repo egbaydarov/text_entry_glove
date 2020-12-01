@@ -30,7 +30,7 @@ EditorBuildSettings:
     path: Assets/Scenes/OculusQuestTrain.unity
     guid: dd1b7a308a41efc45b94f2738411736d
   - enabled: 1
-    path: Assets/Scenes/OculusQuestMain.unity
+    path: Assets/Scenes/Second experiment/OculusQuestMain.unity
     guid: 253edd94b3719964e8cb601c07ffa324
   - enabled: 1
     path: Assets/Scenes/PointMethodMain.unity
