@@ -111,6 +111,11 @@ public class TrialDataStorage : MonoBehaviour
             _currentTrialData.entry_time = (_measuringMetrics.entry_time_single / 1000f).ToString();
         }
 
+        if(FindObjectsOfType<EyeMetrics>().Length != 0)
+        {
+            _currentTrialData.check_time = (_measuringMetrics.check_time_eye / 1000f).ToString();
+        }
+
     }
 
 

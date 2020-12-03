@@ -24,6 +24,7 @@ public class MeasuringMetrics : MonoBehaviour
     public Stopwatch entry_time_sw_single { get; set; } = new Stopwatch();
     public Stopwatch remove_time_sw { get; set; } = new Stopwatch();
     public Stopwatch check_time_sw { get; set; } = new Stopwatch();
+    public Stopwatch check_time_sw_eye { get; set; } = new Stopwatch();
     public int prediction_choose { get; set; }
     public int backspace_choose { get; set; }
     public int removed_count { get; set; }
@@ -34,6 +35,7 @@ public class MeasuringMetrics : MonoBehaviour
     public long entry_time_single { get; set; }
     public long remove_time { get; set; }
     public long check_time { get; set; }
+    public long check_time_eye { get; set; }
     public bool isRemoves { get; set; } = false;
     public string sent_text { get; set; }
 
@@ -112,13 +114,14 @@ public class MeasuringMetrics : MonoBehaviour
 
     public void ResetAll()
     {
-        full_time.Reset();
-        search_time_sw.Reset();
-        search_time_sw_single.Reset();
-        entry_time_sw_single.Reset();
-        entry_time_sw.Reset();
-        remove_time_sw.Reset();
-        check_time_sw.Reset();
+        full_time.Restart();
+        search_time_sw.Restart();
+        search_time_sw_single.Restart();
+        entry_time_sw_single.Restart();
+        entry_time_sw.Restart();
+        remove_time_sw.Restart();
+        check_time_sw.Restart();
+        check_time_sw_eye.Restart();
         prediction_choose = 0;
         backspace_choose = 0;
         removed_count = 0;
@@ -127,6 +130,7 @@ public class MeasuringMetrics : MonoBehaviour
         search_time = 0;
         search_time_single = 0;
         remove_time = 0;
+        check_time = 0;
         check_time = 0;
 
         //check_time = 0; //TODO

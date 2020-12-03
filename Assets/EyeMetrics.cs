@@ -8,20 +8,32 @@ public class EyeMetrics : MonoBehaviour
     [SerializeField]
     bool isMainKeys = true;
 
+    MeasuringMetrics measuringMetrics;
+
+
     private void OnCollisionEnter(Collision collision)
     {
         if (isMainKeys)
-        {
+        { //keyboard surface
             if (collision.gameObject.name.Equals("EyePointer"))
             {
-                Debug.Log("MainKeys Enter");
+                measuringMetrics.check_time_eye += measuringMetrics.check_time_sw_eye.ElapsedMilliseconds;
+                measuringMetrics.check_time_sw_eye.Reset();
+                measuringMetrics.entry_time_sw_single.Start();
+                //measuringMetrics.entry_time_sw.Start(); upd12 2
+                measuringMetrics.search_time_sw_single.Start();
+                measuringMetrics.search_time_sw.Start();
             }
         }
         else
-        {
+        { //prediction surface
             if (collision.gameObject.name.Equals("EyePointer"))
             {
-                Debug.Log("Predictions Enter");
+                measuringMetrics.check_time_sw_eye.Restart();
+                measuringMetrics.entry_time_sw_single.Stop();
+                //measuringMetrics.entry_time_sw.Stop(); upd12 2
+                measuringMetrics.search_time_sw_single.Stop();
+                measuringMetrics.search_time_sw.Stop();
             }
         }
     }
@@ -32,14 +44,20 @@ public class EyeMetrics : MonoBehaviour
         {
             if (collision.gameObject.name.Equals("EyePointer"))
             {
-                Debug.Log("MainKeys Exit");
+
+                
             }
         }
         else
         {
             if (collision.gameObject.name.Equals("EyePointer"))
             {
-                Debug.Log("Predictions Exit");
+                //measuringMetrics.check_time_eye += measuringMetrics.check_time_sw_eye.ElapsedMilliseconds;
+                //measuringMetrics.check_time_sw_eye.Reset();
+                //measuringMetrics.entry_time_sw_single.Start();
+                ////measuringMetrics.entry_time_sw.Start(); upd12 2
+                //measuringMetrics.search_time_sw_single.Start();
+                //measuringMetrics.search_time_sw.Start();
             }
         }
     }
@@ -63,5 +81,10 @@ public class EyeMetrics : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
         transform.localPosition = pos;
         transform.localRotation = Quaternion.Euler(Vector3.zero);
+    }
+
+    private void Awake()
+    {
+        measuringMetrics = FindObjectOfType<MeasuringMetrics>();
     }
 }

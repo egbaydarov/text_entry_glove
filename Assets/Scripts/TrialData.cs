@@ -67,6 +67,8 @@ public class TrialData
         //if (HasError)
         //    form.Add("entry.1347030375", "Ошибка при удалении слова");   // Примечание
 
+
+
         return form;
     }
 

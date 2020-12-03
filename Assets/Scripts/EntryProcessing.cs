@@ -170,6 +170,15 @@ public class EntryProcessing : MonoBehaviour
             measuringMetrics.entry_time_single += measuringMetrics.entry_time_sw_single.ElapsedMilliseconds;
             measuringMetrics.entry_time_sw_single.Stop();
 
+            //простой после ввода последнего слова
+            measuringMetrics.search_time_sw.Stop();
+            measuringMetrics.search_time += measuringMetrics.search_time_sw.ElapsedMilliseconds;
+            measuringMetrics.search_time_sw.Reset();
+
+            //просмотр подсказок перед завершением
+            measuringMetrics.check_time += measuringMetrics.check_time_sw.ElapsedMilliseconds;
+            measuringMetrics.check_time_sw.Reset();
+
             confirmButton.SetActive(false);
             sentenceField.SetActive(true);
 
@@ -370,7 +379,7 @@ public class EntryProcessing : MonoBehaviour
         {
             measuringMetrics.check_time_sw.Restart();
             measuringMetrics.entry_time_sw_single.Stop();
-            measuringMetrics.entry_time_sw.Stop();
+            //measuringMetrics.entry_time_sw.Stop(); upd12 2
             measuringMetrics.search_time_sw_single.Stop();
             measuringMetrics.search_time_sw.Stop();
             //Debug.Log("HIGHLIGHT CHECK TIME MEASURING STARTED");
@@ -385,7 +394,7 @@ public class EntryProcessing : MonoBehaviour
             measuringMetrics.check_time += measuringMetrics.check_time_sw.ElapsedMilliseconds;
             measuringMetrics.check_time_sw.Reset();
             measuringMetrics.entry_time_sw_single.Start();
-            measuringMetrics.entry_time_sw.Start();
+            //measuringMetrics.entry_time_sw.Start(); upd12 2
             measuringMetrics.search_time_sw_single.Start();
             measuringMetrics.search_time_sw.Start();
 
