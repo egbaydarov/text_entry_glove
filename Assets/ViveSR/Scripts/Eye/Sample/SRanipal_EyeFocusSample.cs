@@ -7,6 +7,9 @@ namespace ViveSR.anipal.Eye
 {
     public class SRanipal_EyeFocusSample : MonoBehaviour
     {
+        [SerializeField]
+        Transform pointer;
+
         private FocusInfo FocusInfo;
         private readonly float MaxDistance = 20;
         private readonly GazeIndex[] GazePriority = new GazeIndex[] { GazeIndex.COMBINE, GazeIndex.LEFT, GazeIndex.RIGHT };
@@ -42,15 +45,23 @@ namespace ViveSR.anipal.Eye
                 Ray GazeRay;
                 int dart_board_layer_id = LayerMask.NameToLayer("NoReflection");
                 bool eye_focus;
+                //if (eye_callback_registered)
+                //    eye_focus = SRanipal_Eye.Focus(index, out GazeRay, out FocusInfo, 0, MaxDistance, (1 << dart_board_layer_id), eyeData);
+                //else
+                //    eye_focus = SRanipal_Eye.Focus(index, out GazeRay, out FocusInfo, 0, MaxDistance, (1 << dart_board_layer_id));
+
                 if (eye_callback_registered)
-                    eye_focus = SRanipal_Eye.Focus(index, out GazeRay, out FocusInfo, 0, MaxDistance, (1 << dart_board_layer_id), eyeData);
+                    eye_focus = SRanipal_Eye.Focus(index, out GazeRay, out FocusInfo, 0, MaxDistance, eyeData);
                 else
-                    eye_focus = SRanipal_Eye.Focus(index, out GazeRay, out FocusInfo, 0, MaxDistance, (1 << dart_board_layer_id));
+                    eye_focus = SRanipal_Eye.Focus(index, out GazeRay, out FocusInfo, 0, MaxDistance);
+
 
                 if (eye_focus)
                 {
-                    DartBoard dartBoard = FocusInfo.transform.GetComponent<DartBoard>();
-                    if (dartBoard != null) dartBoard.Focus(FocusInfo.point);
+                    //DartBoard dartBoard = FocusInfo.transform.GetComponent<DartBoard>();
+                    //if (dartBoard != null) dartBoard.Focus(FocusInfo.point);
+
+                    pointer.localRotation = Quaternion.LookRotation(GazeRay.direction);
                     break;
                 }
             }

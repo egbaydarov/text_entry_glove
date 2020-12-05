@@ -42,7 +42,7 @@ public class MeasuringMetrics : MonoBehaviour
 
     private string _prevValue = "";
 
-
+    
     Server server;
 
     private void Start()
@@ -119,7 +119,7 @@ public class MeasuringMetrics : MonoBehaviour
         search_time_sw_single.Restart();
         entry_time_sw_single.Restart();
         entry_time_sw.Restart();
-        remove_time_sw.Restart();
+        remove_time_sw.Reset();
         check_time_sw.Restart();
         check_time_sw_eye.Restart();
         prediction_choose = 0;
@@ -131,7 +131,7 @@ public class MeasuringMetrics : MonoBehaviour
         search_time_single = 0;
         remove_time = 0;
         check_time = 0;
-        check_time = 0;
+        check_time_eye = 0;
 
         //check_time = 0; //TODO
         isRemoves = false;
@@ -158,4 +158,7 @@ public class MeasuringMetrics : MonoBehaviour
 
         _prevValue = value;
     }
+    
+
+    
 }

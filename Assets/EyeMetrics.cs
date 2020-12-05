@@ -34,6 +34,8 @@ public class EyeMetrics : MonoBehaviour
                 //measuringMetrics.entry_time_sw.Stop(); upd12 2
                 measuringMetrics.search_time_sw_single.Stop();
                 measuringMetrics.search_time_sw.Stop();
+                //начало замера времени коррецкции слово может быть ошибочным
+                measuringMetrics.remove_time_sw.Restart();
             }
         }
     }
@@ -45,7 +47,8 @@ public class EyeMetrics : MonoBehaviour
             if (collision.gameObject.name.Equals("EyePointer"))
             {
 
-                
+                //начало замера времени коррецкции слово может быть ошибочным
+                measuringMetrics.remove_time_sw.Restart();
             }
         }
         else

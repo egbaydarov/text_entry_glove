@@ -11,43 +11,52 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Setup.unity
     guid: 05ff284f4819141468a02521f24de5ff
-  - enabled: 0
-    path: Assets/Scenes/LMwithReticle.unity
+  - enabled: 1
+    path: Assets/Scenes/Trash/LMwithReticle.unity
     guid: a1c4deaa8b0522448af576289c252169
-  - enabled: 0
-    path: Assets/Scenes/DirectHandRay.unity
+  - enabled: 1
+    path: Assets/Scenes/Trash/DirectHandRay.unity
     guid: 11c2b86117394cb4c974742683e85f8b
   - enabled: 1
-    path: Assets/Scenes/OurMethodTrain.unity
+    path: Assets/Scenes/Trash/OurMethodTrain.unity
     guid: cf95c514a8ef55e4d9a81077d4114b00
   - enabled: 1
-    path: Assets/Scenes/OurMethodMain.unity
+    path: Assets/Scenes/Trash/OurMethodMain.unity
     guid: 6e19208e1c4c5234894ef4322a89d337
   - enabled: 1
-    path: Assets/Scenes/GestureTypeTrain.unity
+    path: Assets/Scenes/Trash/GestureTypeTrain.unity
     guid: 35e70fb6c05eba249bae65d3cc77ddf0
   - enabled: 1
-    path: Assets/Scenes/OculusQuestTrain.unity
+    path: Assets/Scenes/Trash/OculusQuestTrain.unity
     guid: dd1b7a308a41efc45b94f2738411736d
   - enabled: 1
-    path: Assets/Scenes/Second experiment/OculusQuestMain.unity
+    path: Assets/Scenes/Trash/OculusQuestMain.unity
     guid: 253edd94b3719964e8cb601c07ffa324
   - enabled: 1
-    path: Assets/Scenes/PointMethodMain.unity
+    path: Assets/Scenes/Trash/PointMethodMain.unity
     guid: 685c862b553cd73488d45008c9c2d1c7
   - enabled: 1
-    path: Assets/Scenes/PointMethodTrain.unity
+    path: Assets/Scenes/Trash/PointMethodTrain.unity
     guid: 03b972ad0066ac04097d305923522bf3
   - enabled: 1
-    path: Assets/Scenes/Second experiment/GazeCharacter.unity
+    path: Assets/Scenes/Trash/GazeCharacter.unity
     guid: a341788cc95af2240bcfb42d8c346311
   - enabled: 1
     path: Assets/Scenes/Second experiment/GazeGesture.unity
     guid: a6e4bb1ef16d65d409e6b44048a58e8b
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/Second experiment/ReticleCharacter.unity
-    guid: 28bd98e9f96fb6c43a0469d90aeaefc4
+    path: Assets/Scenes/Second experiment/OculusQuest_v2.unity
+    guid: 8bbead873cf73894a8fc2458458c6a85
   - enabled: 1
-    path: Assets/Scenes/Second experiment/ReticleGesture.unity
-    guid: 1c8e6df9450894b42b48990dbc3dfa77
+    path: Assets/Scenes/Second experiment/GestureType_v2.unity
+    guid: 4d70b908270954243b99304275517701
+  - enabled: 1
+    path: Assets/Scenes/Second experiment/ImagePlanePointing.unity
+    guid: c2601242c72f00f4d956e1c5f133ff54
   m_configObjects: {}

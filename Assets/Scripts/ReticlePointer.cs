@@ -21,6 +21,12 @@ using LeapMotionGesture;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
+
 
 /// <summary>Draws a circular reticle in front of any object that the user points at.</summary>
 /// <remarks>The circle dilates if the object is clickable.</remarks>
@@ -30,6 +36,33 @@ using UnityEngine.SceneManagement;
 public class ReticlePointer : GvrBasePointer
 {
     GameObject enterRaycastObj;
+    RaycastResult LastPointerHoveredResult;
+    List<KeyValuePair<float, RaycastResult>> LastPointersHovered = new List<KeyValuePair<float, RaycastResult>>();
+
+    MeasuringMetrics measuringMetrics;
+
+
+    public void AddRaycastPoint(float seconds, RaycastResult raycastResult)
+    {
+        if (LastPointersHovered.Count > 240)
+            LastPointersHovered.RemoveRange(0, 120);
+        LastPointersHovered.Add(new KeyValuePair<float, RaycastResult>(seconds, raycastResult));
+    }
+
+    public RaycastResult GetClosestRaycast(int delay)
+    {
+        int index = -1;
+        float border = LastPointersHovered.Last().Key - delay / 1000.0f;
+        for (int i = 0; i < LastPointersHovered.Count; i++)
+        {
+            if (LastPointersHovered[i].Key >= border)
+            {
+                index = i;
+                break;
+            }
+        }
+        return LastPointersHovered[index].Value;
+    }
 
     private Transform trLocal;
     private GameObject canvas;
@@ -130,9 +163,13 @@ public class ReticlePointer : GvrBasePointer
     public override void OnPointerHover(RaycastResult raycastResult, bool isInteractive)
     {
         SetPointerTarget(raycastResult.worldPosition, isInteractive);
+        LastPointerHoveredResult = raycastResult;
+        AddRaycastPoint(Time.time, raycastResult);
 
-        if (!raycastResult.gameObject.tag.Equals("Key") || !isGestureValid)
+        if ((!raycastResult.gameObject.tag.Equals("Key") && !raycastResult.gameObject.tag.Equals("Prediction"))
+            || !isGestureValid)
             return;
+
 
         if (Triggering)
         {
@@ -141,14 +178,23 @@ public class ReticlePointer : GvrBasePointer
             trailPoint.transform.SetParent(canvas.transform);
 
             trRander.AddPoint(trailPoint);
-
             float x = trLocal.InverseTransformPoint(trailPoint.transform.position).x;
             float y = trLocal.InverseTransformPoint(trailPoint.transform.position).y;
             x = (float)(x * server.coef_x + server.keyboard_x / 2.0);
             y = (float)(-y * server.coef_y + server.screen_y - (server.keyboard_y / 2.0));
+            //UnityEngine.Debug.Log("SEND X:" + x + " Y:" + y);
 
             if (trRander.trailPoints.Count == 1 && server.IsConnected && isGestureValid && !isInputEnd)
+            {
                 server.SendToClient($"d;{(int)(x)};{(int)(y)};\r\n");
+                //mmetrics start gesture
+                measuringMetrics.entry_time_sw.Restart();
+
+                //mmetrics end of search first letter
+                measuringMetrics.search_time_sw.Stop();
+                measuringMetrics.search_time += measuringMetrics.search_time_sw.ElapsedMilliseconds;
+                measuringMetrics.search_time_sw.Reset();
+            }
             else if (++hoverCounter % 1 == 0 && server.IsConnected && isGestureValid && !isInputEnd)
                 server.SendToClient($"{(int)(x)};{(int)(y)};\r\n");
         }
@@ -166,9 +212,9 @@ public class ReticlePointer : GvrBasePointer
     public override void OnPointerClickDown()
     {
 
-        isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction");
 
-        
+        isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction") || enterRaycastObj.tag.Equals("Backspace");
+
 
         float x_min = -1080 / 2 + 10;
         float x_max = -1080 / 2 + 10 + (1080 - 120) / 11;
@@ -185,27 +231,27 @@ public class ReticlePointer : GvrBasePointer
         {
             float x = trLocal.InverseTransformPoint(tp.transform.position).x;
             float y = trLocal.InverseTransformPoint(tp.transform.position).y;
-//            x = (float)(x * server.coef_x + server.keyboard_x / 2.0);
-    //        y = (float)(-y * server.coef_y + server.screen_y - (server.keyboard_y / 2.0));
+            x = (float)(x * server.coef_x + server.keyboard_x / 2.0);
+            y = (float)(-y * server.coef_y + server.screen_y - (server.keyboard_y / 2.0));
             data += $"{x};{y};";
         }
 
-        if (SceneManager.GetActiveScene().name == "OurMethodMain" || SceneManager.GetActiveScene().name == "GestureTypeMain")
+        if (server.IsConnected && isGestureValid && !isInputEnd)
         {
-            //server.gest_time.Stop();
-            //server.move_time.Start();
+            server.SendToClient($"u;\r\n");
 
-            //MeasuringMetrics.EndGesture();
+            //mmetrics end gesture(1)
+            measuringMetrics.entry_time_sw.Stop();
+            measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;
+            measuringMetrics.entry_time_sw.Restart();
+
+            //начало поиска первого
+            measuringMetrics.search_time_sw.Restart();
         }
-
-       // if (server.IsConnected && isGestureValid && !isInputEnd)  //
-           // server.SendToClient($"u;\r\n");                       //
         //server.SendToClient(data + "\r\n");
         hoverCounter = 0;
 
-
         isGestureValid = false;
-
 
         trRander.RemoveTrail();
     }
@@ -299,6 +345,7 @@ public class ReticlePointer : GvrBasePointer
         ReticleOuterAngle = RETICLE_MIN_OUTER_ANGLE;
         trRander = GetComponent<TrailRender>();
         server = FindObjectOfType<Server>();
+        measuringMetrics = FindObjectOfType<MeasuringMetrics>();
     }
 
     /// @cond
@@ -395,9 +442,9 @@ public class ReticlePointer : GvrBasePointer
 
     }
 
-    public override bool TriggerUp => !(Input.GetKey(Gesture_KeyCode) || AirStrokeMapper.pinchIsOn);
-    public override bool Triggering => Input.GetKey(Gesture_KeyCode) || AirStrokeMapper.pinchIsOn;
-    public override bool TriggerDown => Input.GetKey(Gesture_KeyCode) || AirStrokeMapper.pinchIsOn;
+    public override bool TriggerUp => !AirStrokeMapper.pinchIsOn;
+    public override bool Triggering => AirStrokeMapper.pinchIsOn;
+    public override bool TriggerDown => AirStrokeMapper.pinchIsOn;
 
     public enum ReticleMode
     {

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
 [Serializable]
 public class TrialData
 {
@@ -37,7 +36,7 @@ public class TrialData
     {
         Dictionary<string, string> form = new Dictionary<string, string>();
 
-        if(sent_text == null)
+        if (sent_text == null)
         {
             Debug.LogWarning("Wrong state of TrialData");
             return form;
@@ -48,7 +47,8 @@ public class TrialData
         form.Add("entry.347604535", block_num); // Номер блока предложений
         form.Add("entry.1580984151", sent_num); // Номер попытки
         form.Add("entry.832183268", sent_text); // Эталонное предложение
-        form.Add("entry.1828483782", resp_text.Capitalize()); // Введенное испытуемым предложение
+        if (!String.IsNullOrEmpty(resp_text))
+            form.Add("entry.1828483782", resp_text.Capitalize()); // Введенное испытуемым предложение
         form.Add("entry.41396143", $"{sent_text.Length}"); // Длина эталонного предложения (символов)
         form.Add("entry.1171184478", $"{sent_text.Count((x) => x == ' ') + 1}"); // Длина эталонного предложения (слов)
         form.Add("entry.2004966619", resp_text == null ? "" : resp_text.Length.ToString()); // Длина введенного испытуемым предложения (символов)

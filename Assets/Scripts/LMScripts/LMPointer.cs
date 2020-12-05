@@ -207,9 +207,6 @@ public class LMPointer : GvrBasePointer
     /// <inheritdoc/>
     public override void OnPointerClickDown()
     {
-        if (enterRaycastObj.tag.Equals("Backspace"))
-            pressTime.Restart();
-
         isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction") || enterRaycastObj.tag.Equals("Backspace");
         Vector3 local;
         if (SceneManager.GetActiveScene().name == "GazeGesture" || SceneManager.GetActiveScene().name == "GazeCharacter")
@@ -238,7 +235,6 @@ public class LMPointer : GvrBasePointer
     public override void OnPointerClickUp()
     {
 
-        pressTime.Reset();
         string data = "";
 
         foreach (var tp in trRander.trailPoints)
@@ -378,35 +374,6 @@ public class LMPointer : GvrBasePointer
         //Backspace();
     }
 
-    public void Backspace()
-    {
-
-        try
-        {
-            if (enterRaycastObj.tag.Equals("Backspace") && pressTime.ElapsedMilliseconds > 500)
-            {
-                Debug.Log("BACKSPACE");
-                int y = 1545;
-                int x = 1050;
-                server.SendToClient($"d;{(int)(x)};{(int)(y)};\r\n");
-                for (int i = 0; i < 200; i++)
-                {
-                    x = 1050 - i;
-                    //if (trRander.trailPoints.Count == 1 && server.IsConnected && isGestureValid && !isInputEnd)
-                    // server.SendToClient($"d;{(int)(x)};{(int)(y)};\r\n");
-                    // else if (++hoverCounter % 1 == 0 && server.IsConnected && isGestureValid && !isInputEnd)
-                    server.SendToClient($"{(int)(x)};{(int)(y)};\r\n");
-                    StartCoroutine(Wait());
-                }
-                pressTime.Reset();
-                server.SendToClient($"u;\r\n");
-            }
-        }
-        catch (Exception ex)
-        {
-
-        }
-    }
 
     /// @endcond
     /// <summary>Sets the reticle pointer's target.</summary>
@@ -506,11 +473,4 @@ public class LMPointer : GvrBasePointer
         StaticDot,
         DynamicDot
     }
-
-    IEnumerator Wait()
-    {
-        yield return new WaitForSeconds((float)0.006);
-    }
-
-
 }

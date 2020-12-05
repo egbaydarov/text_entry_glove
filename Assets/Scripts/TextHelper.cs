@@ -18,6 +18,7 @@ public class TextHelper : MonoBehaviour
 
     Server server;
     MeasuringMetrics measuringMetrics;
+    EntryProcessing entryProcessing;
 
     public string text { get; private set; }
     private void Awake()
@@ -25,6 +26,7 @@ public class TextHelper : MonoBehaviour
         GameObject objs = GameObject.FindGameObjectWithTag("Server");
         server = objs.GetComponent<Server>();
         measuringMetrics = FindObjectOfType<MeasuringMetrics>();
+        entryProcessing = FindObjectOfType<EntryProcessing>();
     }
 
     void Start()
@@ -60,6 +62,10 @@ public class TextHelper : MonoBehaviour
     {
         data = data.Trim('\r', '\n');
         string[] data1 = data.Split('#');
+
+        if (data1.Length > 0 && data1[0].Equals("restart"))
+            entryProcessing.RestartInput();
+
         foreach (var i in data1)
             Debug.Log(i);
         string clientMessage = data1.Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
@@ -70,6 +76,10 @@ public class TextHelper : MonoBehaviour
         measuringMetrics.entry_time_sw.Stop();
         measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;
         measuringMetrics.entry_time_sw.Restart();
+
+        //начало замера времени коррецкции слово может быть ошибочным
+        measuringMetrics.remove_time_sw.Restart();
+
 
         // начало поиска первого
         measuringMetrics.search_time_sw.Restart();

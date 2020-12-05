@@ -65,6 +65,7 @@ public class EntryProcessing : MonoBehaviour
     Stopwatch BackspaceDownTime = new Stopwatch();
 
     bool BackspacePressed { get; set; } = false;
+    bool ShoudSetToStart { get; set; } = false;
 
     //TODO Change storing to serialization
     void Start()
@@ -115,11 +116,13 @@ public class EntryProcessing : MonoBehaviour
         senNumber.text = $"Предложение\n{currentSentence + 1}\\{SENTENCE_COUNT}";
         currentSentenceText = words[SentenceOrder[SENTENCE_COUNT * currentBlock + currentSentence]];
 
-        if (BackspacePressed && BackspaceDownTime.ElapsedMilliseconds > 600)
-        {
-            server.SendToClient("backspace\r\n");
-            BackspaceDownTime.Restart();
-        }
+        //if (BackspacePressed && BackspaceDownTime.ElapsedMilliseconds > 600)
+        //{
+        //    server.SendToClient("backspace\r\n");
+        //    BackspaceDownTime.Restart();
+        //}
+        if (ShoudSetToStart)
+            setToStart();
     }
 
     void AssignListners()
@@ -153,6 +156,23 @@ public class EntryProcessing : MonoBehaviour
         });
     }
 
+    public void setToStart()
+    {
+        icons.SetActive(true);
+
+        confirmButton.SetActive(false);
+
+        sentenceField.SetActive(true);
+
+        ShoudSetToStart = false;
+    }
+
+    public void RestartInput()
+    {
+        server.SendToClient("clear\r\n");
+
+        ShoudSetToStart = true;
+    }
 
     public void OnNextDown(GameObject obj, PointerEventData pointerData)
     {
@@ -178,6 +198,10 @@ public class EntryProcessing : MonoBehaviour
             //просмотр подсказок перед завершением
             measuringMetrics.check_time += measuringMetrics.check_time_sw.ElapsedMilliseconds;
             measuringMetrics.check_time_sw.Reset();
+
+            //просмотр подсказок перед завершением
+            measuringMetrics.check_time_eye += measuringMetrics.check_time_sw_eye.ElapsedMilliseconds;
+            measuringMetrics.check_time_sw_eye.Reset();
 
             confirmButton.SetActive(false);
             sentenceField.SetActive(true);
@@ -247,9 +271,12 @@ public class EntryProcessing : MonoBehaviour
             ++measuringMetrics.backspace_choose;
 
             //начало нажатия на backspace
-            measuringMetrics.remove_time_sw.Restart();
+            //measuringMetrics.remove_time_sw.Restart();
 
             OnBackspaceClicked.Invoke();
+
+            server.SendToClient("backspace\r\n");
+
             isFirstSingleKeyDown = true;
         }
     }
