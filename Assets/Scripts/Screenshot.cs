@@ -43,7 +43,7 @@ public class Screenshot : MonoBehaviour
             tex.LoadImage(bytes);
             try
             {
-                img.sprite = Sprite.Create(tex, new Rect(0, 0, 610, 480),
+                img.sprite = Sprite.Create(tex, new Rect(0, 0, 578, 305),
                     new Vector2(0, 0));
                 updateTexture = false;
             }

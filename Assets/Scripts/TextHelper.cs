@@ -78,7 +78,8 @@ public class TextHelper : MonoBehaviour
         measuringMetrics.entry_time_sw.Restart();
 
         //начало замера времени коррецкции слово может быть ошибочным
-        measuringMetrics.remove_time_sw.Restart();
+        if(!entryProcessing.LastTagDown.Equals("Backspace"))
+            measuringMetrics.remove_time_sw.Restart();
         measuringMetrics.RemoveFlag = true;
 
 
