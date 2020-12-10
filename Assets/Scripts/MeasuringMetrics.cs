@@ -37,6 +37,7 @@ public class MeasuringMetrics : MonoBehaviour
     public long check_time { get; set; }
     public long check_time_eye { get; set; }
     public bool isRemoves { get; set; } = false;
+    public bool RemoveFlag { get; set; } = false;
     public string sent_text { get; set; }
 
 

@@ -79,6 +79,7 @@ public class TextHelper : MonoBehaviour
 
         //начало замера времени коррецкции слово может быть ошибочным
         measuringMetrics.remove_time_sw.Restart();
+        measuringMetrics.RemoveFlag = true;
 
 
         // начало поиска первого

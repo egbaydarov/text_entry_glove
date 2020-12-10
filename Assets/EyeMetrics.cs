@@ -35,7 +35,11 @@ public class EyeMetrics : MonoBehaviour
                 measuringMetrics.search_time_sw_single.Stop();
                 measuringMetrics.search_time_sw.Stop();
                 //начало замера времени коррецкции слово может быть ошибочным
-                measuringMetrics.remove_time_sw.Restart();
+                if (measuringMetrics.RemoveFlag)
+                {
+                    measuringMetrics.remove_time_sw.Restart();
+                    measuringMetrics.RemoveFlag = false;
+                }
             }
         }
     }
@@ -48,7 +52,11 @@ public class EyeMetrics : MonoBehaviour
             {
 
                 //начало замера времени коррецкции слово может быть ошибочным
-                measuringMetrics.remove_time_sw.Restart();
+                if (measuringMetrics.RemoveFlag)
+                {
+                    measuringMetrics.remove_time_sw.Restart();
+                    measuringMetrics.RemoveFlag = false;
+                }
             }
         }
         else
