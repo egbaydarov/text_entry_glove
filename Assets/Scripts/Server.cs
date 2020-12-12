@@ -49,6 +49,10 @@ public class Server : MonoBehaviour
     public float coef_y;
     public bool isSizeSet;
 
+#if UNITY_EDITOR
+    public Stopwatch responseDelay = new Stopwatch();
+#endif
+
 
     public bool IsConnected;
     bool IsBroadcasting = true;

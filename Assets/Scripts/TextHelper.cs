@@ -20,6 +20,10 @@ public class TextHelper : MonoBehaviour
     MeasuringMetrics measuringMetrics;
     EntryProcessing entryProcessing;
 
+#if UNITY_EDITOR
+    [SerializeField]
+    Text responseDelay;
+#endif
     public string text { get; private set; }
     private void Awake()
     {
@@ -70,6 +74,12 @@ public class TextHelper : MonoBehaviour
             Debug.Log(i);
         string clientMessage = data1.Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
         text = clientMessage.Trim('\r', '\n');
+
+#if UNITY_EDITOR
+        server.responseDelay.Stop();
+        responseDelay.text = server.responseDelay.ElapsedMilliseconds.ToString();
+#endif
+
 
 
         //конец росчерка

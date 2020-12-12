@@ -25,7 +25,6 @@ public class LMPointer : GvrBasePointer
 
 
     Server server;
-    Stopwatch pressTime = new Stopwatch();
     GameObject enterRaycastObj;
     private Transform trLocal;
     private GameObject canvas;
@@ -35,7 +34,6 @@ public class LMPointer : GvrBasePointer
 
     [SerializeField]
     int delay = 100;
-
 
 
 
@@ -249,7 +247,9 @@ public class LMPointer : GvrBasePointer
         if (server.IsConnected && isGestureValid && !isInputEnd)
         {
             server.SendToClient($"u;\r\n");
-
+#if UNITY_EDITOR
+            server.responseDelay.Restart();
+#endif
             //mmetrics end gesture(1)
             measuringMetrics.entry_time_sw.Stop();
             measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;
