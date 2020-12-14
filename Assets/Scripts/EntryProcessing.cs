@@ -96,7 +96,7 @@ public class EntryProcessing : MonoBehaviour
         {
             Debug.Log("Create new sentences order");
             SentenceOrder = SentenceOrder.OrderBy(x => rnd.Next()).ToArray();
-            for (int i = 0; i < data.Length; ++i)
+            for (int i = 0; i < BLOCKS_COUNT * SENTENCE_COUNT; ++i)
             {
                 PlayerPrefs.SetInt($"SentenceOrder{i}", SentenceOrder[i]);
             }

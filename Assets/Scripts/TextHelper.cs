@@ -20,10 +20,7 @@ public class TextHelper : MonoBehaviour
     MeasuringMetrics measuringMetrics;
     EntryProcessing entryProcessing;
 
-#if UNITY_EDITOR
-    [SerializeField]
-    Text responseDelay;
-#endif
+
     public string text { get; private set; }
     private void Awake()
     {
@@ -77,7 +74,7 @@ public class TextHelper : MonoBehaviour
 
 #if UNITY_EDITOR
         server.responseDelay.Stop();
-        responseDelay.text = server.responseDelay.ElapsedMilliseconds.ToString();
+        Debug.Log($"RESPONSE DELAY: {server.responseDelay.ElapsedMilliseconds.ToString()}");
 #endif
 
 
