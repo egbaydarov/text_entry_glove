@@ -7,10 +7,13 @@ using UnityEngine;
 public class Screenshot : MonoBehaviour
 {
     [SerializeField]
-    Vector2 upperLeftSource = new Vector2(0, 0);
+    Vector2 upperLeftSource = new Vector2(0, 713);
 
     [SerializeField]
-    Vector2 screenSize = new Vector2(1920, 1080);
+    Vector2 screenSize = new Vector2(578, 342);
+
+    [SerializeField]
+    Vector2 bitmapSize = new Vector2(578, 342);
 
     [SerializeField]
     Vector2 upperLeftDestination = new Vector2(0, 0);
@@ -43,7 +46,7 @@ public class Screenshot : MonoBehaviour
             tex.LoadImage(bytes);
             try
             {
-                img.sprite = Sprite.Create(tex, new Rect(0, 0, 578, 305),
+                img.sprite = Sprite.Create(tex, new Rect(0, 0, screenSize.x, screenSize.y),
                     new Vector2(0, 0));
                 updateTexture = false;
             }
@@ -72,7 +75,7 @@ public class Screenshot : MonoBehaviour
     public void makeScreenshot(Point upperLeftSource, Point upperLeftDestination, Size screenSize)
     {
         System.Drawing.Bitmap keyboardBitmap;
-        using (keyboardBitmap = new Bitmap(780, 480)) // 780 480
+        using (keyboardBitmap = new Bitmap((int)bitmapSize.x, (int)bitmapSize.y)) // 780 480
         {
             using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(keyboardBitmap))
             {
