@@ -14,7 +14,7 @@ public class EyeMetrics : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (isMainKeys)
-        { //keyboard surface
+        { //keyboard surface enter
             if (collision.gameObject.name.Equals("EyePointer"))
             {
                 measuringMetrics.check_time_eye += measuringMetrics.check_time_sw_eye.ElapsedMilliseconds;
@@ -23,10 +23,11 @@ public class EyeMetrics : MonoBehaviour
                 //measuringMetrics.entry_time_sw.Start(); upd12 2
                 measuringMetrics.search_time_sw_single.Start();
                 measuringMetrics.search_time_sw.Start();
+                measuringMetrics.remove_time_sw.Restart();
             }
         }
         else
-        { //prediction surface
+        { //prediction surface enter
             if (collision.gameObject.name.Equals("EyePointer"))
             {
                 measuringMetrics.check_time_sw_eye.Restart();
@@ -44,16 +45,15 @@ public class EyeMetrics : MonoBehaviour
     {
         if (isMainKeys)
         {
+            //keyboard surface exit
             if (collision.gameObject.name.Equals("EyePointer"))
             {
                 //начало замера времени коррецкции слово может быть ошибочным
-                measuringMetrics.remove_time_sw.Restart();
-
-              
+                //measuringMetrics.remove_time_sw.Restart(); решил использовать только события входа в плоскость
             }
         }
         else
-        {
+        { //prediction surface exit
             if (collision.gameObject.name.Equals("EyePointer"))
             {
                 //measuringMetrics.check_time_eye += measuringMetrics.check_time_sw_eye.ElapsedMilliseconds;
@@ -83,10 +83,13 @@ public class EyeMetrics : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rb.velocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-        transform.localPosition = pos;
-        transform.localRotation = Quaternion.Euler(Vector3.zero);
+        if (rb.velocity != Vector3.zero || rb.angularVelocity != Vector3.zero)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            transform.localPosition = pos;
+            transform.localRotation = Quaternion.Euler(Vector3.zero);
+        }
     }
 
     private void Awake()
