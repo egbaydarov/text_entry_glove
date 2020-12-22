@@ -79,19 +79,17 @@ public class TextHelper : MonoBehaviour
 
 
 
-        //конец росчерка
-        measuringMetrics.entry_time_sw.Stop();
-        measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;
-        measuringMetrics.entry_time_sw.Restart();
+        
 
         //начало замера времени коррецкции слово может быть ошибочным
-        if(!entryProcessing.LastTagDown.Equals("Backspace"))
+        if (!entryProcessing.LastTagDown.Equals("Backspace"))
+        {
             measuringMetrics.remove_time_sw.Restart();
+        }
         measuringMetrics.RemoveFlag = true;
 
 
-        // начало поиска первого
-        measuringMetrics.search_time_sw.Restart();
+        
 
         ShouldUpdate = true;
     }

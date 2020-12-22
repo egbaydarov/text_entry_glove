@@ -615,13 +615,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsConnected: 0
   offset_x: 0
-  offset_y: 210
+  offset_y: 120
   scale_coef: 0.1
   height: 1920
   width: 1080
   cur_x: 0
   cur_y: 0
-  VYSOR_HEIGHT: 800
+  VYSOR_HEIGHT: 920
   VYSOR_WIDTH: 577
 --- !u!114 &2026602162
 MonoBehaviour:
@@ -635,7 +635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f007d8982d2f140abaf3a79447db70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentScene: 8
+  currentScene: 6
 --- !u!1 &2026995027
 GameObject:
   m_ObjectHideFlags: 0

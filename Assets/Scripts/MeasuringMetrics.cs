@@ -19,7 +19,7 @@ public class MeasuringMetrics : MonoBehaviour
 
     public Stopwatch full_time { get; set; } = new Stopwatch();
     public Stopwatch search_time_sw { get; set; } = new Stopwatch();
-    public Stopwatch search_time_sw_single { get; set; } = new Stopwatch();
+    public Stopwatch search_time_sw_eye { get; set; } = new Stopwatch();
     public Stopwatch entry_time_sw { get; set; } = new Stopwatch();
     public Stopwatch entry_time_sw_single { get; set; } = new Stopwatch();
     public Stopwatch remove_time_sw { get; set; } = new Stopwatch();
@@ -39,7 +39,7 @@ public class MeasuringMetrics : MonoBehaviour
     [SerializeField]
     long _entry_time_single;
     [SerializeField]
-    long _search_time_single;
+    long _search_time_eye;
     [SerializeField]
     int _backspace_choose;
     [SerializeField]
@@ -80,12 +80,12 @@ public class MeasuringMetrics : MonoBehaviour
             _search_time = value;
         }
     }
-    public long search_time_single
+    public long search_time_eye
     {
-        get => _search_time_single;
+        get => _search_time_eye;
         set
         {
-            _search_time_single = value;
+            _search_time_eye = value;
         }
     }
     public long entry_time
@@ -207,15 +207,13 @@ public class MeasuringMetrics : MonoBehaviour
         ResetAll();
         full_time.Start();
         entry_time_sw_single.Start();
-
     }
 
     public void ResetAll()
     {
         full_time.Reset();
         search_time_sw.Reset();
-        search_time_sw_single.Reset();
-        entry_time_sw_single.Reset();
+        search_time_sw_eye.Reset();
         entry_time_sw.Reset();
         remove_time_sw.Reset();
         check_time_sw.Reset();
@@ -226,7 +224,7 @@ public class MeasuringMetrics : MonoBehaviour
         entry_time = 0;
         entry_time_single = 0;
         search_time = 0;
-        search_time_single = 0;
+        search_time_eye = 0;
         remove_time = 0;
         check_time = 0;
         check_time_eye = 0;

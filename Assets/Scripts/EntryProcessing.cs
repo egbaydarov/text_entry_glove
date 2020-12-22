@@ -203,6 +203,11 @@ public class EntryProcessing : MonoBehaviour
             measuringMetrics.check_time_eye += measuringMetrics.check_time_sw_eye.ElapsedMilliseconds;
             measuringMetrics.check_time_sw_eye.Reset();
 
+            //mmetrics end of search first letter eye
+            measuringMetrics.search_time_sw_eye.Stop();
+            measuringMetrics.search_time_eye += measuringMetrics.search_time_sw_eye.ElapsedMilliseconds;
+            measuringMetrics.search_time_sw_eye.Reset();
+
             confirmButton.SetActive(false);
             sentenceField.SetActive(true);
 
@@ -236,22 +241,7 @@ public class EntryProcessing : MonoBehaviour
 
             //счетчик нажатий на подсказку
             ++measuringMetrics.prediction_choose;
-
-            //начало поиска первого
-            measuringMetrics.search_time_sw.Restart();
-
-            //начало поиска первого (посимвольный)
-            measuringMetrics.search_time_sw_single.Restart();
-
-            //mmetrics end gesture(2)
-            measuringMetrics.entry_time_sw.Stop();
-            measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;
-            measuringMetrics.entry_time_sw.Restart();
-
-            //для посимвольного, завершение ввода
-            measuringMetrics.entry_time_sw_single.Stop();
-            measuringMetrics.entry_time_single += measuringMetrics.entry_time_sw_single.ElapsedMilliseconds;
-            measuringMetrics.entry_time_sw_single.Restart();
+            
 
             OnPredictionClicked.Invoke();
             isFirstSingleKeyDown = true;
@@ -293,21 +283,6 @@ public class EntryProcessing : MonoBehaviour
             measuringMetrics.remove_time += measuringMetrics.remove_time_sw.ElapsedMilliseconds;
             measuringMetrics.remove_time_sw.Reset();
 
-            // начало поиска первого
-            measuringMetrics.search_time_sw.Restart();
-
-            //mmetrics end gesture(3)
-            measuringMetrics.entry_time_sw.Stop();
-            measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;
-            measuringMetrics.entry_time_sw.Restart();
-
-            //начало поиска первого (посимвольный)
-            measuringMetrics.search_time_sw_single.Restart();
-
-            //для посимвольного, завершение ввода
-            measuringMetrics.entry_time_sw_single.Stop();
-            measuringMetrics.entry_time_single += measuringMetrics.entry_time_sw_single.ElapsedMilliseconds;
-            measuringMetrics.entry_time_sw_single.Restart();
 
             isFirstSingleKeyDown = true;
         }
@@ -327,10 +302,7 @@ public class EntryProcessing : MonoBehaviour
             {
                 measuringMetrics.entry_time_sw_single.Restart();
 
-                //конец поиска первого (посимвольный)
-                measuringMetrics.search_time_sw_single.Stop();
-                measuringMetrics.search_time_single += measuringMetrics.search_time_sw_single.ElapsedMilliseconds;
-                measuringMetrics.search_time_sw_single.Reset();
+                
                 isFirstSingleKeyDown = false;
             }
 
@@ -342,11 +314,12 @@ public class EntryProcessing : MonoBehaviour
                     server.SendToClient("clear\r\n");
 
 
-                measuringMetrics.StartSentenceInput();
                 measuringMetrics.sent_text = (string)currentSentenceText.Clone();
 
                 sentenceField.SetActive(false);
                 confirmButton.SetActive(true);
+                measuringMetrics.StartSentenceInput();
+
             }
 
             StartCoroutine(WaitForSec());
@@ -359,8 +332,7 @@ public class EntryProcessing : MonoBehaviour
     {
         if (obj != null && obj.name.Equals("Space") && !menuButton.activeSelf)
         {
-            //начало поиска первого (посимвольный)
-            measuringMetrics.search_time_sw_single.Restart();
+           
 
             //для посимвольного, завершение ввода
             measuringMetrics.entry_time_sw_single.Stop();
@@ -407,7 +379,6 @@ public class EntryProcessing : MonoBehaviour
             measuringMetrics.check_time_sw.Restart();
             measuringMetrics.entry_time_sw_single.Stop();
             //measuringMetrics.entry_time_sw.Stop(); upd12 2
-            measuringMetrics.search_time_sw_single.Stop();
             measuringMetrics.search_time_sw.Stop();
             //Debug.Log("HIGHLIGHT CHECK TIME MEASURING STARTED");
         }
@@ -420,9 +391,8 @@ public class EntryProcessing : MonoBehaviour
         {
             measuringMetrics.check_time += measuringMetrics.check_time_sw.ElapsedMilliseconds;
             measuringMetrics.check_time_sw.Reset();
-            measuringMetrics.entry_time_sw_single.Start();
             //measuringMetrics.entry_time_sw.Start(); upd12 2
-            measuringMetrics.search_time_sw_single.Start();
+           
             measuringMetrics.search_time_sw.Start();
 
             //Debug.Log("HIGHLIGHT CHECK TIME MEASURING ENDED");

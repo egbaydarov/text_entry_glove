@@ -19,10 +19,9 @@ public class EyeMetrics : MonoBehaviour
             {
                 measuringMetrics.check_time_eye += measuringMetrics.check_time_sw_eye.ElapsedMilliseconds;
                 measuringMetrics.check_time_sw_eye.Reset();
-                measuringMetrics.entry_time_sw_single.Start();
-                //measuringMetrics.entry_time_sw.Start(); upd12 2
-                measuringMetrics.search_time_sw_single.Start();
-                measuringMetrics.search_time_sw.Start();
+
+                measuringMetrics.search_time_sw_eye.Start();
+
                 measuringMetrics.remove_time_sw.Restart();
             }
         }
@@ -31,11 +30,9 @@ public class EyeMetrics : MonoBehaviour
             if (collision.gameObject.name.Equals("EyePointer"))
             {
                 measuringMetrics.check_time_sw_eye.Restart();
-                measuringMetrics.entry_time_sw_single.Stop();
-                //measuringMetrics.entry_time_sw.Stop(); upd12 2
-                measuringMetrics.search_time_sw_single.Stop();
-                measuringMetrics.search_time_sw.Stop();
-                //начало замера времени коррецкции слово может быть ошибочным
+
+                measuringMetrics.search_time_sw_eye.Stop();
+
                 measuringMetrics.remove_time_sw.Restart();
             }
         }

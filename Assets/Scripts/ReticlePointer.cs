@@ -194,6 +194,11 @@ public class ReticlePointer : GvrBasePointer
                 measuringMetrics.search_time_sw.Stop();
                 measuringMetrics.search_time += measuringMetrics.search_time_sw.ElapsedMilliseconds;
                 measuringMetrics.search_time_sw.Reset();
+
+                //mmetrics end of search first letter
+                measuringMetrics.search_time_sw_eye.Stop();
+                measuringMetrics.search_time_eye += measuringMetrics.search_time_sw_eye.ElapsedMilliseconds;
+                measuringMetrics.search_time_sw_eye.Reset();
             }
             else if (++hoverCounter % 1 == 0 && server.IsConnected && isGestureValid && !isInputEnd)
                 server.SendToClient($"{(int)(x)};{(int)(y)};\r\n");
@@ -242,13 +247,17 @@ public class ReticlePointer : GvrBasePointer
 #if UNITY_EDITOR
             server.responseDelay.Restart();
 #endif
-            //mmetrics end gesture(1)
-            measuringMetrics.entry_time_sw.Stop();
-            measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;
-            measuringMetrics.entry_time_sw.Restart();
 
+            if (!entryProcessing.LastTagDown.Equals("Backspace"))
+            {
+                //конец росчерка
+                measuringMetrics.entry_time_sw.Stop();
+                measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;
+                measuringMetrics.entry_time_sw.Reset();
+            }
             //начало поиска первого
             measuringMetrics.search_time_sw.Restart();
+            measuringMetrics.search_time_sw_eye.Restart();
         }
         //server.SendToClient(data + "\r\n");
         hoverCounter = 0;
@@ -339,6 +348,8 @@ public class ReticlePointer : GvrBasePointer
         CreateReticleVertices();
     }
 
+    EntryProcessing entryProcessing;
+
     /// @endcond
     /// <summary>This MonoBehavior's Awake behavior.</summary>
     private void Awake()
@@ -348,6 +359,8 @@ public class ReticlePointer : GvrBasePointer
         trRander = GetComponent<TrailRender>();
         server = FindObjectOfType<Server>();
         measuringMetrics = FindObjectOfType<MeasuringMetrics>();
+
+        entryProcessing = FindObjectOfType<EntryProcessing>();
     }
 
     /// @cond
