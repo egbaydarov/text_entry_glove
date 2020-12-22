@@ -13,6 +13,7 @@ public class SoundOnHighlight : MonoBehaviour, IPointerEnterHandler
 
     private void Start()
     {
+        audio = FindObjectOfType<AudioSource>();
         if (audio == null)
         {
             Debug.LogError("SoundOnHighlight: The 'Audio' field cannot be left unassigned. Disabling the script");
