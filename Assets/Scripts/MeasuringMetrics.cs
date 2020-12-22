@@ -25,17 +25,109 @@ public class MeasuringMetrics : MonoBehaviour
     public Stopwatch remove_time_sw { get; set; } = new Stopwatch();
     public Stopwatch check_time_sw { get; set; } = new Stopwatch();
     public Stopwatch check_time_sw_eye { get; set; } = new Stopwatch();
-    public int prediction_choose { get; set; }
-    public int backspace_choose { get; set; }
-    public int removed_count { get; set; }
+
+    [SerializeField]
+    long _search_time;
+    [SerializeField]
+    long _entry_time;
+    [SerializeField]
+    long _remove_time;
+    [SerializeField]
+    long _check_time;
+    [SerializeField]
+    long _check_time_eye;
+    [SerializeField]
+    long _entry_time_single;
+    [SerializeField]
+    long _search_time_single;
+    [SerializeField]
+    int _backspace_choose;
+    [SerializeField]
+    int _prediction_choose;
+    [SerializeField]
+    int _removed_count;
+
+    public int prediction_choose
+    {
+        get => _prediction_choose;
+        set
+        {
+            _prediction_choose = value;
+        }
+    }
+    public int backspace_choose
+    {
+        get => _backspace_choose;
+        set
+        {
+            _backspace_choose = value;
+        }
+    }
+    public int removed_count
+    {
+        get => _removed_count;
+        set
+        {
+            _removed_count = value;
+        }
+    }
     public bool HasWrong { get; set; }
-    public long search_time { get; set; }
-    public long search_time_single { get; set; }
-    public long entry_time { get; set; }
-    public long entry_time_single { get; set; }
-    public long remove_time { get; set; }
-    public long check_time { get; set; }
-    public long check_time_eye { get; set; }
+    public long search_time
+    {
+        get => _search_time;
+        set
+        {
+            _search_time = value;
+        }
+    }
+    public long search_time_single
+    {
+        get => _search_time_single;
+        set
+        {
+            _search_time_single = value;
+        }
+    }
+    public long entry_time
+    {
+        get => _entry_time;
+        set
+        {
+            _entry_time = value;
+        }
+    }
+    public long entry_time_single
+    {
+        get => _entry_time_single;
+        set
+        {
+            _entry_time_single = value;
+        }
+    }
+    public long remove_time
+    {
+        get => _remove_time;
+        set
+        {
+            _remove_time = value;
+        }
+    }
+    public long check_time
+    {
+        get => _check_time;
+        set
+        {
+            _check_time = value;
+        }
+    }
+    public long check_time_eye
+    {
+        get => _check_time_eye;
+        set
+        {
+            _check_time_eye = value;
+        }
+    }
     public bool isRemoves { get; set; } = false;
     public bool RemoveFlag { get; set; } = false;
     public string sent_text { get; set; }
@@ -50,6 +142,11 @@ public class MeasuringMetrics : MonoBehaviour
     {
         if (!SceneManagment.isNew)
             LoadPrefs();
+    }
+
+    private void Update()
+    {
+        
     }
 
     private void OnApplicationQuit()
@@ -115,14 +212,14 @@ public class MeasuringMetrics : MonoBehaviour
 
     public void ResetAll()
     {
-        full_time.Restart();
-        search_time_sw.Restart();
-        search_time_sw_single.Restart();
-        entry_time_sw_single.Restart();
-        entry_time_sw.Restart();
+        full_time.Reset();
+        search_time_sw.Reset();
+        search_time_sw_single.Reset();
+        entry_time_sw_single.Reset();
+        entry_time_sw.Reset();
         remove_time_sw.Reset();
-        check_time_sw.Restart();
-        check_time_sw_eye.Restart();
+        check_time_sw.Reset();
+        check_time_sw_eye.Reset();
         prediction_choose = 0;
         backspace_choose = 0;
         removed_count = 0;

@@ -50,7 +50,7 @@ public class Server : MonoBehaviour
     public bool isSizeSet;
 
 #if UNITY_EDITOR
-    public Stopwatch responseDelay = new Stopwatch();
+    public Stopwatch responseDelay { get; set; } = new Stopwatch();
 #endif
 
 

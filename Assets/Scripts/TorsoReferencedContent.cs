@@ -33,6 +33,8 @@ public class TorsoReferencedContent : MonoBehaviour
 
     protected virtual void Update()
     {
+
+
         Vector3 posTo = camera.position + offset;
 
         float posSpeed = Time.deltaTime * POSITION_LERP_SPEED;

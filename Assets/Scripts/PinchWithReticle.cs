@@ -7,9 +7,9 @@ public class PinchWithReticle : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    public Canvas keyCanvas;
-    public GameObject reticlePointer;
-    public GameObject LMPointer;
+    Canvas keyCanvas;
+    GameObject reticlePointer;
+    GameObject LMPointer;
 
     public bool HideReticleWhileGesturing = true;
     void Start()

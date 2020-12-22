@@ -35,11 +35,7 @@ public class EyeMetrics : MonoBehaviour
                 measuringMetrics.search_time_sw_single.Stop();
                 measuringMetrics.search_time_sw.Stop();
                 //начало замера времени коррецкции слово может быть ошибочным
-                if (measuringMetrics.RemoveFlag)
-                {
-                    measuringMetrics.remove_time_sw.Restart();
-                    measuringMetrics.RemoveFlag = false;
-                }
+                measuringMetrics.remove_time_sw.Restart();
             }
         }
     }
@@ -50,13 +46,10 @@ public class EyeMetrics : MonoBehaviour
         {
             if (collision.gameObject.name.Equals("EyePointer"))
             {
-
                 //начало замера времени коррецкции слово может быть ошибочным
-                if (measuringMetrics.RemoveFlag)
-                {
-                    measuringMetrics.remove_time_sw.Restart();
-                    measuringMetrics.RemoveFlag = false;
-                }
+                measuringMetrics.remove_time_sw.Restart();
+
+              
             }
         }
         else
@@ -83,6 +76,8 @@ public class EyeMetrics : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         pos = transform.localPosition;
+        rb.detectCollisions = true;
+
     }
 
     // Update is called once per frame

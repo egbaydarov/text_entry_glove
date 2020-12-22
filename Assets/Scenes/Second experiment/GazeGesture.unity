@@ -2542,8 +2542,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.10226607}
   m_AnchorMax: {x: 0.5, y: 0.10226607}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1080, y: 130}
+  m_AnchoredPosition: {x: 0, y: -8}
+  m_SizeDelta: {x: 1080, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &555311053
 MonoBehaviour:
@@ -4453,7 +4453,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 5, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.6181105}
+  m_AnchoredPosition: {x: 0, y: 0.711}
   m_SizeDelta: {x: 1400, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &728724468
@@ -4615,8 +4615,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -38}
-  m_SizeDelta: {x: 1080, y: 630}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1080, y: 853}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &752575961
 MonoBehaviour:
@@ -4630,9 +4630,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af9c5accb5141854896dbe6469348982, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upperLeftSource: {x: 0, y: 713}
-  screenSize: {x: 578, y: 342}
-  bitmapSize: {x: 578, y: 342}
+  upperLeftSource: {x: 0, y: 610}
+  screenSize: {x: 578, y: 445}
+  bitmapSize: {x: 578, y: 445}
   upperLeftDestination: {x: 0, y: 0}
   img: {fileID: 752575964}
   updatesPerSercond: 25
@@ -4682,8 +4682,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: c6fd34c71bbe74c42ab0aa61564c2512, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -5645,6 +5645,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FORM_URL: https://docs.google.com/forms/u/0/d/e/1FAIpQLScWlRx70e3SICI3YnnIJSOVPJ3jGoORoAdh-NvsTnuTtVpqkw/formResponse
   _currentEntryProcessing: {fileID: 728724463}
+  _search_time: 0
+  _entry_time: 0
+  _remove_time: 0
+  _check_time: 0
+  _check_time_eye: 0
+  _entry_time_single: 0
+  _search_time_single: 0
+  _backspace_choose: 0
+  _prediction_choose: 0
+  _removed_count: 0
 --- !u!114 &885768150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6892,7 +6902,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5201301}
   m_AnchorMax: {x: 0.5, y: 0.5201301}
   m_AnchoredPosition: {x: -4, y: 3}
-  m_SizeDelta: {x: 1080, y: 430}
+  m_SizeDelta: {x: 1080, y: 580}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1333040890
 MonoBehaviour:
@@ -10083,7 +10093,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.312}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.415}
+  m_AnchoredPosition: {x: 0, y: 0.51}
   m_SizeDelta: {x: 1080, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1922024329
@@ -10631,9 +10641,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df429ae0f0472e44ca9e89a9183fdb27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keyCanvas: {fileID: 0}
-  reticlePointer: {fileID: 0}
-  LMPointer: {fileID: 0}
   HideReticleWhileGesturing: 0
 --- !u!1 &2037215423
 GameObject:
@@ -11059,7 +11066,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1080, y: 630}
+  m_SizeDelta: {x: 1080, y: 853}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2105982876
 MonoBehaviour:

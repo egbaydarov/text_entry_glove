@@ -239,7 +239,9 @@ public class ReticlePointer : GvrBasePointer
         if (server.IsConnected && isGestureValid && !isInputEnd)
         {
             server.SendToClient($"u;\r\n");
-
+#if UNITY_EDITOR
+            server.responseDelay.Restart();
+#endif
             //mmetrics end gesture(1)
             measuringMetrics.entry_time_sw.Stop();
             measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;

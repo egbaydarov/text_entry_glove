@@ -615,13 +615,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsConnected: 0
   offset_x: 0
-  offset_y: 15
+  offset_y: 210
   scale_coef: 0.1
   height: 1920
   width: 1080
   cur_x: 0
   cur_y: 0
-  VYSOR_HEIGHT: 1027
+  VYSOR_HEIGHT: 800
   VYSOR_WIDTH: 577
 --- !u!114 &2026602162
 MonoBehaviour:
