@@ -381,6 +381,8 @@ public class EntryProcessing : MonoBehaviour
             //measuringMetrics.entry_time_sw.Stop(); upd12 2
             measuringMetrics.search_time_sw.Stop();
             //Debug.Log("HIGHLIGHT CHECK TIME MEASURING STARTED");
+            //restart on keyboard surface enter 
+            measuringMetrics.remove_time_sw.Restart();
         }
     }
 
@@ -394,7 +396,8 @@ public class EntryProcessing : MonoBehaviour
             //measuringMetrics.entry_time_sw.Start(); upd12 2
            
             measuringMetrics.search_time_sw.Start();
-
+            //restart on control surface enter (exit keyboard) //TODO make true control surface enter check
+            measuringMetrics.remove_time_sw.Restart();
             //Debug.Log("HIGHLIGHT CHECK TIME MEASURING ENDED");
             // начало поиска первого
         }
