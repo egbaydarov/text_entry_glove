@@ -257,7 +257,7 @@ public class ReticlePointer : GvrBasePointer
             }
             //начало поиска первого
             measuringMetrics.search_time_sw.Restart();
-            measuringMetrics.search_time_sw_eye.Restart();
+            measuringMetrics.search_time_sw_eye.Start();
         }
         //server.SendToClient(data + "\r\n");
         hoverCounter = 0;

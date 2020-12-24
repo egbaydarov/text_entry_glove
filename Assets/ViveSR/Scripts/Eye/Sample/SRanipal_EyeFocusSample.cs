@@ -1,5 +1,4 @@
 ﻿//========= Copyright 2018, HTC Corporation. All rights reserved. ===========
-using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -9,6 +8,8 @@ namespace ViveSR.anipal.Eye
     {
         [SerializeField]
         Transform pointer;
+        [SerializeField]
+        Transform collider_stick;
 
         private FocusInfo FocusInfo;
         private readonly float MaxDistance = 20;
@@ -62,6 +63,8 @@ namespace ViveSR.anipal.Eye
                     //if (dartBoard != null) dartBoard.Focus(FocusInfo.point);
 
                     pointer.localRotation = Quaternion.LookRotation(GazeRay.direction);
+                    if (collider_stick != null)
+                        collider_stick.localRotation = Quaternion.LookRotation(GazeRay.direction);
                     break;
                 }
             }

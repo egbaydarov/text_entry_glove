@@ -32,6 +32,8 @@ public class EyeMetrics : MonoBehaviour
                 measuringMetrics.check_time_sw_eye.Restart();
 
                 measuringMetrics.search_time_sw_eye.Stop();
+                measuringMetrics.search_time_eye += measuringMetrics.search_time_sw_eye.ElapsedMilliseconds;
+                measuringMetrics.search_time_sw_eye.Reset();
 
                 measuringMetrics.remove_time_sw.Restart();
             }

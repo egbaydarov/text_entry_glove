@@ -283,6 +283,7 @@ public class EntryProcessing : MonoBehaviour
             measuringMetrics.remove_time += measuringMetrics.remove_time_sw.ElapsedMilliseconds;
             measuringMetrics.remove_time_sw.Reset();
 
+            measuringMetrics.search_time_sw_eye.Restart();
 
             isFirstSingleKeyDown = true;
         }

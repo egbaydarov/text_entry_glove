@@ -162,13 +162,7 @@ public class LMPointer : GvrBasePointer
         if ((!raycastResult.gameObject.tag.Equals("Key") && !raycastResult.gameObject.tag.Equals("Prediction"))
             || !isGestureValid)
             return;
-        else if (raycastResult.gameObject.tag.Equals("Backspace"))
-        {
-            measuringMetrics.search_time_sw_eye.Stop();
-            measuringMetrics.search_time_eye += measuringMetrics.search_time_sw_eye.ElapsedMilliseconds;
-            measuringMetrics.search_time_sw_eye.Reset();
-            return;
-        }
+        
 
 
         if (Triggering)
@@ -272,7 +266,8 @@ public class LMPointer : GvrBasePointer
 
             //начало поиска первого
             measuringMetrics.search_time_sw.Restart();
-            measuringMetrics.search_time_sw_eye.Restart();
+            measuringMetrics.search_time_sw_eye.Start();
+
 
         }
         //server.SendToClient(data + "\r\n");
