@@ -76,21 +76,7 @@ public class TextHelper : MonoBehaviour
         server.responseDelay.Stop();
         Debug.Log($"RESPONSE DELAY: {server.responseDelay.ElapsedMilliseconds.ToString()}");
 #endif
-
-
-
-        
-
-        //начало замера времени коррецкции слово может быть ошибочным
-        if (!entryProcessing.LastTagDown.Equals("Backspace"))
-        {
-            measuringMetrics.remove_time_sw.Restart();
-        }
-        measuringMetrics.RemoveFlag = true;
-
-
-        
-
+      
         ShouldUpdate = true;
     }
 

@@ -187,18 +187,11 @@ public class ReticlePointer : GvrBasePointer
             if (trRander.trailPoints.Count == 1 && server.IsConnected && isGestureValid && !isInputEnd)
             {
                 server.SendToClient($"d;{(int)(x)};{(int)(y)};\r\n");
-                //mmetrics start gesture
-                measuringMetrics.entry_time_sw.Restart();
 
-                //mmetrics end of search first letter
-                measuringMetrics.search_time_sw.Stop();
-                measuringMetrics.search_time += measuringMetrics.search_time_sw.ElapsedMilliseconds;
-                measuringMetrics.search_time_sw.Reset();
-
-                //mmetrics end of search first letter
-                measuringMetrics.search_time_sw_eye.Stop();
-                measuringMetrics.search_time_eye += measuringMetrics.search_time_sw_eye.ElapsedMilliseconds;
-                measuringMetrics.search_time_sw_eye.Reset();
+                if (entryProcessing.LastTagDown.Equals("Key"))
+                {
+                    measuringMetrics.StartGesture();
+                }
             }
             else if (++hoverCounter % 1 == 0 && server.IsConnected && isGestureValid && !isInputEnd)
                 server.SendToClient($"{(int)(x)};{(int)(y)};\r\n");
@@ -216,15 +209,7 @@ public class ReticlePointer : GvrBasePointer
     /// <inheritdoc/>
     public override void OnPointerClickDown()
     {
-
-
-        isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction") || enterRaycastObj.tag.Equals("Backspace");
-
-
-        float x_min = -1080 / 2 + 10;
-        float x_max = -1080 / 2 + 10 + (1080 - 120) / 11;
-        float y_min = -660 / 2 + (float)(0.835 * 660 - 45) / 4 + 20;
-        float y_max = -660 / 2 + (float)(0.835 * 660 - 45) / 2 + 20;
+        isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction");
     }
 
     /// <inheritdoc/>
@@ -248,16 +233,10 @@ public class ReticlePointer : GvrBasePointer
             server.responseDelay.Restart();
 #endif
 
-            if (!entryProcessing.LastTagDown.Equals("Backspace"))
+            if (entryProcessing.LastTagDown.Equals("Key"))
             {
-                //конец росчерка
-                measuringMetrics.entry_time_sw.Stop();
-                measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;
-                measuringMetrics.entry_time_sw.Reset();
+                measuringMetrics.EndGesture();
             }
-            //начало поиска первого
-            measuringMetrics.search_time_sw.Restart();
-            measuringMetrics.search_time_sw_eye.Start();
         }
         //server.SendToClient(data + "\r\n");
         hoverCounter = 0;

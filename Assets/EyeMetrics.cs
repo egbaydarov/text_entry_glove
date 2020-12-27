@@ -17,25 +17,14 @@ public class EyeMetrics : MonoBehaviour
         { //keyboard surface enter
             if (collision.gameObject.name.Equals("EyePointer"))
             {
-                measuringMetrics.check_time_eye += measuringMetrics.check_time_sw_eye.ElapsedMilliseconds;
-                measuringMetrics.check_time_sw_eye.Reset();
-
-                measuringMetrics.search_time_sw_eye.Start();
-
-                measuringMetrics.remove_time_sw.Restart();
+                measuringMetrics.OnInputEnter();
             }
         }
         else
         { //prediction surface enter
             if (collision.gameObject.name.Equals("EyePointer"))
             {
-                measuringMetrics.check_time_sw_eye.Restart();
-
-                measuringMetrics.search_time_sw_eye.Stop();
-                measuringMetrics.search_time_eye += measuringMetrics.search_time_sw_eye.ElapsedMilliseconds;
-                measuringMetrics.search_time_sw_eye.Reset();
-
-                measuringMetrics.remove_time_sw.Restart();
+                measuringMetrics.OnControlEnter();
             }
         }
     }
@@ -47,20 +36,14 @@ public class EyeMetrics : MonoBehaviour
             //keyboard surface exit
             if (collision.gameObject.name.Equals("EyePointer"))
             {
-                //начало замера времени коррецкции слово может быть ошибочным
-                //measuringMetrics.remove_time_sw.Restart(); решил использовать только события входа в плоскость
+               
             }
         }
         else
         { //prediction surface exit
             if (collision.gameObject.name.Equals("EyePointer"))
             {
-                //measuringMetrics.check_time_eye += measuringMetrics.check_time_sw_eye.ElapsedMilliseconds;
-                //measuringMetrics.check_time_sw_eye.Reset();
-                //measuringMetrics.entry_time_sw_single.Start();
-                ////measuringMetrics.entry_time_sw.Start(); upd12 2
-                //measuringMetrics.search_time_sw_single.Start();
-                //measuringMetrics.search_time_sw.Start();
+                
             }
         }
     }

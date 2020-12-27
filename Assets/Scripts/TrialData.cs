@@ -21,7 +21,6 @@ public class TrialData
     public string entry_time { get; set; }
     public string search_time { get; set; }
 
-    public bool HasError { get; set; }
 
 
     // Instructions were taken from here: https://youtu.be/z9b5aRfrz7M
@@ -64,8 +63,7 @@ public class TrialData
         form.Add("entry.647338142", removing_time.Replace(".", ","));  // Общее время удаления слова 
         form.Add("entry.1673523306", Math.Round(((float)resp_text.Length) * 12.0 / all_time, 2).ToString().Replace(".", ",")); // Скорость набора текста
 
-        //if (HasError)
-        //    form.Add("entry.1347030375", "Ошибка при удалении слова");   // Примечание
+        //form.Add("entry.1347030375", "");   // Примечание
 
 
 
