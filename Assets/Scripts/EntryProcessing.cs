@@ -226,9 +226,7 @@ public class EntryProcessing : MonoBehaviour
         {
             LastTagDown = "Prediction";
 
-            //счетчик нажатий на подсказку
-            ++measuringMetrics.prediction_choose;
-            
+            measuringMetrics.ChoosePrediction();
 
             OnPredictionClicked.Invoke();
             isFirstSingleKeyDown = true;
