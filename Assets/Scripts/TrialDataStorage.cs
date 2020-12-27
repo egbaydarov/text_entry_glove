@@ -97,21 +97,14 @@ public class TrialDataStorage : MonoBehaviour
             removed_count = _measuringMetrics.removed_count.ToString(),
             backspace_count = _measuringMetrics.backspace_choose.ToString(),
             prediction_count = _measuringMetrics.prediction_choose.ToString(),
-            search_time = (_measuringMetrics.search_time / 1000f).ToString(),
             entry_time = (_measuringMetrics.entry_time / 1000f).ToString(),
             removing_time = _measuringMetrics.isRemoves ? (_measuringMetrics.remove_time / 1000f).ToString() : "",
-            HasError = _measuringMetrics.HasWrong,
             resp_text = TextHelper.text,
-            check_time = (_measuringMetrics.check_time / 1000f).ToString()
+            check_time = (_measuringMetrics.check_time_eye / 1000f).ToString(),
+            search_time = (_measuringMetrics.search_time_eye / 1000f).ToString()
         };
 
-        
-
-        if(FindObjectsOfType<EyeMetrics>().Length != 0)
-        {
-            _currentTrialData.check_time = (_measuringMetrics.check_time_eye / 1000f).ToString();
-            _currentTrialData.search_time = (_measuringMetrics.search_time_eye / 1000f).ToString();
-        }
+        _currentTrialData.RefactoredMetrics = $"{(_measuringMetrics.search_time / 1000f).ToString()} ; {(_measuringMetrics.check_time / 1000f).ToString()}";
 
     }
 

@@ -216,15 +216,7 @@ public class ReticlePointer : GvrBasePointer
     /// <inheritdoc/>
     public override void OnPointerClickDown()
     {
-
-
         isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction") || enterRaycastObj.tag.Equals("Backspace");
-
-
-        float x_min = -1080 / 2 + 10;
-        float x_max = -1080 / 2 + 10 + (1080 - 120) / 11;
-        float y_min = -660 / 2 + (float)(0.835 * 660 - 45) / 4 + 20;
-        float y_max = -660 / 2 + (float)(0.835 * 660 - 45) / 2 + 20;
     }
 
     /// <inheritdoc/>

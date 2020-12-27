@@ -186,9 +186,7 @@ public class EntryProcessing : MonoBehaviour
 
             measuringMetrics.EndSentenceInput();
 
-            //для посимвольного, завершение ввода
-            measuringMetrics.entry_time_single += measuringMetrics.entry_time_sw_single.ElapsedMilliseconds;
-            measuringMetrics.entry_time_sw_single.Stop();
+            
 
             //простой после ввода последнего слова
             measuringMetrics.search_time_sw.Stop();
@@ -301,7 +299,6 @@ public class EntryProcessing : MonoBehaviour
 
             if (isFirstSingleKeyDown)
             {
-                measuringMetrics.entry_time_sw_single.Restart();
 
                 
                 isFirstSingleKeyDown = false;
@@ -334,11 +331,6 @@ public class EntryProcessing : MonoBehaviour
         if (obj != null && obj.name.Equals("Space") && !menuButton.activeSelf)
         {
            
-
-            //для посимвольного, завершение ввода
-            measuringMetrics.entry_time_sw_single.Stop();
-            measuringMetrics.entry_time_single += measuringMetrics.entry_time_sw_single.ElapsedMilliseconds;
-            measuringMetrics.entry_time_sw_single.Restart();
 
             isFirstSingleKeyDown = true;
         }
@@ -378,7 +370,6 @@ public class EntryProcessing : MonoBehaviour
         if (obj.name.Equals("CanvasInputField") || obj.name.Equals("NextSentence") || obj.CompareTag("Prediction"))
         {
             measuringMetrics.check_time_sw.Restart();
-            measuringMetrics.entry_time_sw_single.Stop();
             //measuringMetrics.entry_time_sw.Stop(); upd12 2
             measuringMetrics.search_time_sw.Stop();
             //Debug.Log("HIGHLIGHT CHECK TIME MEASURING STARTED");

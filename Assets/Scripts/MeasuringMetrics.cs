@@ -21,10 +21,12 @@ public class MeasuringMetrics : MonoBehaviour
     public Stopwatch search_time_sw { get; set; } = new Stopwatch();
     public Stopwatch search_time_sw_eye { get; set; } = new Stopwatch();
     public Stopwatch entry_time_sw { get; set; } = new Stopwatch();
-    public Stopwatch entry_time_sw_single { get; set; } = new Stopwatch();
     public Stopwatch remove_time_sw { get; set; } = new Stopwatch();
     public Stopwatch check_time_sw { get; set; } = new Stopwatch();
     public Stopwatch check_time_sw_eye { get; set; } = new Stopwatch();
+    public Stopwatch timer { get; set; } = new Stopwatch();
+
+
 
     [SerializeField]
     long _search_time;
@@ -36,8 +38,6 @@ public class MeasuringMetrics : MonoBehaviour
     long _check_time;
     [SerializeField]
     long _check_time_eye;
-    [SerializeField]
-    long _entry_time_single;
     [SerializeField]
     long _search_time_eye;
     [SerializeField]
@@ -96,14 +96,6 @@ public class MeasuringMetrics : MonoBehaviour
             _entry_time = value;
         }
     }
-    public long entry_time_single
-    {
-        get => _entry_time_single;
-        set
-        {
-            _entry_time_single = value;
-        }
-    }
     public long remove_time
     {
         get => _remove_time;
@@ -135,7 +127,7 @@ public class MeasuringMetrics : MonoBehaviour
 
     private string _prevValue = "";
 
-    
+
     Server server;
 
     private void Start()
@@ -146,7 +138,7 @@ public class MeasuringMetrics : MonoBehaviour
 
     private void Update()
     {
-        
+
     }
 
     private void OnApplicationQuit()
@@ -202,12 +194,7 @@ public class MeasuringMetrics : MonoBehaviour
         PlayerPrefs.DeleteKey("Session_number");
     }
 
-    public void StartSentenceInput()
-    {
-        ResetAll();
-        full_time.Start();
-        entry_time_sw_single.Start();
-    }
+
 
     public void ResetAll()
     {
@@ -222,7 +209,6 @@ public class MeasuringMetrics : MonoBehaviour
         backspace_choose = 0;
         removed_count = 0;
         entry_time = 0;
-        entry_time_single = 0;
         search_time = 0;
         search_time_eye = 0;
         remove_time = 0;
@@ -234,10 +220,7 @@ public class MeasuringMetrics : MonoBehaviour
         HasWrong = false;
     }
 
-    public void EndSentenceInput()
-    {
-        full_time.Stop();
-    }
+
 
     public void OnCharacterRemoving(string value)
     {
@@ -254,7 +237,98 @@ public class MeasuringMetrics : MonoBehaviour
 
         _prevValue = value;
     }
-    
 
-    
+
+    public void StartSentenceInput()
+    {
+        ResetAll();
+
+        full_time.Start();
+        timer.Start();
+    }
+
+    bool IsGestureExecuting = false;
+    bool IsEyeOnInputZone = false;
+
+    public void StartGesture()
+    {
+        IsGestureExecuting = true;
+
+        timer.Stop();
+        if (IsEyeOnInputZone)
+            search_time += timer.ElapsedMilliseconds;
+        else
+            check_time += timer.ElapsedMilliseconds;
+
+        timer.Reset();
+        timer.Start();
+
+        entry_time_sw.Start();
+    }
+
+
+    public void EndGesture()
+    {
+        IsGestureExecuting = false;
+
+        entry_time_sw.Stop();
+        entry_time += entry_time_sw.ElapsedMilliseconds;
+        entry_time_sw.Reset();
+
+        timer.Stop();
+        if (!IsEyeOnInputZone) //для исключения поиска первого во время pfdthitybz росчерка
+            check_time += timer.ElapsedMilliseconds;
+        timer.Reset();
+        timer.Start();
+    }
+
+    public void DeleteWord()
+    {
+        timer.Stop();
+        remove_time += timer.ElapsedMilliseconds;
+        timer.Reset();
+
+        timer.Start();
+    }
+
+    public void ChoosePrediction()
+    {
+        ++prediction_choose;
+    }
+
+    public void EndSentenceInput()
+    {
+        full_time.Stop();
+
+        timer.Stop();
+        if (IsEyeOnInputZone)
+            search_time += timer.ElapsedMilliseconds;
+        else
+            check_time += timer.ElapsedMilliseconds;
+
+        timer.Reset();
+    }
+
+    public void OnControlEnter()
+    {
+        IsEyeOnInputZone = false;
+
+        timer.Stop();
+        if (!IsGestureExecuting) //для исключения поиска первого во время росчерка
+            search_time += timer.ElapsedMilliseconds;
+        timer.Reset();
+
+        timer.Start();
+    }
+
+    public void OnInputEnter()
+    {
+        IsEyeOnInputZone = true;
+
+        timer.Stop();
+        check_time += timer.ElapsedMilliseconds;
+        timer.Reset();
+
+        timer.Start();
+    }
 }
