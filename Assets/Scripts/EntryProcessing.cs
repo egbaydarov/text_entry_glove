@@ -116,11 +116,7 @@ public class EntryProcessing : MonoBehaviour
         senNumber.text = $"Предложение\n{currentSentence + 1}\\{SENTENCE_COUNT}";
         currentSentenceText = words[SentenceOrder[SENTENCE_COUNT * currentBlock + currentSentence]];
 
-        //if (BackspacePressed && BackspaceDownTime.ElapsedMilliseconds > 600)
-        //{
-        //    server.SendToClient("backspace\r\n");
-        //    BackspaceDownTime.Restart();
-        //}
+        
         if (ShoudSetToStart)
             setToStart();
     }
@@ -186,15 +182,6 @@ public class EntryProcessing : MonoBehaviour
 
             measuringMetrics.EndSentenceInput();
 
-            //просмотр подсказок перед завершением
-            measuringMetrics.check_time_eye += measuringMetrics.check_time_sw_eye.ElapsedMilliseconds;
-            measuringMetrics.check_time_sw_eye.Reset();
-
-            //mmetrics end of search first letter eye
-            measuringMetrics.search_time_sw_eye.Stop();
-            measuringMetrics.search_time_eye += measuringMetrics.search_time_sw_eye.ElapsedMilliseconds;
-            measuringMetrics.search_time_sw_eye.Reset();
-
             confirmButton.SetActive(false);
             sentenceField.SetActive(true);
 
@@ -242,9 +229,6 @@ public class EntryProcessing : MonoBehaviour
             LastTagDown = "Backspace";
             BackspaceDownTime.Restart();
 
-            //счетчик нажатий на backspace
-            ++measuringMetrics.backspace_choose;
-
             //начало нажатия на backspace
             //measuringMetrics.remove_time_sw.Restart();
 
@@ -265,13 +249,6 @@ public class EntryProcessing : MonoBehaviour
 
             measuringMetrics.DeleteWord();
 
-            //конец нажатия на backspace
-            measuringMetrics.remove_time_sw.Stop();
-            measuringMetrics.remove_time += measuringMetrics.remove_time_sw.ElapsedMilliseconds;
-            measuringMetrics.remove_time_sw.Reset();
-
-            measuringMetrics.search_time_sw_eye.Restart();
-
             isFirstSingleKeyDown = true;
         }
     }
@@ -284,15 +261,6 @@ public class EntryProcessing : MonoBehaviour
         if (obj != null && obj.tag.Equals("Key") && !menuButton.activeSelf)
         {
             LastTagDown = "Key";
-
-
-            if (isFirstSingleKeyDown)
-            {
-
-                
-                isFirstSingleKeyDown = false;
-            }
-
 
             //Первое нажатие после заучивания предложения
             if (!confirmButton.activeSelf)
@@ -358,12 +326,7 @@ public class EntryProcessing : MonoBehaviour
     {
         if (obj.name.Equals("CanvasInputField") || obj.name.Equals("NextSentence") || obj.CompareTag("Prediction"))
         {
-            measuringMetrics.check_time_sw.Restart();
-            //measuringMetrics.entry_time_sw.Stop(); upd12 2
-            measuringMetrics.search_time_sw.Stop();
-            //Debug.Log("HIGHLIGHT CHECK TIME MEASURING STARTED");
-            //restart on keyboard surface enter 
-            measuringMetrics.remove_time_sw.Restart();
+            
         }
     }
 
@@ -372,15 +335,7 @@ public class EntryProcessing : MonoBehaviour
         //Debug.Log($"HIGHLIGHT TAG {obj.tag} NAME: {obj.name}");
         if (obj.name.Equals("CanvasInputField") || obj.name.Equals("NextSentence") || obj.CompareTag("Prediction"))
         {
-            measuringMetrics.check_time += measuringMetrics.check_time_sw.ElapsedMilliseconds;
-            measuringMetrics.check_time_sw.Reset();
-            //measuringMetrics.entry_time_sw.Start(); upd12 2
            
-            measuringMetrics.search_time_sw.Start();
-            //restart on control surface enter (exit keyboard) //TODO make true control surface enter check
-            measuringMetrics.remove_time_sw.Restart();
-            //Debug.Log("HIGHLIGHT CHECK TIME MEASURING ENDED");
-            // начало поиска первого
         }
     }
 

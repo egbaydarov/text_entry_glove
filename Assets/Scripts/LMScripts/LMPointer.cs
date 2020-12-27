@@ -181,15 +181,12 @@ public class LMPointer : GvrBasePointer
             if (trRander.trailPoints.Count == 1 && server.IsConnected && isGestureValid && !isInputEnd)
             {
                 server.SendToClient($"d;{(int)(x)};{(int)(y)};\r\n");
-                //mmetrics start gesture
-                measuringMetrics.entry_time_sw.Restart();
 
-                measuringMetrics.StartGesture();
 
-                //mmetrics end of search first letter
-                measuringMetrics.search_time_sw_eye.Stop();
-                measuringMetrics.search_time_eye += measuringMetrics.search_time_sw_eye.ElapsedMilliseconds;
-                measuringMetrics.search_time_sw_eye.Reset();
+                if (entryProcessing.LastTagDown.Equals("Key"))
+                {
+                    measuringMetrics.StartGesture();
+                }
             }
             else if (++hoverCounter % 1 == 0 && server.IsConnected && isGestureValid && !isInputEnd)
                 server.SendToClient($"{(int)(x)};{(int)(y)};\r\n");
@@ -208,7 +205,7 @@ public class LMPointer : GvrBasePointer
     /// <inheritdoc/>
     public override void OnPointerClickDown()
     {
-        isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction") || enterRaycastObj.tag.Equals("Backspace");
+        isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction");
         Vector3 local;
         if (SceneManager.GetActiveScene().name == "GazeGesture" || SceneManager.GetActiveScene().name == "GazeCharacter")
         {
@@ -253,15 +250,10 @@ public class LMPointer : GvrBasePointer
 #if UNITY_EDITOR
             server.responseDelay.Restart();
 #endif
-            if (!entryProcessing.LastTagDown.Equals("Backspace"))
+            if (entryProcessing.LastTagDown.Equals("Key"))
             {
                 measuringMetrics.EndGesture();
             }
-
-            //начало поиска первого
-            measuringMetrics.search_time_sw.Restart();
-            measuringMetrics.search_time_sw_eye.Start();
-
 
         }
         //server.SendToClient(data + "\r\n");

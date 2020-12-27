@@ -100,11 +100,10 @@ public class TrialDataStorage : MonoBehaviour
             entry_time = (_measuringMetrics.entry_time / 1000f).ToString(),
             removing_time = _measuringMetrics.isRemoves ? (_measuringMetrics.remove_time / 1000f).ToString() : "",
             resp_text = TextHelper.text,
-            check_time = (_measuringMetrics.check_time_eye / 1000f).ToString(),
-            search_time = (_measuringMetrics.search_time_eye / 1000f).ToString()
+            check_time = (_measuringMetrics.check_time / 1000f).ToString(),
+            search_time = (_measuringMetrics.search_time / 1000f).ToString()
         };
 
-        _currentTrialData.RefactoredMetrics = $"{(_measuringMetrics.search_time / 1000f).ToString()} ; {(_measuringMetrics.check_time / 1000f).ToString()}";
 
     }
 
