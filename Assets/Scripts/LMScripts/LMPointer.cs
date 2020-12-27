@@ -184,10 +184,7 @@ public class LMPointer : GvrBasePointer
                 //mmetrics start gesture
                 measuringMetrics.entry_time_sw.Restart();
 
-                //mmetrics end of search first letter
-                measuringMetrics.search_time_sw.Stop();
-                measuringMetrics.search_time += measuringMetrics.search_time_sw.ElapsedMilliseconds;
-                measuringMetrics.search_time_sw.Reset();
+                measuringMetrics.StartGesture();
 
                 //mmetrics end of search first letter
                 measuringMetrics.search_time_sw_eye.Stop();
@@ -258,10 +255,7 @@ public class LMPointer : GvrBasePointer
 #endif
             if (!entryProcessing.LastTagDown.Equals("Backspace"))
             {
-                //конец росчерка
-                measuringMetrics.entry_time_sw.Stop();
-                measuringMetrics.entry_time += measuringMetrics.entry_time_sw.ElapsedMilliseconds;
-                measuringMetrics.entry_time_sw.Reset();
+                measuringMetrics.EndGesture();
             }
 
             //начало поиска первого

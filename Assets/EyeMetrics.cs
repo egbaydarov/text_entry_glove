@@ -23,6 +23,8 @@ public class EyeMetrics : MonoBehaviour
                 measuringMetrics.search_time_sw_eye.Start();
 
                 measuringMetrics.remove_time_sw.Restart();
+
+                measuringMetrics.OnInputEnter();
             }
         }
         else
@@ -36,6 +38,8 @@ public class EyeMetrics : MonoBehaviour
                 measuringMetrics.search_time_sw_eye.Reset();
 
                 measuringMetrics.remove_time_sw.Restart();
+
+                measuringMetrics.OnControlEnter();
             }
         }
     }

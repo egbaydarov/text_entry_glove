@@ -186,17 +186,6 @@ public class EntryProcessing : MonoBehaviour
 
             measuringMetrics.EndSentenceInput();
 
-            
-
-            //простой после ввода последнего слова
-            measuringMetrics.search_time_sw.Stop();
-            measuringMetrics.search_time += measuringMetrics.search_time_sw.ElapsedMilliseconds;
-            measuringMetrics.search_time_sw.Reset();
-
-            //просмотр подсказок перед завершением
-            measuringMetrics.check_time += measuringMetrics.check_time_sw.ElapsedMilliseconds;
-            measuringMetrics.check_time_sw.Reset();
-
             //просмотр подсказок перед завершением
             measuringMetrics.check_time_eye += measuringMetrics.check_time_sw_eye.ElapsedMilliseconds;
             measuringMetrics.check_time_sw_eye.Reset();
@@ -275,6 +264,8 @@ public class EntryProcessing : MonoBehaviour
         if (obj != null && obj.tag.Equals("Backspace") && !menuButton.activeSelf)
         {
             BackspacePressed = false;
+
+            measuringMetrics.DeleteWord();
 
             //конец нажатия на backspace
             measuringMetrics.remove_time_sw.Stop();
