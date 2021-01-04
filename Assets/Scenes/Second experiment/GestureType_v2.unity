@@ -1691,7 +1691,6 @@ GameObject:
   - component: {fileID: 332122827}
   - component: {fileID: 332122825}
   - component: {fileID: 332122828}
-  - component: {fileID: 332122826}
   m_Layer: 0
   m_Name: EyePointer
   m_TagString: Untagged
@@ -1721,22 +1720,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 332122823}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &332122826
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 332122823}
-  serializedVersion: 2
-  m_Mass: 0.0000001
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 3
 --- !u!23 &332122827
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4025,9 +4008,6 @@ MonoBehaviour:
   _entry_time: 0
   _remove_time: 0
   _check_time: 0
-  _check_time_eye: 0
-  _entry_time_single: 0
-  _search_time_eye: 0
   _backspace_choose: 0
   _prediction_choose: 0
   _removed_count: 0
@@ -7415,6 +7395,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointer: {fileID: 332122824}
+  collider_stick: {fileID: 0}
 --- !u!4 &1617955226
 Transform:
   m_ObjectHideFlags: 0
@@ -8334,7 +8315,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -8382,7 +8363,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1720593747}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1156, y: 853, z: 2}
@@ -11202,7 +11183,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -11250,7 +11231,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2115169593}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1400, y: 560, z: 2}

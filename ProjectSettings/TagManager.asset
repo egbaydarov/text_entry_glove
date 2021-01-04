@@ -15,6 +15,7 @@ TagManager:
   - ThumbFinger
   - Backspace
   - EyeMetrics
+  - ImagePlaneThumb
   layers:
   - Default
   - TransparentFX

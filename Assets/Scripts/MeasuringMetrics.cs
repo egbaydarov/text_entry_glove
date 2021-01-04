@@ -177,7 +177,6 @@ public class MeasuringMetrics : MonoBehaviour
         remove_time = 0;
         check_time = 0;
 
-        //check_time = 0; //TODO
         isRemoves = false;
     }
 
@@ -268,7 +267,7 @@ public class MeasuringMetrics : MonoBehaviour
         timer.Reset();
     }
 
-    public void OnControlEnter()
+    public void OnInputExit()
     {
         IsEyeOnInputZone = false;
 
@@ -280,7 +279,7 @@ public class MeasuringMetrics : MonoBehaviour
         timer.Start();
     }
 
-    public void OnInputEnter()
+    public void OnControlExit()
     {
         IsEyeOnInputZone = true;
 

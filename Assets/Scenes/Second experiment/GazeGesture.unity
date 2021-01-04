@@ -3525,7 +3525,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -3573,7 +3573,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 698308223}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1156, y: 853, z: 2}
@@ -5103,9 +5103,6 @@ MonoBehaviour:
   _entry_time: 0
   _remove_time: 0
   _check_time: 0
-  _check_time_eye: 0
-  _entry_time_single: 0
-  _search_time_eye: 0
   _backspace_choose: 0
   _prediction_choose: 0
   _removed_count: 0
@@ -6942,7 +6939,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -6990,7 +6987,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1252388687}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1400, y: 560, z: 2}
@@ -10685,7 +10682,6 @@ GameObject:
   - component: {fileID: 1995621353}
   - component: {fileID: 1995621352}
   - component: {fileID: 1995621351}
-  - component: {fileID: 1995621350}
   m_Layer: 0
   m_Name: EyePointer
   m_TagString: Untagged
@@ -10707,22 +10703,6 @@ Transform:
   m_Father: {fileID: 1960954532}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &1995621350
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1995621348}
-  serializedVersion: 2
-  m_Mass: 0.0000001
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 3
 --- !u!65 &1995621351
 BoxCollider:
   m_ObjectHideFlags: 0
