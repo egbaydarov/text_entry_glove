@@ -11256,7 +11256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leftPinchDetector: {fileID: 713360097}
-  rightPinchDetector: {fileID: 1698435973}
+  rightPinchDetector: {fileID: 0}
   pointerRig: {fileID: 1911783987}
   PinchHand: 1
   delay: 3
