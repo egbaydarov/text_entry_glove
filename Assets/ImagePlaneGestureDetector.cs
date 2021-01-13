@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ImagePlaneGestureDetector : MonoBehaviour
 {
+    public bool IsTriggered { get; set; } = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +18,7 @@ public class ImagePlaneGestureDetector : MonoBehaviour
     {
         if(other.gameObject.CompareTag("ImagePlaneThumb"))
         {
+            IsTriggered = true;
             airStrokeMapper.OnPinchBegan();
         }
     }
@@ -25,6 +27,15 @@ public class ImagePlaneGestureDetector : MonoBehaviour
     {
         if (other.gameObject.CompareTag("ImagePlaneThumb"))
         {
+            IsTriggered = false;
+            var AllTrigers = FindObjectsOfType<ImagePlaneGestureDetector>();
+            foreach(var trigger in AllTrigers)
+            {
+                if(trigger.IsTriggered)
+                {
+                    return;
+                }
+            }
             airStrokeMapper.OnPinchEnded();
         }
     }

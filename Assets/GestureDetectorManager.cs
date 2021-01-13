@@ -14,6 +14,14 @@ public class GestureDetectorManager : MonoBehaviour
     ImagePlaneGestureDetector gd3;
     [SerializeField]
     ImagePlaneGestureDetector gd4;
+    [SerializeField]
+    ImagePlaneGestureDetector gd5;
+    [SerializeField]
+    ImagePlaneGestureDetector gd6;
+    [SerializeField]
+    ImagePlaneGestureDetector gd7;
+    [SerializeField]
+    ImagePlaneGestureDetector gd8;
 
     void Start()
     {
@@ -27,5 +35,9 @@ public class GestureDetectorManager : MonoBehaviour
         gd2.enabled = enabled;
         gd3.enabled = enabled;
         gd4.enabled = enabled;
+        gd5.enabled = enabled;
+        gd6.enabled = enabled;
+        gd7.enabled = enabled;
+        gd8.enabled = enabled;
     }
 }

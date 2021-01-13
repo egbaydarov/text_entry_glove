@@ -13,7 +13,20 @@ public class EyeMetrics : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        
+        if (isMainKeys)
+        { //keyboard surface enter
+            if (other.gameObject.name.Equals("EyePointer"))
+            {
+                measuringMetrics.OnInputEnter();
+            }
+        }
+        else
+        { //prediction surface enter
+            if (other.gameObject.name.Equals("EyePointer"))
+            {
+                measuringMetrics.OnControlEnter();
+            }
+        }
     }
 
     private void OnTriggerExit(Collider other)

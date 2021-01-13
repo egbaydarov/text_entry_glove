@@ -267,10 +267,18 @@ public class MeasuringMetrics : MonoBehaviour
         timer.Reset();
     }
 
-    public void OnInputExit()
+    public void OnInputEnter()
+    {
+        IsEyeOnInputZone = true;
+    }
+
+    public void OnControlEnter()
     {
         IsEyeOnInputZone = false;
+    }
 
+    public void OnInputExit()
+    {
         timer.Stop();
         if (!IsGestureExecuting) //для исключения поиска первого во время росчерка
             search_time += timer.ElapsedMilliseconds;
@@ -281,8 +289,6 @@ public class MeasuringMetrics : MonoBehaviour
 
     public void OnControlExit()
     {
-        IsEyeOnInputZone = true;
-
         timer.Stop();
         check_time += timer.ElapsedMilliseconds;
         timer.Reset();
