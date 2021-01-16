@@ -91,8 +91,12 @@ public class MeasuringMetrics : MonoBehaviour
     public bool isRemoves { get; set; } = false;
     public string sent_text { get; set; }
 
-    bool IsGestureExecuting = false;
-    bool IsEyeOnInputZone = false;
+    volatile bool IsGestureExecuting = false;
+    volatile bool IsEyeLastEnterInput = false;
+    volatile bool IsEyeLastExitInput = false;
+    volatile bool controlFlag = false;
+    volatile bool inputFlag = false;
+
 
     private string _prevValue = "";
 
@@ -211,7 +215,7 @@ public class MeasuringMetrics : MonoBehaviour
         IsGestureExecuting = true;
 
         timer.Stop();
-        if (IsEyeOnInputZone)
+        if (IsEyeLastEnterInput)
             search_time += timer.ElapsedMilliseconds;
         else
             check_time += timer.ElapsedMilliseconds;
@@ -232,7 +236,7 @@ public class MeasuringMetrics : MonoBehaviour
         entry_time_sw.Reset();
 
         timer.Stop();
-        if (!IsEyeOnInputZone) //для исключения поиска первого во время заверешния росчерка
+        if (!IsEyeLastEnterInput) //для исключения поиска первого во время заверешния росчерка
             check_time += timer.ElapsedMilliseconds;
         timer.Reset();
         timer.Start();
@@ -259,7 +263,7 @@ public class MeasuringMetrics : MonoBehaviour
         full_time.Stop();
 
         timer.Stop();
-        if (IsEyeOnInputZone)
+        if (IsEyeLastEnterInput && !inputFlag)
             search_time += timer.ElapsedMilliseconds;
         else
             check_time += timer.ElapsedMilliseconds;
@@ -269,16 +273,47 @@ public class MeasuringMetrics : MonoBehaviour
 
     public void OnInputEnter()
     {
-        IsEyeOnInputZone = true;
+        inputFlag = false;
+        IsEyeLastEnterInput = true;
+
+        timer.Stop();
+        if (IsEyeLastExitInput && !controlFlag)
+        {
+            if (!IsGestureExecuting) //для исключения поиска первого во время росчерка
+                search_time += timer.ElapsedMilliseconds;
+        }
+        else
+            check_time += timer.ElapsedMilliseconds;
+
+        timer.Reset();
+
+        timer.Start();
     }
 
     public void OnControlEnter()
     {
-        IsEyeOnInputZone = false;
+        controlFlag = true;
+        IsEyeLastEnterInput = false;
+
+        timer.Stop();
+
+        if (IsEyeLastExitInput)
+        {
+            if (!IsGestureExecuting) //для исключения поиска первого во время росчерка
+                search_time += timer.ElapsedMilliseconds;
+        }
+        else
+            check_time += timer.ElapsedMilliseconds;
+        timer.Reset();
+
+        timer.Start();
     }
 
     public void OnInputExit()
     {
+        inputFlag = false;
+        IsEyeLastExitInput = true;
+
         timer.Stop();
         if (!IsGestureExecuting) //для исключения поиска первого во время росчерка
             search_time += timer.ElapsedMilliseconds;
@@ -289,6 +324,9 @@ public class MeasuringMetrics : MonoBehaviour
 
     public void OnControlExit()
     {
+        controlFlag = false;
+        IsEyeLastExitInput = false;
+
         timer.Stop();
         check_time += timer.ElapsedMilliseconds;
         timer.Reset();

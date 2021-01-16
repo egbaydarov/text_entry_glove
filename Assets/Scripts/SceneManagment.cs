@@ -64,19 +64,19 @@ public class SceneManagment : MonoBehaviour
                 method_id = "CHARACTER_GAZE";
                 IsSingleCharacterInput = false;
                 break;
-            case Scenes.GazeGesture:
+            case Scenes.Eye_gaze_and_commit:
                 SceneManager.LoadSceneAsync("GazeGesture");
                 IsSingleCharacterInput = false;
-                method_id = "GESTURE_GAZE";
+                method_id = "EYE_GAZE_AND_COMMIT";
                 break;
             case Scenes.ReticleCharacterOLD:
                 SceneManager.LoadSceneAsync("ReticleCharacter");
                 method_id = "CHARACTER_RETICLE";
                 IsSingleCharacterInput = false;
                 break;
-            case Scenes.ReticleGesture:
+            case Scenes.Head_gaze_and_commit:
                 SceneManager.LoadSceneAsync("ReticleGesture");
-                method_id = "GESTURE_RETICLE";
+                method_id = "HEAD_GAZE_AND_COMMIT";
                 IsSingleCharacterInput = false;
                 break;
             case Scenes.GestureType_v2:
@@ -138,19 +138,19 @@ public class SceneManagment : MonoBehaviour
                 method_id = "CHARACTER_GAZE";
                 IsSingleCharacterInput = false;
                 break;
-            case Scenes.GazeGesture:
+            case Scenes.Eye_gaze_and_commit:
                 SceneManager.LoadSceneAsync("GazeGesture");
                 IsSingleCharacterInput = false;
-                method_id = "GESTURE_GAZE";
+                method_id = "EYE_GAZE_AND_COMMIT";
                 break;
             case Scenes.ReticleCharacterOLD:
                 SceneManager.LoadSceneAsync("ReticleCharacter");
                 method_id = "CHARACTER_RETICLE";
                 IsSingleCharacterInput = false;
                 break;
-            case Scenes.ReticleGesture:
+            case Scenes.Head_gaze_and_commit:
                 SceneManager.LoadSceneAsync("ReticleGesture");
-                method_id = "GESTURE_RETICLE";
+                method_id = "HEAD_GAZE_AND_COMMIT";
                 IsSingleCharacterInput = false;
                 break;
             case Scenes.GestureType_v2:
@@ -199,19 +199,19 @@ public class SceneManagment : MonoBehaviour
                 method_id = "CHARACTER_GAZE";
                 IsSingleCharacterInput = false;
                 break;
-            case Scenes.GazeGesture:
+            case Scenes.Eye_gaze_and_commit:
                 SceneManager.LoadSceneAsync("GazeGesture");
                 IsSingleCharacterInput = false;
-                method_id = "GESTURE_GAZE";
+                method_id = "Eye_gaze_and_commit";
                 break;
             case Scenes.ReticleCharacterOLD:
                 SceneManager.LoadSceneAsync("ReticleCharacter");
                 method_id = "CHARACTER_RETICLE";
                 IsSingleCharacterInput = false;
                 break;
-            case Scenes.ReticleGesture:
+            case Scenes.Head_gaze_and_commit:
                 SceneManager.LoadSceneAsync("ReticleGesture");
-                method_id = "GESTURE_RETICLE";
+                method_id = "HEAD_GAZE_AND_COMMIT";
                 IsSingleCharacterInput = false;
                 break;
             case Scenes.GestureType_v2:
@@ -264,8 +264,8 @@ public class SceneManagment : MonoBehaviour
         PointMethodOLD,
         GazeCharacterOLD,
         ReticleCharacterOLD,
-        GazeGesture,
-        ReticleGesture,
+        Eye_gaze_and_commit,
+        Head_gaze_and_commit,
         OculusQuest_v2,
         GestureType_v2,
         ImagePlanePointing

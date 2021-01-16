@@ -6,22 +6,24 @@ public class GestureDetectorManager : MonoBehaviour
 {
     // Start is called before the first frame update
 
+    public bool isEnabled { get; set; }
+
     [SerializeField]
-    ImagePlaneGestureDetector gd1;
+    SphereCollider gd1;
     [SerializeField]
-    ImagePlaneGestureDetector gd2;
+    SphereCollider gd2;
     [SerializeField]
-    ImagePlaneGestureDetector gd3;
+    SphereCollider gd3;
     [SerializeField]
-    ImagePlaneGestureDetector gd4;
+    SphereCollider gd4;
     [SerializeField]
-    ImagePlaneGestureDetector gd5;
+    SphereCollider gd5;
     [SerializeField]
-    ImagePlaneGestureDetector gd6;
+    SphereCollider gd6;
     [SerializeField]
-    ImagePlaneGestureDetector gd7;
+    SphereCollider gd7;
     [SerializeField]
-    ImagePlaneGestureDetector gd8;
+    SphereCollider gd8;
 
     void Start()
     {
@@ -31,13 +33,13 @@ public class GestureDetectorManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        gd1.enabled = enabled;
-        gd2.enabled = enabled;
-        gd3.enabled = enabled;
-        gd4.enabled = enabled;
-        gd5.enabled = enabled;
-        gd6.enabled = enabled;
-        gd7.enabled = enabled;
-        gd8.enabled = enabled;
+        gd1.isTrigger = isEnabled;
+        gd2.isTrigger = isEnabled;
+        gd3.isTrigger = isEnabled;
+        gd4.isTrigger = isEnabled;
+        gd5.isTrigger = isEnabled;
+        gd6.isTrigger = isEnabled;
+        gd7.isTrigger = isEnabled;
+        gd8.isTrigger = isEnabled;
     }
 }

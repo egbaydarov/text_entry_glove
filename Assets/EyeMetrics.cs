@@ -18,6 +18,7 @@ public class EyeMetrics : MonoBehaviour
             if (other.gameObject.name.Equals("EyePointer"))
             {
                 measuringMetrics.OnInputEnter();
+                Debug.Log("EYEMETR Inpur enter");
             }
         }
         else
@@ -25,6 +26,8 @@ public class EyeMetrics : MonoBehaviour
             if (other.gameObject.name.Equals("EyePointer"))
             {
                 measuringMetrics.OnControlEnter();
+                Debug.Log("EYEMETR control enter");
+
             }
         }
     }
@@ -36,6 +39,8 @@ public class EyeMetrics : MonoBehaviour
             if (other.gameObject.name.Equals("EyePointer"))
             {
                 measuringMetrics.OnInputExit();
+                Debug.Log("EYEMETR input exit");
+
             }
         }
         else
@@ -43,6 +48,8 @@ public class EyeMetrics : MonoBehaviour
             if (other.gameObject.name.Equals("EyePointer"))
             {
                 measuringMetrics.OnControlExit();
+                Debug.Log("EYEMETR control exit");
+
             }
         }
     }

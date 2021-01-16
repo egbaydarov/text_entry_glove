@@ -10,10 +10,10 @@ public class DoubleShift : MonoBehaviour
     private Image im;
     void Start()
     {
-        im = panel.GetComponent<Image>();
+       // im = panel.GetComponent<Image>();
     }
     public void doubleShift()
     {
-        im.sprite = pic;
+        //im.sprite = pic;
     }
 }

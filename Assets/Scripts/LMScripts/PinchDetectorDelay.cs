@@ -15,6 +15,11 @@ public class PinchDetectorDelay : MonoBehaviour
     MonoBehaviour rightPinchDetector;
 
     [SerializeField]
+    GestureDetectorManager leftGDM;
+    [SerializeField]
+    GestureDetectorManager rightGDM;
+
+    [SerializeField]
     GameObject pointerRig;
 
     [SerializeField]
@@ -47,12 +52,20 @@ public class PinchDetectorDelay : MonoBehaviour
         if (PinchHand == HandMode.right)
         {
             rightPinchDetector.enabled = true;
+            if(rightGDM != null)
+            {
+                rightGDM.isEnabled = true;
+            }
             if (pointerRig != null && rightPinchDetector.gameObject.activeInHierarchy)
                 pointerRig.GetComponent<MeshRenderer>().enabled = true;
         }
         else
         {
             leftPinchDetector.enabled = true;
+            if (leftGDM != null)
+            {
+                leftGDM.isEnabled = true;
+            }
             if (pointerRig != null && leftPinchDetector.gameObject.activeInHierarchy)
                 pointerRig.GetComponent<MeshRenderer>().enabled = true;
         }
@@ -63,12 +76,20 @@ public class PinchDetectorDelay : MonoBehaviour
         if (PinchHand == HandMode.right)
         {
             rightPinchDetector.enabled = false;
+            if (rightGDM != null)
+            {
+                rightGDM.isEnabled = false;
+            }
             if (pointerRig != null && rightPinchDetector.gameObject.activeInHierarchy)
                 pointerRig.GetComponent<MeshRenderer>().enabled = false;
         }
         else
         {
             leftPinchDetector.enabled = false;
+            if (leftGDM != null)
+            {
+                leftGDM.isEnabled = false;
+            }
             if (pointerRig != null && leftPinchDetector.gameObject.activeInHierarchy)
                 pointerRig.GetComponent<MeshRenderer>().enabled = false;
         }
