@@ -55,7 +55,7 @@ public class MeasuringMetrics : MonoBehaviour
         }
     }
 
-    public long search_time
+    public long input_time
     {
         get => _search_time;
         set
@@ -79,7 +79,7 @@ public class MeasuringMetrics : MonoBehaviour
             _remove_time = value;
         }
     }
-    public long check_time
+    public long control_time
     {
         get => _check_time;
         set
@@ -131,40 +131,49 @@ public class MeasuringMetrics : MonoBehaviour
 
     public void SavePrefs()
     {
-        PlayerPrefs.SetInt("Respondent_ID", (int)Settings.id); // Идентификатор испытуемого
-        PlayerPrefs.SetString("InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
-        PlayerPrefs.SetInt("Attempt_number", _currentEntryProcessing.currentBlock); //Номер блока предложений
-        PlayerPrefs.SetInt("Session_number", _currentEntryProcessing.currentSentence); //Номер попытки
+        if (SceneManagment.isMain)
+        {
+            PlayerPrefs.SetInt("Respondent_ID", (int)Settings.id); // Идентификатор испытуемого
+            PlayerPrefs.SetString("InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
+            PlayerPrefs.SetInt("Attempt_number", _currentEntryProcessing.currentBlock); //Номер блока предложений
+            PlayerPrefs.SetInt("Session_number", _currentEntryProcessing.currentSentence); //Номер попытки
 
-        Debug.Log("Session Saved.");
+            Debug.Log("Session Saved.");
+        }
     }
 
     public void LoadPrefs()
     {
-        if (PlayerPrefs.HasKey("InputMethod_ID"))
+        if (SceneManagment.isMain)
         {
-            Settings.id = (uint)PlayerPrefs.GetInt("Respondent_ID");
-            SceneManagment.method_id = PlayerPrefs.GetString("InputMethod_ID");
-            _currentEntryProcessing.currentBlock = PlayerPrefs.GetInt("Attempt_number");
-            _currentEntryProcessing.currentSentence = PlayerPrefs.GetInt("Session_number");
+            if (PlayerPrefs.HasKey("InputMethod_ID"))
+            {
+                Settings.id = (uint)PlayerPrefs.GetInt("Respondent_ID");
+                SceneManagment.method_id = PlayerPrefs.GetString("InputMethod_ID");
+                _currentEntryProcessing.currentBlock = PlayerPrefs.GetInt("Attempt_number");
+                _currentEntryProcessing.currentSentence = PlayerPrefs.GetInt("Session_number");
 
-            Debug.Log(
-                $"Loaded: id {Settings.id}" +
-                $", method  {SceneManagment.method_id}" +
-                $", block {_currentEntryProcessing.currentBlock}" +
-                $", sentence {_currentEntryProcessing.currentSentence}");
-        }
-        else
-        {
-            Debug.Log("No saved sessions.");
+                Debug.Log(
+                    $"Loaded: id {Settings.id}" +
+                    $", method  {SceneManagment.method_id}" +
+                    $", block {_currentEntryProcessing.currentBlock}" +
+                    $", sentence {_currentEntryProcessing.currentSentence}");
+            }
+            else
+            {
+                Debug.Log("No saved sessions.");
+            }
         }
     }
 
     public void DeletePrefs()
     {
-        PlayerPrefs.DeleteKey("InputMethod_ID");
-        PlayerPrefs.DeleteKey("Attempt_number");
-        PlayerPrefs.DeleteKey("Session_number");
+        if (SceneManagment.isMain)
+        {
+            PlayerPrefs.DeleteKey("InputMethod_ID");
+            PlayerPrefs.DeleteKey("Attempt_number");
+            PlayerPrefs.DeleteKey("Session_number");
+        }
     }
 
 
@@ -177,9 +186,9 @@ public class MeasuringMetrics : MonoBehaviour
         backspace_choose = 0;
         removed_count = 0;
         entry_time = 0;
-        search_time = 0;
+        input_time = 0;
         remove_time = 0;
-        check_time = 0;
+        control_time = 0;
 
         isRemoves = false;
     }
@@ -216,9 +225,9 @@ public class MeasuringMetrics : MonoBehaviour
 
         timer.Stop();
         if (IsEyeLastEnterInput)
-            search_time += timer.ElapsedMilliseconds;
+            input_time += timer.ElapsedMilliseconds;
         else
-            check_time += timer.ElapsedMilliseconds;
+            control_time += timer.ElapsedMilliseconds;
 
         timer.Reset();
         timer.Start();
@@ -237,7 +246,7 @@ public class MeasuringMetrics : MonoBehaviour
 
         timer.Stop();
         if (!IsEyeLastEnterInput) //для исключения поиска первого во время заверешния росчерка
-            check_time += timer.ElapsedMilliseconds;
+            control_time += timer.ElapsedMilliseconds;
         timer.Reset();
         timer.Start();
     }
@@ -263,10 +272,10 @@ public class MeasuringMetrics : MonoBehaviour
         full_time.Stop();
 
         timer.Stop();
-        if (IsEyeLastEnterInput && !inputFlag)
-            search_time += timer.ElapsedMilliseconds;
+        if (IsEyeLastEnterInput)
+            input_time += timer.ElapsedMilliseconds;
         else
-            check_time += timer.ElapsedMilliseconds;
+            control_time += timer.ElapsedMilliseconds;
 
         timer.Reset();
     }
@@ -280,11 +289,10 @@ public class MeasuringMetrics : MonoBehaviour
         if (IsEyeLastExitInput && !controlFlag)
         {
             if (!IsGestureExecuting) //для исключения поиска первого во время росчерка
-                search_time += timer.ElapsedMilliseconds;
+                input_time += timer.ElapsedMilliseconds;
         }
         else
-            check_time += timer.ElapsedMilliseconds;
-
+            control_time += timer.ElapsedMilliseconds;
         timer.Reset();
 
         timer.Start();
@@ -296,14 +304,13 @@ public class MeasuringMetrics : MonoBehaviour
         IsEyeLastEnterInput = false;
 
         timer.Stop();
-
-        if (IsEyeLastExitInput)
+        if (IsEyeLastExitInput || inputFlag)
         {
             if (!IsGestureExecuting) //для исключения поиска первого во время росчерка
-                search_time += timer.ElapsedMilliseconds;
+                input_time += timer.ElapsedMilliseconds;
         }
         else
-            check_time += timer.ElapsedMilliseconds;
+            control_time += timer.ElapsedMilliseconds;
         timer.Reset();
 
         timer.Start();
@@ -316,7 +323,7 @@ public class MeasuringMetrics : MonoBehaviour
 
         timer.Stop();
         if (!IsGestureExecuting) //для исключения поиска первого во время росчерка
-            search_time += timer.ElapsedMilliseconds;
+            input_time += timer.ElapsedMilliseconds;
         timer.Reset();
 
         timer.Start();
@@ -328,7 +335,7 @@ public class MeasuringMetrics : MonoBehaviour
         IsEyeLastExitInput = false;
 
         timer.Stop();
-        check_time += timer.ElapsedMilliseconds;
+        control_time += timer.ElapsedMilliseconds;
         timer.Reset();
 
         timer.Start();

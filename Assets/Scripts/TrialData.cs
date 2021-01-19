@@ -51,7 +51,7 @@ public class TrialData
         form.Add("entry.41396143", $"{sent_text.Length}"); // Длина эталонного предложения (символов)
         form.Add("entry.1171184478", $"{sent_text.Count((x) => x == ' ') + 1}"); // Длина эталонного предложения (слов)
         form.Add("entry.2004966619", resp_text == null ? "" : resp_text.Length.ToString()); // Длина введенного испытуемым предложения (символов)
-        form.Add("entry.208575183", $"{resp_text.Count((x) => x == ' ') + 1}"); // Длина введенного испытуемым предложения (слов)
+        form.Add("entry.208575183", resp_text == null ? "0" : $"{resp_text.Count((x) => x == ' ') + 1}"); // Длина введенного испытуемым предложения (слов)
         form.Add("entry.202448380", prediction_count);  // сколько раз выбрали подсказку
         form.Add("entry.887164200", removed_count);  // количество удаленных символов
         form.Add("entry.931566926", backspace_count);  // кол-во нажатий backspace

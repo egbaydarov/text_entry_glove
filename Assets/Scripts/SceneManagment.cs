@@ -41,9 +41,11 @@ public class SceneManagment : MonoBehaviour
     }
 
 
-
     public void Train()
     {
+
+
+
         isMain = false;
         switch (currentScene)
         {
@@ -65,7 +67,7 @@ public class SceneManagment : MonoBehaviour
                 IsSingleCharacterInput = false;
                 break;
             case Scenes.Eye_gaze_and_commit:
-                SceneManager.LoadSceneAsync("GazeGesture");
+                SceneManager.LoadSceneAsync("GazeGestureTR");
                 IsSingleCharacterInput = false;
                 method_id = "EYE_GAZE_AND_COMMIT";
                 break;
@@ -75,22 +77,22 @@ public class SceneManagment : MonoBehaviour
                 IsSingleCharacterInput = false;
                 break;
             case Scenes.Head_gaze_and_commit:
-                SceneManager.LoadSceneAsync("ReticleGesture");
+                SceneManager.LoadSceneAsync("ReticleGestureTR");
                 method_id = "HEAD_GAZE_AND_COMMIT";
                 IsSingleCharacterInput = false;
                 break;
             case Scenes.GestureType_v2:
-                SceneManager.LoadSceneAsync("GestureType_v2");
+                SceneManager.LoadSceneAsync("GestureType_v2TR");
                 method_id = "GESTURE_TYPE";
                 IsSingleCharacterInput = false;
                 break;
             case Scenes.OculusQuest_v2:
-                SceneManager.LoadSceneAsync("OculusQuest_v2");
+                SceneManager.LoadSceneAsync("OculusQuest_v2TR");
                 method_id = "OCULUS_QUEST";
                 IsSingleCharacterInput = false;
                 break;
             case Scenes.ImagePlanePointing:
-                SceneManager.LoadSceneAsync("ImagePlanePointing");
+                SceneManager.LoadSceneAsync("ImagePlanePointingTR");
                 method_id = "IMAGE-PLANE_POINTING";
                 IsSingleCharacterInput = false;
                 break;
@@ -106,70 +108,75 @@ public class SceneManagment : MonoBehaviour
         PlayerPrefs.SetInt("Respondent_ID", (int)(++Settings.id));
 
 
-        for (int i = 0; i < 64; ++i) //TODO сделать красиво
+        for (int i = 0; i < 395; ++i) //TODO сделать красиво
         {
             PlayerPrefs.DeleteKey($"SentenceOrder{i}");
         }
+
+        PlayerPrefs.DeleteKey("InputMethod_ID");
+        PlayerPrefs.DeleteKey("Attempt_number");
+        PlayerPrefs.DeleteKey("Session_number");
 
         PlayerPrefs.Save();
         Debug.Log("Delete saved sentences order");
 
 
-        switch (currentScene)
-        {
-            case Scenes.OurMethodOLD:
-                SceneManager.LoadSceneAsync("OurMethodMain");
-                method_id = "OurMethod";
-                break;
-            case Scenes.GestureTypeOLD:
-                SceneManager.LoadSceneAsync("GestureTypeMain");
-                method_id = "GestureType";
-                break;
-            case Scenes.OculusQuestOLD:
-                SceneManager.LoadSceneAsync("OculusQuestMain");
-                method_id = "OculusQuest";
-                break;
-            case Scenes.PointMethodOLD:
-                SceneManager.LoadSceneAsync("PointMethodMain");
-                method_id = "PontMethod";
-                break;
-            case Scenes.GazeCharacterOLD:
-                SceneManager.LoadSceneAsync("GazeCharacter");
-                method_id = "CHARACTER_GAZE";
-                IsSingleCharacterInput = false;
-                break;
-            case Scenes.Eye_gaze_and_commit:
-                SceneManager.LoadSceneAsync("GazeGesture");
-                IsSingleCharacterInput = false;
-                method_id = "EYE_GAZE_AND_COMMIT";
-                break;
-            case Scenes.ReticleCharacterOLD:
-                SceneManager.LoadSceneAsync("ReticleCharacter");
-                method_id = "CHARACTER_RETICLE";
-                IsSingleCharacterInput = false;
-                break;
-            case Scenes.Head_gaze_and_commit:
-                SceneManager.LoadSceneAsync("ReticleGesture");
-                method_id = "HEAD_GAZE_AND_COMMIT";
-                IsSingleCharacterInput = false;
-                break;
-            case Scenes.GestureType_v2:
-                SceneManager.LoadSceneAsync("GestureType_v2");
-                method_id = "GESTURE_TYPE";
-                IsSingleCharacterInput = false;
-                break;
-            case Scenes.OculusQuest_v2:
-                SceneManager.LoadSceneAsync("OculusQuest_v2");
-                method_id = "OCULUS_QUEST";
-                IsSingleCharacterInput = false;
-                break;
-            case Scenes.ImagePlanePointing:
-                SceneManager.LoadSceneAsync("ImagePlanePointing");
-                method_id = "IMAGE-PLANE_POINTING";
-                IsSingleCharacterInput = false;
-                break;
-        }
-        PlayerPrefs.SetString("InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
+
+        //switch (currentScene)
+        //{
+        //    case Scenes.OurMethodOLD:
+        //        SceneManager.LoadSceneAsync("OurMethodMain");
+        //        method_id = "OurMethod";
+        //        break;
+        //    case Scenes.GestureTypeOLD:
+        //        SceneManager.LoadSceneAsync("GestureTypeMain");
+        //        method_id = "GestureType";
+        //        break;
+        //    case Scenes.OculusQuestOLD:
+        //        SceneManager.LoadSceneAsync("OculusQuestMain");
+        //        method_id = "OculusQuest";
+        //        break;
+        //    case Scenes.PointMethodOLD:
+        //        SceneManager.LoadSceneAsync("PointMethodMain");
+        //        method_id = "PontMethod";
+        //        break;
+        //    case Scenes.GazeCharacterOLD:
+        //        SceneManager.LoadSceneAsync("GazeCharacter");
+        //        method_id = "CHARACTER_GAZE";
+        //        IsSingleCharacterInput = false;
+        //        break;
+        //    case Scenes.Eye_gaze_and_commit:
+        //        SceneManager.LoadSceneAsync("GazeGesture");
+        //        IsSingleCharacterInput = false;
+        //        method_id = "EYE_GAZE_AND_COMMIT";
+        //        break;
+        //    case Scenes.ReticleCharacterOLD:
+        //        SceneManager.LoadSceneAsync("ReticleCharacter");
+        //        method_id = "CHARACTER_RETICLE";
+        //        IsSingleCharacterInput = false;
+        //        break;
+        //    case Scenes.Head_gaze_and_commit:
+        //        SceneManager.LoadSceneAsync("ReticleGesture");
+        //        method_id = "HEAD_GAZE_AND_COMMIT";
+        //        IsSingleCharacterInput = false;
+        //        break;
+        //    case Scenes.GestureType_v2:
+        //        SceneManager.LoadSceneAsync("GestureType_v2");
+        //        method_id = "GESTURE_TYPE";
+        //        IsSingleCharacterInput = false;
+        //        break;
+        //    case Scenes.OculusQuest_v2:
+        //        SceneManager.LoadSceneAsync("OculusQuest_v2");
+        //        method_id = "OCULUS_QUEST";
+        //        IsSingleCharacterInput = false;
+        //        break;
+        //    case Scenes.ImagePlanePointing:
+        //        SceneManager.LoadSceneAsync("ImagePlanePointing");
+        //        method_id = "IMAGE-PLANE_POINTING";
+        //        IsSingleCharacterInput = false;
+        //        break;
+        //}
+        //PlayerPrefs.SetString("InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
     }
 
     public void ContinueExperiment()
@@ -202,7 +209,7 @@ public class SceneManagment : MonoBehaviour
             case Scenes.Eye_gaze_and_commit:
                 SceneManager.LoadSceneAsync("GazeGesture");
                 IsSingleCharacterInput = false;
-                method_id = "Eye_gaze_and_commit";
+                method_id = "EYE_GAZE_AND_COMMIT";
                 break;
             case Scenes.ReticleCharacterOLD:
                 SceneManager.LoadSceneAsync("ReticleCharacter");
@@ -236,9 +243,7 @@ public class SceneManagment : MonoBehaviour
     public void LoadMenu()
     {
         isMain = false;
-        Scene current = SceneManager.GetActiveScene();
         SceneManager.LoadSceneAsync("MainMenu");
-        SceneManager.UnloadSceneAsync(current);
     }
 
     private void Awake()

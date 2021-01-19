@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
-using TMPro;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -24,13 +22,13 @@ public class TrainTextEntryProcessing : MonoBehaviour
 
     public Text sentenceNumber;
     TextHelper th;
-    
-    [SerializeField] 
-    private InputField intext;
 
-    public UnityEvent OnSentenceEnd;
-    public UnityEvent OnTrainEnd;
-    public UnityEvent OnMenuClicked;
+
+    public UnityEvent OnSentenceInputEnd;
+
+    public string LastTagDown { get; private set; } = "";
+    int[] SentenceOrder;
+
 
     Server server;
 
@@ -39,8 +37,6 @@ public class TrainTextEntryProcessing : MonoBehaviour
 
     int currentSentence = -1;
 
-    [SerializeField]
-    int SENTENCE_COUNT = 8;
 
     bool isFirstTap = true;
 
@@ -55,20 +51,23 @@ public class TrainTextEntryProcessing : MonoBehaviour
 
         data = sentences.text.Split('\n');
 
-        go = GameObject.Find("keyboard");
-        shift = go.GetComponent<Shift>();
+        SentenceOrder = new int[data.Length];
 
         for (int i = 0; i < data.Length; ++i)
+            SentenceOrder[i] = i;
+
+        Debug.Log("Create new sentences order");
+        SentenceOrder = SentenceOrder.OrderBy(x => rnd.Next()).ToArray();
+        for (int i = 0; i < data.Length; ++i)
         {
-            if (rnd.Next(data.Length - i) < SENTENCE_COUNT)
-                words.Add(data[i]);
+            PlayerPrefs.SetInt($"SentenceOrder{i}", SentenceOrder[i]);
         }
+        PlayerPrefs.Save();
+
+        words = new List<string>(data);
+
     }
-    private void Awake()
-    {
-        server = FindObjectOfType<Server>();
-        th = FindObjectOfType<TextHelper>();
-    }
+
 
     string[] data;
 
@@ -79,57 +78,89 @@ public class TrainTextEntryProcessing : MonoBehaviour
         if (currentSentence == -1)
             sentenceField.GetComponent<Text>().text = "ТРЕНИРОВКА";
         else
-            sentenceField.GetComponent<Text>().text = words[currentSentence];
+            sentenceField.GetComponent<Text>().text = words[SentenceOrder[currentSentence + 64]];
 
-        sentenceNumber.text = $"Предложение\n{currentSentence + 1}\\{SENTENCE_COUNT}";
     }
 
-    public void OnNextClicked(GameObject obj, PointerEventData pointerData)
+
+    public void OnMenuClickedUp(GameObject obj, PointerEventData pointerData)
     {
+        if (obj != null && obj.name.Equals("ToMenu"))
+        {
+            server.SendToClient("clear\r\n");
+        }
+    }
+
+    private void Awake()
+    {
+        //  icons.SetActive(true);
+        server = FindObjectOfType<Server>();
+        th = FindObjectOfType<TextHelper>();
+    }
+
+
+
+    [SerializeField]
+    GameObject icons;
+
+    public void OnNextDown(GameObject obj, PointerEventData pointerData)
+    {
+
+        //UnityEngine.Debug.Log(obj == null ? "null" : $"{obj.name} : {obj.tag}");
         if (obj != null && obj.name.Equals("NextSentence"))
         {
-            //Shift.ToCapital();
-            if (currentSentence + 1 < SENTENCE_COUNT)
-            {
-                OnSentenceEnd.Invoke();
-                ++currentSentence;
-                sentenceField.SetActive(true);
-                confirmButton.SetActive(false);
-                isFirstTap = true;
-            }
-            else
-            {
-                OnTrainEnd.Invoke();
-                sentenceField.SetActive(false);
-                confirmButton.SetActive(false);
-                menuButton.SetActive(true);
-            }
+            icons.SetActive(true);
+            ++currentSentence;
+
+            LastTagDown = "NextSentence";
+
+            OnSentenceInputEnd.Invoke();
+            confirmButton.SetActive(false);
+            sentenceField.SetActive(true);
         }
-        else if (obj != null && obj.tag == "Key")
+    }
+
+    public void OnPredictionDown(GameObject obj, PointerEventData pointerData)
+    {
+        //check valid
+        if (obj != null && obj.tag.Equals("Prediction") && !menuButton.activeSelf)
         {
-            if (isFirstTap)
+            LastTagDown = "Prediction";
+        }
+    }
+
+    public void OnBackspaceDown(GameObject obj, PointerEventData pointerData)
+    {
+        //check valid
+        if (obj != null && obj.tag.Equals("Backspace") && !menuButton.activeSelf)
+        {
+            LastTagDown = "Backspace";
+
+            //начало нажатия на backspace
+            //measuringMetrics.remove_time_sw.Restart();
+            server.SendToClient("backspace\r\n");
+        }
+    }
+
+    public void OnKeyboardDown(GameObject obj, PointerEventData pointerData)
+    {
+
+        //check valid
+        if (obj != null && obj.tag.Equals("Key") && !menuButton.activeSelf)
+        {
+            LastTagDown = "Key";
+
+            //Первое нажатие после заучивания предложения
+            if (!confirmButton.activeSelf)
             {
-                //Shift.ToSmall();
-                server.SendToClient("clear\r\n");
-                isFirstTap = false;
-                intext.text = "";
+                if (!String.IsNullOrEmpty(th.text))
+                    server.SendToClient("clear\r\n");
 
                 sentenceField.SetActive(false);
                 confirmButton.SetActive(true);
             }
-        }
-       
-    }
 
-    public void OnPointerUpMenu(GameObject obj, PointerEventData pointerData)
-    {
-        if ((obj != null && obj.name.Equals("StartTrain")))
-        {
-            server.SendToClient("clear\r\n");
-            sentenceField.SetActive(false);
-            confirmButton.SetActive(false);
-            menuButton.SetActive(false);
-            OnMenuClicked.Invoke();
+            Debug.Log("ICONS OFF");
         }
     }
 }

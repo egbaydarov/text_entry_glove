@@ -56,7 +56,7 @@ public class EntryProcessing : MonoBehaviour
     int SENTENCE_COUNT = 8;
 
     public int currentBlock;
-    public int currentSentence;
+    public int currentSentence { get; set; }
     public string currentSentenceText;
     public UnityEvent disablePinch;
 
@@ -96,7 +96,7 @@ public class EntryProcessing : MonoBehaviour
         {
             Debug.Log("Create new sentences order");
             SentenceOrder = SentenceOrder.OrderBy(x => rnd.Next()).ToArray();
-            for (int i = 0; i < BLOCKS_COUNT * SENTENCE_COUNT; ++i)
+            for (int i = 0; i < data.Length; ++i)
             {
                 PlayerPrefs.SetInt($"SentenceOrder{i}", SentenceOrder[i]);
             }
@@ -111,6 +111,13 @@ public class EntryProcessing : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!SceneManagment.isMain)
+        {
+            tm.text = words[SentenceOrder[currentSentence + 64]];
+            currentSentenceText = words[SentenceOrder[currentSentence + 64]];
+            return;
+        }
+
         tm.text = words[SentenceOrder[SENTENCE_COUNT * currentBlock + currentSentence]];
         blockNumber.text = $"Блок\n{currentBlock + 1}\\{BLOCKS_COUNT}";
         senNumber.text = $"Предложение\n{currentSentence + 1}\\{SENTENCE_COUNT}";
@@ -185,6 +192,12 @@ public class EntryProcessing : MonoBehaviour
             confirmButton.SetActive(false);
             sentenceField.SetActive(true);
 
+            if(!SceneManagment.isMain)
+            {
+                OnSentenceInputEnd.Invoke();
+                return;
+            }
+
             // Если в блоке еще есть предложения
             if (currentSentence + 1 < SENTENCE_COUNT)
             {
@@ -258,7 +271,8 @@ public class EntryProcessing : MonoBehaviour
     {
 
         //check valid
-        if (obj != null && obj.tag.Equals("Key") && !menuButton.activeSelf)
+        if ((obj != null && obj.tag.Equals("Key") && !menuButton.activeSelf) |
+            (obj != null && obj.tag.Equals("Key") && !SceneManagment.isMain))
         {
             LastTagDown = "Key";
 
@@ -287,8 +301,6 @@ public class EntryProcessing : MonoBehaviour
     {
         if (obj != null && obj.name.Equals("Space") && !menuButton.activeSelf)
         {
-           
-
             isFirstSingleKeyDown = true;
         }
     }
@@ -306,6 +318,7 @@ public class EntryProcessing : MonoBehaviour
         {
             server.SendToClient("clear\r\n");
             OnMenuClicked.Invoke();
+            currentSentence = 0;
         }
     }
 
