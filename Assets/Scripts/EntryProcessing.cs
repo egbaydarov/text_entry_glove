@@ -92,20 +92,26 @@ public class EntryProcessing : MonoBehaviour
                 SentenceOrder[i] = PlayerPrefs.GetInt($"SentenceOrder{i}");
             }
         }
-        else
-        {
-            Debug.Log("Create new sentences order");
-            SentenceOrder = SentenceOrder.OrderBy(x => rnd.Next()).ToArray();
-            for (int i = 0; i < data.Length; ++i)
-            {
-                PlayerPrefs.SetInt($"SentenceOrder{i}", SentenceOrder[i]);
-            }
-            PlayerPrefs.Save();
-        }
 
         words = new List<string>(data);
 
         AssignListners();
+    }
+
+    public void regenerateSentences()
+    {
+        Debug.Log("Create new sentences order");
+        SentenceOrder = new int[data.Length];
+
+        for (int i = 0; i < data.Length; ++i)
+            SentenceOrder[i] = i;
+
+        SentenceOrder = SentenceOrder.OrderBy(x => rnd.Next()).ToArray();
+        for (int i = 0; i < data.Length; ++i)
+        {
+            PlayerPrefs.SetInt($"SentenceOrder{i}", SentenceOrder[i]);
+        }
+        PlayerPrefs.Save();
     }
 
     // Update is called once per frame

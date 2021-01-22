@@ -44,6 +44,8 @@ public class TrialDataStorage : MonoBehaviour
 
     void Awake()
     {
+        TextHelper = FindObjectOfType<TextHelper>();
+
         try
         {
             StreamReader reader = new StreamReader(Application.persistentDataPath + FILE_NAME, System.Text.Encoding.UTF8);
@@ -55,8 +57,6 @@ public class TrialDataStorage : MonoBehaviour
             }
             else
                 _storedTrialData = new Queue<TrialData>();
-
-            TextHelper = FindObjectOfType<TextHelper>();
 
         }
         catch (Exception e)

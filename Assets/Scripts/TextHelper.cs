@@ -17,9 +17,9 @@ public class TextHelper : MonoBehaviour
     volatile bool ShouldUpdate = false;
 
     Server server;
+    SwitchABCD switchABCD;
     MeasuringMetrics measuringMetrics;
     EntryProcessing entryProcessing;
-
 
     public string text { get; private set; }
     private void Awake()
@@ -28,6 +28,7 @@ public class TextHelper : MonoBehaviour
         server = objs.GetComponent<Server>();
         measuringMetrics = FindObjectOfType<MeasuringMetrics>();
         entryProcessing = FindObjectOfType<EntryProcessing>();
+        switchABCD = FindObjectOfType<SwitchABCD>();
     }
 
     void Start()
@@ -37,6 +38,7 @@ public class TextHelper : MonoBehaviour
     private void OnDisable()
     {
         server.OnMessageRecieved.RemoveListener(UpdateTextFieldAndPredictionsButtons);
+        
     }
 
 
@@ -59,13 +61,53 @@ public class TextHelper : MonoBehaviour
     }
 
 
+
     void UpdateTextFieldAndPredictionsButtons(string data)
     {
         data = data.Trim('\r', '\n');
         string[] data1 = data.Split('#');
 
-        if (data1.Length > 0 && data1[0].Equals("restart"))
-            entryProcessing.RestartInput();
+        if (data1.Length > 0)
+            switch (data1[0])
+            {
+                case "restart":
+                    Debug.Log("sentence re-entry");
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                      entryProcessing.RestartInput());
+                    break;
+                case "regenerate":
+                    Debug.Log("sentence re-generation");
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    entryProcessing.regenerateSentences());
+                    break;
+                case "switchA":
+                    Debug.Log("switch A");
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    switchABCD.switchA());
+                    break;
+                case "switchB":
+                    Debug.Log("switch B");
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    switchABCD.switchB());
+                    break;
+                case "switchC":
+                    Debug.Log("switch C");
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    switchABCD.switchC());
+                    break;
+                case "switchD":
+                    Debug.Log("switch D");
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    switchABCD.switchD());
+                    break;
+                case "switchTrain":
+                    Debug.Log("switch Train");
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    switchABCD.switchTrain());
+                    break;
+                default:
+                    break;
+            }
 
         foreach (var i in data1)
             Debug.Log(i);
@@ -76,7 +118,7 @@ public class TextHelper : MonoBehaviour
         server.responseDelay.Stop();
         Debug.Log($"RESPONSE DELAY: {server.responseDelay.ElapsedMilliseconds.ToString()}");
 #endif
-      
+
         ShouldUpdate = true;
     }
 
