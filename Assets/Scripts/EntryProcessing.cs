@@ -139,9 +139,8 @@ public class EntryProcessing : MonoBehaviour
         OnSentenceInputEnd.AddListener(() =>
         {
             Debug.Log("OnSentenceInputEnd: INVOKED");
-
-            if (currentSentence + 1 < SENTENCE_COUNT)
-                ++currentSentence;
+            ++currentSentence;
+                
         });
 
         OnBlockInputEnd.AddListener(() =>

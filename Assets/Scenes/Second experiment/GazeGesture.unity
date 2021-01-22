@@ -5571,7 +5571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 1960954532}
-  distanceFromCamera: 1.5
+  distanceFromCamera: 2.5
   pitch: 0
 --- !u!4 &885768148
 Transform:

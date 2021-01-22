@@ -30,10 +30,10 @@ public class SwitchABCD : MonoBehaviour
         switch (sm.currentScene)
         {
             case SceneManagment.Scenes.ImagePlanePointing:
-                gameObject.transform.localScale = new Vector3(0.835f, 0.835f, 0);
+                gameObject.transform.localScale = new Vector3(0.835f, 0.835f, 1);
                 break;
             case SceneManagment.Scenes.GestureType_v2:
-                gameObject.transform.localScale = new Vector3(0.835f, 0.835f, 0);
+                gameObject.transform.localScale = new Vector3(0.835f, 0.835f, 1);
                 break;
             default:
                 break;
@@ -45,10 +45,10 @@ public class SwitchABCD : MonoBehaviour
         switch (sm.currentScene)
         {
             case SceneManagment.Scenes.ImagePlanePointing:
-                gameObject.transform.localScale = new Vector3(1.015f, 1.015f, 0);
+                gameObject.transform.localScale = new Vector3(1.015f, 1.015f, 1);
                 break;
             case SceneManagment.Scenes.GestureType_v2:
-                gameObject.transform.localScale = new Vector3(1.015f, 1.015f, 0);
+                gameObject.transform.localScale = new Vector3(1.015f, 1.015f, 1);
                 break;
             default:
                 break;
@@ -60,10 +60,10 @@ public class SwitchABCD : MonoBehaviour
         switch (sm.currentScene)
         {
             case SceneManagment.Scenes.ImagePlanePointing:
-                gameObject.transform.localScale = new Vector3(1.194f, 1.194f, 0);
+                gameObject.transform.localScale = new Vector3(1.194f, 1.194f, 1);
                 break;
             case SceneManagment.Scenes.GestureType_v2:
-                gameObject.transform.localScale = new Vector3(1.194f, 1.194f, 0);
+                gameObject.transform.localScale = new Vector3(1.194f, 1.194f, 1);
                 break;
             default:
                 break;
@@ -75,10 +75,10 @@ public class SwitchABCD : MonoBehaviour
         switch (sm.currentScene)
         {
             case SceneManagment.Scenes.ImagePlanePointing:
-                gameObject.transform.localScale = new Vector3(1.569f, 1.569f, 0);
+                gameObject.transform.localScale = new Vector3(1.569f, 1.569f, 1);
                 break;
             case SceneManagment.Scenes.GestureType_v2:
-                gameObject.transform.localScale = new Vector3(1.569f, 1.569f, 0);
+                gameObject.transform.localScale = new Vector3(1.569f, 1.569f, 1);
                 break;
             default:
                 break;
@@ -90,10 +90,10 @@ public class SwitchABCD : MonoBehaviour
         switch (sm.currentScene)
         {
             case SceneManagment.Scenes.ImagePlanePointing:
-                gameObject.transform.localScale = new Vector3(1.379f, 1.379f, 0);
+                gameObject.transform.localScale = new Vector3(1.379f, 1.379f, 1);
                 break;
             case SceneManagment.Scenes.GestureType_v2:
-                gameObject.transform.localScale = new Vector3(1.379f, 1.379f, 0);
+                gameObject.transform.localScale = new Vector3(1.379f, 1.379f, 1);
                 break;
             default:
                 break;
