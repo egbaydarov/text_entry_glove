@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -34,7 +33,6 @@ public class EntryProcessing : MonoBehaviour
     GameObject icons;
 
     public string LastTagDown { get; private set; } = "";
-    bool isFirstSingleKeyDown { get; set; }
 
     public UnityEvent OnSentenceInputEnd;
     public UnityEvent OnBlockInputEnd;
@@ -53,7 +51,9 @@ public class EntryProcessing : MonoBehaviour
 
 
     int BLOCKS_COUNT = 8;
+    int TRAIN_BLOCKS_COUNT = 2;
     int SENTENCE_COUNT = 8;
+    int TRAIN_SENTENCE_COUNT = 8;
 
     public int currentBlock;
     public int currentSentence { get; set; }
@@ -61,6 +61,7 @@ public class EntryProcessing : MonoBehaviour
     public UnityEvent disablePinch;
 
     MeasuringMetrics measuringMetrics;
+    SceneManagment sceneManagment;
 
     Stopwatch BackspaceDownTime = new Stopwatch();
 
@@ -95,10 +96,11 @@ public class EntryProcessing : MonoBehaviour
 
         words = new List<string>(data);
 
+
         AssignListners();
     }
 
-    public void regenerateSentences()
+    public void RegenerateSentences()
     {
         Debug.Log("Create new sentences order");
         SentenceOrder = new int[data.Length];
@@ -117,51 +119,86 @@ public class EntryProcessing : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!SceneManagment.isMain)
+        if (SceneManagment.isMain)
         {
-            tm.text = words[SentenceOrder[currentSentence + 64]];
-            currentSentenceText = words[SentenceOrder[currentSentence + 64]];
-            return;
+            tm.text = words[SentenceOrder[SENTENCE_COUNT * currentBlock + currentSentence]];
+            blockNumber.text = $"Блок\n{currentBlock + 1}\\{BLOCKS_COUNT}";
+            senNumber.text = $"Предложение\n{currentSentence + 1}\\{SENTENCE_COUNT}";
+            currentSentenceText = words[SentenceOrder[SENTENCE_COUNT * currentBlock + currentSentence]];
+        }
+        else
+        {
+            tm.text = words[SentenceOrder[TRAIN_SENTENCE_COUNT * (currentBlock + BLOCKS_COUNT) + currentSentence]];
+            blockNumber.text = $"Блок\n{currentBlock + 1}\\{TRAIN_BLOCKS_COUNT}";
+            senNumber.text = $"Предложение\n{currentSentence + 1}\\{TRAIN_SENTENCE_COUNT}";
+            currentSentenceText = words[SentenceOrder[TRAIN_SENTENCE_COUNT * (currentBlock + BLOCKS_COUNT) + currentSentence]];
         }
 
-        tm.text = words[SentenceOrder[SENTENCE_COUNT * currentBlock + currentSentence]];
-        blockNumber.text = $"Блок\n{currentBlock + 1}\\{BLOCKS_COUNT}";
-        senNumber.text = $"Предложение\n{currentSentence + 1}\\{SENTENCE_COUNT}";
-        currentSentenceText = words[SentenceOrder[SENTENCE_COUNT * currentBlock + currentSentence]];
-
         
+
+
         if (ShoudSetToStart)
             setToStart();
     }
 
     void AssignListners()
     {
-        OnSentenceInputEnd.AddListener(() =>
+        if (SceneManagment.isMain)
         {
+            OnSentenceInputEnd.AddListener(() =>
+            {
             Debug.Log("OnSentenceInputEnd: INVOKED");
             ++currentSentence;
-                
-        });
+            });
 
-        OnBlockInputEnd.AddListener(() =>
+            OnBlockInputEnd.AddListener(() =>
+            {
+                Debug.Log("OnBlockInputEnd: INVOKED");
+                currentSentence = 0;
+
+                if (currentBlock + 1 < BLOCKS_COUNT)
+                    ++currentBlock;
+
+                sentenceField.SetActive(false);
+                confirmButton.SetActive(false);
+                disablePinch.Invoke();
+                StartCoroutine(ShowMenuBittonAfterSeconds());
+            });
+
+            OnInputEnd.AddListener(() =>
+            {
+                Debug.Log("OnInputEnd: INVOKED");
+                currentBlock = 0;
+            });
+        }
+        else
         {
-            Debug.Log("OnBlockInputEnd: INVOKED");
-            currentSentence = 0;
+            OnSentenceInputEnd.AddListener(() =>
+            {
+                Debug.Log("OnSentenceInputEnd: INVOKED");
+                ++currentSentence;
+            });
 
-            if (currentBlock + 1 < BLOCKS_COUNT)
-                ++currentBlock;
+            OnBlockInputEnd.AddListener(() =>
+            {
+                Debug.Log("OnBlockInputEnd: INVOKED");
+                currentSentence = 0;
 
-            sentenceField.SetActive(false);
-            confirmButton.SetActive(false);
-            disablePinch.Invoke();
-            StartCoroutine(Wait());
-        });
+                if (currentBlock + 1 < TRAIN_BLOCKS_COUNT)
+                    ++currentBlock;
 
-        OnInputEnd.AddListener(() =>
-        {
-            Debug.Log("OnInputEnd: INVOKED");
-            currentBlock = 0;
-        });
+                sentenceField.SetActive(false);
+                confirmButton.SetActive(false);
+                disablePinch.Invoke();
+                StartCoroutine(ShowMenuBittonAfterSeconds());
+            });
+
+            OnInputEnd.AddListener(() =>
+            {
+                Debug.Log("OnInputEnd: INVOKED");
+                currentBlock = 0;
+            });
+        }
     }
 
     public void setToStart()
@@ -197,30 +234,50 @@ public class EntryProcessing : MonoBehaviour
             confirmButton.SetActive(false);
             sentenceField.SetActive(true);
 
-            if(!SceneManagment.isMain)
+            if (SceneManagment.isMain)
             {
-                OnSentenceInputEnd.Invoke();
-                return;
+                // Если в блоке еще есть предложения
+                if (currentSentence + 1 < SENTENCE_COUNT)
+                {
+                    OnSentenceInputEnd.Invoke();
+                }
+                // Если в блоке больше нет предложений (это последнее предложение блока)
+                else if (currentBlock + 1 < BLOCKS_COUNT)
+                {
+                    OnSentenceInputEnd.Invoke();
+                    OnBlockInputEnd.Invoke();
+                }
+                // если ввод полностью закончен
+                else
+                {
+                    OnSentenceInputEnd.Invoke();
+                    OnBlockInputEnd.Invoke();
+                    OnInputEnd.Invoke();
+                }
             }
-
-            // Если в блоке еще есть предложения
-            if (currentSentence + 1 < SENTENCE_COUNT)
-            {
-                OnSentenceInputEnd.Invoke();
-            }
-            // Если в блоке больше нет предложений (это последнее предложение блока)
-            else if (currentBlock + 1 < BLOCKS_COUNT)
-            {
-                OnSentenceInputEnd.Invoke();
-                OnBlockInputEnd.Invoke();
-            }
-            // если ввод полностью закончен
             else
             {
-                OnSentenceInputEnd.Invoke();
-                OnBlockInputEnd.Invoke();
-                OnInputEnd.Invoke();
+                if (currentSentence + 1 < TRAIN_SENTENCE_COUNT)
+                {
+                    OnSentenceInputEnd.Invoke();
+                }
+                // Если в блоке больше нет предложений (это последнее предложение блока)
+                else if (currentBlock + 1 < TRAIN_BLOCKS_COUNT)
+                {
+                    OnSentenceInputEnd.Invoke();
+                    OnBlockInputEnd.Invoke();
+                }
+                // если ввод полностью закончен
+                else
+                {
+                    OnSentenceInputEnd.Invoke();
+                    OnBlockInputEnd.Invoke();
+                    OnInputEnd.Invoke();
+                }
             }
+
+
+            measuringMetrics.SavePrefs();
         }
     }
 
@@ -234,7 +291,6 @@ public class EntryProcessing : MonoBehaviour
             measuringMetrics.ChoosePrediction();
 
             OnPredictionClicked.Invoke();
-            isFirstSingleKeyDown = true;
         }
     }
 
@@ -247,14 +303,11 @@ public class EntryProcessing : MonoBehaviour
             LastTagDown = "Backspace";
             BackspaceDownTime.Restart();
 
-            //начало нажатия на backspace
-            //measuringMetrics.remove_time_sw.Restart();
 
             OnBackspaceClicked.Invoke();
 
             server.SendToClient("backspace\r\n");
 
-            isFirstSingleKeyDown = true;
         }
     }
 
@@ -266,8 +319,6 @@ public class EntryProcessing : MonoBehaviour
             BackspacePressed = false;
 
             measuringMetrics.DeleteWord();
-
-            isFirstSingleKeyDown = true;
         }
     }
 
@@ -276,8 +327,7 @@ public class EntryProcessing : MonoBehaviour
     {
 
         //check valid
-        if ((obj != null && obj.tag.Equals("Key") && !menuButton.activeSelf) |
-            (obj != null && obj.tag.Equals("Key") && !SceneManagment.isMain))
+        if ((obj != null && obj.tag.Equals("Key") && !menuButton.activeSelf))
         {
             LastTagDown = "Key";
 
@@ -306,7 +356,6 @@ public class EntryProcessing : MonoBehaviour
     {
         if (obj != null && obj.name.Equals("Space") && !menuButton.activeSelf)
         {
-            isFirstSingleKeyDown = true;
         }
     }
 
@@ -316,18 +365,18 @@ public class EntryProcessing : MonoBehaviour
         server = FindObjectOfType<Server>();
         th = FindObjectOfType<TextHelper>();
         measuringMetrics = FindObjectOfType<MeasuringMetrics>();
+        sceneManagment = FindObjectOfType<SceneManagment>();
     }
     public void OnMenuClickedUp(GameObject obj, PointerEventData pointerData)
     {
         if (obj != null && obj.name.Equals("ToMenu"))
         {
             server.SendToClient("clear\r\n");
-            OnMenuClicked.Invoke();
-            currentSentence = 0;
+            sceneManagment.LoadMenu();
         }
     }
 
-    public IEnumerator Wait()
+    public IEnumerator ShowMenuBittonAfterSeconds()
     {
         yield return new WaitForSeconds(3);
         menuButton.SetActive(true);
@@ -344,7 +393,7 @@ public class EntryProcessing : MonoBehaviour
     {
         if (obj.name.Equals("CanvasInputField") || obj.name.Equals("NextSentence") || obj.CompareTag("Prediction"))
         {
-            
+
         }
     }
 
@@ -353,7 +402,7 @@ public class EntryProcessing : MonoBehaviour
         //Debug.Log($"HIGHLIGHT TAG {obj.tag} NAME: {obj.name}");
         if (obj.name.Equals("CanvasInputField") || obj.name.Equals("NextSentence") || obj.CompareTag("Prediction"))
         {
-           
+
         }
     }
 

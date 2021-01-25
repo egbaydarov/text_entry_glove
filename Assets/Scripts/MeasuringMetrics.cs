@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -15,20 +16,21 @@ public class MeasuringMetrics : MonoBehaviour
     public Stopwatch entry_time_sw { get; set; } = new Stopwatch();
     public Stopwatch timer { get; set; } = new Stopwatch();
 
-    [SerializeField]
     long _search_time;
-    [SerializeField]
     long _entry_time;
-    [SerializeField]
     long _remove_time;
-    [SerializeField]
     long _check_time;
-    [SerializeField]
     int _backspace_choose;
-    [SerializeField]
     int _prediction_choose;
-    [SerializeField]
     int _removed_count;
+    public double AverageCameraIndexDistance;
+
+
+    GameObject Camera;
+    [SerializeField]
+    GameObject IndexTip;
+
+    public List<double> distances = new List<double>();
 
     public int prediction_choose
     {
@@ -98,6 +100,7 @@ public class MeasuringMetrics : MonoBehaviour
     volatile bool inputFlag = false;
 
 
+
     private string _prevValue = "";
 
 
@@ -111,8 +114,34 @@ public class MeasuringMetrics : MonoBehaviour
 
     private void Update()
     {
-
+        if (IsGestureExecuting)
+        {
+            float distance = Vector3.Distance(Camera.transform.position, IndexTip.transform.position);
+            distances.Add(distance);
+            if (distances.Count == 100)
+            {
+                UpdateAverageDistance();
+                Debug.Log("1000 UPD");
+            }
+        }
     }
+
+    public void UpdateAverageDistance()
+    {
+        double temp = 0;
+        for (int i = 0; i < distances.Count; ++i)
+            temp += distances[i] / distances.Count;
+        distances.Clear();
+        if (AverageCameraIndexDistance != 0)
+        {
+            AverageCameraIndexDistance = (AverageCameraIndexDistance + temp) / 2;
+        }
+        else
+        {
+            AverageCameraIndexDistance = temp;
+        }
+    }
+
 
     private void OnApplicationQuit()
     {
@@ -127,6 +156,7 @@ public class MeasuringMetrics : MonoBehaviour
     private void Awake()
     {
         server = FindObjectOfType<Server>();
+        Camera = GameObject.Find("Camera");
     }
 
     public void SavePrefs()
@@ -137,7 +167,14 @@ public class MeasuringMetrics : MonoBehaviour
             PlayerPrefs.SetString("InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
             PlayerPrefs.SetInt("Attempt_number", _currentEntryProcessing.currentBlock); //Номер блока предложений
             PlayerPrefs.SetInt("Session_number", _currentEntryProcessing.currentSentence); //Номер попытки
-
+            Debug.Log("Session Saved.");
+        }
+        else
+        {
+            PlayerPrefs.SetInt("Respondent_ID", (int)Settings.id); // Идентификатор испытуемого
+            PlayerPrefs.SetString("Test_InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
+            PlayerPrefs.SetInt("Test_Attempt_number", _currentEntryProcessing.currentBlock); //Номер блока предложений
+            PlayerPrefs.SetInt("Test_Session_number", _currentEntryProcessing.currentSentence); //Номер попытки
             Debug.Log("Session Saved.");
         }
     }
@@ -164,6 +201,26 @@ public class MeasuringMetrics : MonoBehaviour
                 Debug.Log("No saved sessions.");
             }
         }
+        else
+        {
+            if (PlayerPrefs.HasKey("Test_InputMethod_ID"))
+            {
+                Settings.id = (uint)PlayerPrefs.GetInt("Respondent_ID");
+                SceneManagment.method_id = PlayerPrefs.GetString("Test_InputMethod_ID");
+                _currentEntryProcessing.currentBlock = PlayerPrefs.GetInt("Test_Attempt_number");
+                _currentEntryProcessing.currentSentence = PlayerPrefs.GetInt("Test_Session_number");
+
+                Debug.Log(
+                    $"Loaded: id {Settings.id}" +
+                    $", method  {SceneManagment.method_id}" +
+                    $", block {_currentEntryProcessing.currentBlock}" +
+                    $", sentence {_currentEntryProcessing.currentSentence}");
+            }
+            else
+            {
+                Debug.Log("No saved sessions.");
+            }
+        }
     }
 
     public void DeletePrefs()
@@ -174,6 +231,12 @@ public class MeasuringMetrics : MonoBehaviour
             PlayerPrefs.DeleteKey("Attempt_number");
             PlayerPrefs.DeleteKey("Session_number");
         }
+        else
+        {
+            PlayerPrefs.DeleteKey("Test_InputMethod_ID");
+            PlayerPrefs.DeleteKey("Test_Attempt_number");
+            PlayerPrefs.DeleteKey("Test_Session_number");
+        }
     }
 
 
@@ -182,6 +245,7 @@ public class MeasuringMetrics : MonoBehaviour
     {
         full_time.Reset();
         entry_time_sw.Reset();
+        timer.Reset();
         prediction_choose = 0;
         backspace_choose = 0;
         removed_count = 0;
@@ -189,6 +253,8 @@ public class MeasuringMetrics : MonoBehaviour
         input_time = 0;
         remove_time = 0;
         control_time = 0;
+        AverageCameraIndexDistance = 0;
+        distances.Clear();
 
         isRemoves = false;
     }
@@ -249,6 +315,8 @@ public class MeasuringMetrics : MonoBehaviour
             control_time += timer.ElapsedMilliseconds;
         timer.Reset();
         timer.Start();
+
+        UpdateAverageDistance();
     }
 
     public void DeleteWord()
@@ -304,13 +372,14 @@ public class MeasuringMetrics : MonoBehaviour
         IsEyeLastEnterInput = false;
 
         timer.Stop();
-        if (IsEyeLastExitInput || inputFlag)
+
+        if (!IsEyeLastExitInput && !inputFlag)
         {
-            if (!IsGestureExecuting) //для исключения поиска первого во время росчерка
-                input_time += timer.ElapsedMilliseconds;
-        }
-        else
             control_time += timer.ElapsedMilliseconds;
+        }
+        else if (!IsGestureExecuting) //для исключения поиска первого во время росчерка
+            input_time += timer.ElapsedMilliseconds;
+
         timer.Reset();
 
         timer.Start();

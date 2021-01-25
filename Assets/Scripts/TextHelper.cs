@@ -78,7 +78,7 @@ public class TextHelper : MonoBehaviour
                 case "regenerate":
                     Debug.Log("sentence re-generation");
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
-                    entryProcessing.regenerateSentences());
+                    entryProcessing.RegenerateSentences());
                     break;
                 case "switchA":
                     Debug.Log("switch A");

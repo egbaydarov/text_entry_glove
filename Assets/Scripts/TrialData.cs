@@ -20,6 +20,7 @@ public class TrialData
     public string check_time { get; set; }
     public string entry_time { get; set; }
     public string search_time { get; set; }
+    public string average_distance { get; set; }
 
 
 
@@ -61,6 +62,7 @@ public class TrialData
         form.Add("entry.938770484", entry_time.Replace(".", ","));  // Общее время ввода росчерка/слова
         form.Add("entry.1875291993", check_time.Replace(".", ",")); // Общее время проверки
         form.Add("entry.647338142", removing_time.Replace(".", ","));  // Общее время удаления слова 
+        form.Add("entry.1072504150", average_distance.Replace(".", ","));  // среднее расстояние
         form.Add("entry.1673523306", Math.Round(((float)resp_text.Length) * 12.0 / all_time, 2).ToString().Replace(".", ",")); // Скорость набора текста
 
         //form.Add("entry.1347030375", "");   // Примечание

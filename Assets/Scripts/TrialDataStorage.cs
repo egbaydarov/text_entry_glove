@@ -101,14 +101,15 @@ public class TrialDataStorage : MonoBehaviour
             removing_time = _measuringMetrics.isRemoves ? (_measuringMetrics.remove_time / 1000f).ToString() : "",
             resp_text = TextHelper.text,
             check_time = (_measuringMetrics.control_time / 1000f).ToString(),
-            search_time = (_measuringMetrics.input_time / 1000f).ToString()
+            search_time = (_measuringMetrics.input_time / 1000f).ToString(),
+            average_distance = _measuringMetrics.AverageCameraIndexDistance.ToString(),
         };
 
 
     }
 
 
-    public IEnumerator Wait()
+    public IEnumerator EnqueueCurrentTrial()
     {
         yield return new WaitForSeconds(3);
         if (_currentTrialData != null)
@@ -125,7 +126,8 @@ public class TrialDataStorage : MonoBehaviour
 
     public void Save()
     {
-        StartCoroutine(Wait());
+        if(SceneManagment.isMain)
+            StartCoroutine(EnqueueCurrentTrial());
     }
 
     private IEnumerator TryToSaveToGoogleSheets()

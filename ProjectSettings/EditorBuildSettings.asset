@@ -41,34 +41,34 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Trash/GazeCharacter.unity
     guid: a341788cc95af2240bcfb42d8c346311
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Second experiment/GazeGesture.unity
     guid: a6e4bb1ef16d65d409e6b44048a58e8b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Second experiment/OculusQuest_v2.unity
     guid: 8bbead873cf73894a8fc2458458c6a85
   - enabled: 1
     path: Assets/Scenes/Second experiment/GestureType_v2.unity
     guid: 4d70b908270954243b99304275517701
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Second experiment/ImagePlanePointing.unity
     guid: c2601242c72f00f4d956e1c5f133ff54
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Second experiment/ReticleGesture.unity
     guid: a7084a8b60414724593ba68dacf01eff
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Second experiment/TRAIN/GazeGestureTR.unity
     guid: 6a236d65acd2ca14482e3c6552790e73
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Second experiment/TRAIN/GestureType_v2TR.unity
     guid: 368fdf30f4a28b2408a706ad6a01aaf0
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Second experiment/TRAIN/ImagePlanePointingTR.unity
     guid: 6905943e7e782f64e9219b6f112ae849
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Second experiment/TRAIN/OculusQuest_v2TR.unity
     guid: fe9490d35796d2c469510966e522ef64
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Second experiment/TRAIN/ReticleGestureTR.unity
     guid: 11872dca1a2e71d40ab706d66c0871d3
   m_configObjects: {}
