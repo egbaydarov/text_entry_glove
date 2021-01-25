@@ -9,8 +9,8 @@ public class SceneManagment : MonoBehaviour
     [SerializeField]
     public Scenes currentScene = Scenes.OurMethodOLD;
 
-    public static bool isMain = false;
-    public static bool isNew = false;
+    public static bool isMain { get; set; } = false;
+    public static bool isNew { get; set; } = false;
     public static string method_id { get; set; }
     public static bool IsSingleCharacterInput { get; set; }
 
