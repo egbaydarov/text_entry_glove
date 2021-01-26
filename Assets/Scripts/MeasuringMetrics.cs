@@ -207,7 +207,7 @@ public class MeasuringMetrics : MonoBehaviour
             {
                 Settings.id = (uint)PlayerPrefs.GetInt("Respondent_ID");
                 SceneManagment.method_id = PlayerPrefs.GetString("Test_InputMethod_ID");
-                _currentEntryProcessing.currentBlock = PlayerPrefs.GetInt("Test_Attempt_number");
+                _currentEntryProcessing.currentBlock = PlayerPrefs.GetInt("Test_Attempt_number") > 1 ? 0 : PlayerPrefs.GetInt("Test_Attempt_number");
                 _currentEntryProcessing.currentSentence = PlayerPrefs.GetInt("Test_Session_number");
 
                 Debug.Log(

@@ -42,6 +42,7 @@ public class TrialData
             return form;
         }
 
+        form.Add("entry.1932861945", SwitchABCD.CurrentMode); // Mode
         form.Add("entry.507185938", Settings.id.ToString()); // Идентификатор испытуемого
         form.Add("entry.582005842", SceneManagment.method_id); // Идентификатор техники взаимодействия
         form.Add("entry.347604535", block_num); // Номер блока предложений

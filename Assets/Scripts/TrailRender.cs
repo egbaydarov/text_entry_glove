@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class TrailRender : MonoBehaviour
 {
-    public List<GameObject> trailPoints = new List<GameObject>();
+    public Queue<GameObject> trailPoints = new Queue<GameObject>();
 
     private LineRenderer line;
 
@@ -23,8 +23,10 @@ public class TrailRender : MonoBehaviour
     void Update()
     {
         line.positionCount = trailPoints.Count;
-        for (int i = 0; i < trailPoints.Count; ++i)
-            line.SetPosition(i, trailPoints[i].transform.position);
+        int i = 0;
+        foreach (var point in trailPoints)
+            line.SetPosition(i++, point.transform.position);
+
     }
 
     private void Awake()
@@ -37,12 +39,15 @@ public class TrailRender : MonoBehaviour
 
     public void AddPoint(GameObject trailPoint)
     {
-        trailPoints.Add(trailPoint);
+        trailPoints.Enqueue(trailPoint);
+        if (trailPoints.Count > 20)
+            Destroy(trailPoints.Dequeue());
     }
 
     public void RemoveTrail()
     {
-        trailPoints.ForEach((x) => Destroy(x));
+        foreach (var point in trailPoints)
+            Destroy(point);
         trailPoints.Clear();
     }
 }

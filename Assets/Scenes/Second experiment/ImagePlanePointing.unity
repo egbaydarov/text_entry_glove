@@ -3200,8 +3200,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1400, y: 800}
+  m_AnchoredPosition: {x: 0, y: -24}
+  m_SizeDelta: {x: 1400, y: 840}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!54 &513288039
 Rigidbody:
@@ -13260,7 +13260,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: c883090c023cb3f49ab67298bcace1d4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -13351,8 +13351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a7fe97f073039643a944fbc3b6c80d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trailPoints: []
-  LINE_WIDTH: 0.01
+  LINE_WIDTH: 0.02
   Drawing_Surface: {x: 0, y: 0, z: -0.01}
 --- !u!114 &1911783991
 MonoBehaviour:
