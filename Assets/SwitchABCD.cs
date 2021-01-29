@@ -21,11 +21,11 @@ public class SwitchABCD : MonoBehaviour
         1.972f / scale_coef,
         1.667f / scale_coef };
 
-    const float scale_coef = 1.972f;
+    const float scale_coef = 1f;
 
     GameObject ScaledObject;
-    GameObject ScaledObjectPrediction;
     public static string CurrentMode = "A";
+    TrailRender tr;
 
     Text TextAbove;
 
@@ -59,7 +59,8 @@ public class SwitchABCD : MonoBehaviour
         GameObject goText = GameObject.Find("Mode");
         TextAbove = goText.GetComponent<Text>();
 
-        ScaledObjectPrediction = GameObject.Find("Prediction");
+        tr = FindObjectOfType<TrailRender>();
+
 
         GameObject KeyboardHolder = GameObject.Find("Keyboard Holder");
         KeyboardHolder.transform.localScale = new Vector3(scale_coef, scale_coef, 1);
@@ -83,14 +84,15 @@ public class SwitchABCD : MonoBehaviour
         {
             case SceneManagment.Scenes.IMAGE_PLANE_POINTING:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues[0], ScaleValues[0], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[0]);
                 break;
             case SceneManagment.Scenes.GESTURE_TYPE:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues[0], ScaleValues[0], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[0]);
                 break;
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[0], ScaleValues1[0], 1);
-                ScaledObjectPrediction.GetComponent<RectTransform>().sizeDelta = new Vector2(1400, 840);
-
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[0]);
                 break;
             default:
                 break;
@@ -105,14 +107,15 @@ public class SwitchABCD : MonoBehaviour
         {
             case SceneManagment.Scenes.IMAGE_PLANE_POINTING:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[1]);
                 break;
             case SceneManagment.Scenes.GESTURE_TYPE:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[1]);
                 break;
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[1], ScaleValues1[1], 1);
-                ScaledObjectPrediction.GetComponent<RectTransform>().sizeDelta = new Vector2(1400, 840);
-
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[1]);
                 break;
             default:
                 break;
@@ -128,14 +131,15 @@ public class SwitchABCD : MonoBehaviour
         {
             case SceneManagment.Scenes.IMAGE_PLANE_POINTING:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues[2], ScaleValues[2], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[2]);
                 break;
             case SceneManagment.Scenes.GESTURE_TYPE:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues[2], ScaleValues[2], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[2]);
                 break;
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[2], ScaleValues1[2], 1);
-                ScaledObjectPrediction.GetComponent<RectTransform>().sizeDelta = new Vector2(1400, 840);
-
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[2]);
                 break;
             default:
                 break;
@@ -151,13 +155,15 @@ public class SwitchABCD : MonoBehaviour
         {
             case SceneManagment.Scenes.IMAGE_PLANE_POINTING:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues[3], ScaleValues[3], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[3]);
                 break;
             case SceneManagment.Scenes.GESTURE_TYPE:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues[3], ScaleValues[3], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[3]);
                 break;
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[3], ScaleValues1[3], 1);
-                ScaledObjectPrediction.GetComponent<RectTransform>().sizeDelta = new Vector2(1400, 760);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[3]);
                 break;
             default:
                 break;
@@ -173,13 +179,15 @@ public class SwitchABCD : MonoBehaviour
         {
             case SceneManagment.Scenes.IMAGE_PLANE_POINTING:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues[4], ScaleValues[4], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[4]);
                 break;
             case SceneManagment.Scenes.GESTURE_TYPE:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues[4], ScaleValues[4], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[4]);
                 break;
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[4], ScaleValues1[4], 1);
-                ScaledObjectPrediction.GetComponent<RectTransform>().sizeDelta = new Vector2(1400, 840);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[4]);
                 break;
             default:
                 break;

@@ -36,6 +36,11 @@ public class TrailRender : MonoBehaviour
         line.startWidth = LINE_WIDTH;
     }
 
+    public void setLineWidth(float lineWidth)
+    {
+        line.endWidth = lineWidth;
+        line.startWidth = lineWidth;
+    }
 
     public void AddPoint(GameObject trailPoint)
     {
