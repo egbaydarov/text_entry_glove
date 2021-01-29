@@ -17,7 +17,13 @@ public class TrailRender : MonoBehaviour
 
     void Start()
     {
-
+        //float alpha = 0.9f;
+        //Gradient gradient = new Gradient();
+        //gradient.SetKeys(
+        //    new GradientColorKey[] { new GradientColorKey(Color.magenta, 0.0f), new GradientColorKey(Color.cyan, 1.0f) },
+        //    new GradientAlphaKey[] { new GradientAlphaKey(0.01f, 0.0f), new GradientAlphaKey(0.1f, 1.0f) }
+        //);
+        //line.colorGradient = gradient;
     }
 
     void Update()
@@ -45,7 +51,7 @@ public class TrailRender : MonoBehaviour
     public void AddPoint(GameObject trailPoint)
     {
         trailPoints.Enqueue(trailPoint);
-        if (trailPoints.Count > 20)
+        if (trailPoints.Count > 30)
             Destroy(trailPoints.Dequeue());
     }
 

@@ -13283,7 +13283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a7fe97f073039643a944fbc3b6c80d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LINE_WIDTH: 0.02
+  LINE_WIDTH: 0.013
   Drawing_Surface: {x: 0, y: 0, z: -0.01}
 --- !u!114 &1911783991
 MonoBehaviour:
