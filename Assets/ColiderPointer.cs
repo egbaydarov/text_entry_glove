@@ -1,30 +1,46 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ColiderPointer : MonoBehaviour
 {
     public bool Triggering { get; set; } = false;
 
     EntryProcessing entryProcessing;
-    public bool isGestureValid { get; set; }
-    public bool isInputEnd { get; set; } = false;
+
+    public Vector3 startPos = new Vector3();
 
     int hoverCounter = 0;
 
     Server server;
     TrailRender trRander;
     MeasuringMetrics measuringMetrics;
-    GameObject keyboardColliderGO;
-
+    [SerializeField]
+    UnityEvent OnTrigerEnter;
+    [SerializeField]
+    UnityEvent OnTrigerExit;
+    public GameObject Go { get; set; }
+    GameObject FakePointer;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name.Equals("GestureZone"))
+        if (other.gameObject.CompareTag("tapTip"))
         {
-            Triggering = true;
-            keyboardColliderGO = other.gameObject;
-            Debug.Log("POINTERDOwN COLLIDERKEY");
+            Go = other.gameObject;
+            float x = transform.InverseTransformPoint(other.gameObject.transform.position).x;
+            float y = transform.InverseTransformPoint(other.gameObject.transform.position).y;
+            startPos = transform.TransformPoint(new Vector3(x, y, trRander.Drawing_Surface.z));
+
+            Vector3 local = FakePointer.transform.parent.InverseTransformPoint
+            //(LastPointerHoveredResult.gameObject.GetComponent<Transform>().position); // - centre
+            //(GetClosestRaycast(delay).gameObject.GetComponent<Transform>().position);
+            (startPos);
+
+            FakePointer.transform.localPosition = new Vector3(local.x, local.y, 0);
+
+
+            OnTrigerEnter.Invoke();
         }
 
         //TO DO CHANGE HAND COLOR
@@ -33,78 +49,29 @@ public class ColiderPointer : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.name.Equals("GestureZone"))
+        if (other.gameObject.CompareTag("tapTip"))
         {
-            Triggering = false;
-            Debug.Log("POINTERUP COLLIDERKEY");
-
-
-            if (server.IsConnected && isGestureValid && !isInputEnd)
-            {
-                server.SendToClient($"u;\r\n");
-#if UNITY_EDITOR
-                server.responseDelay.Restart();
-#endif
-                if (entryProcessing.LastTagDown.Equals("Key"))
-                {
-                    measuringMetrics.EndGesture();
-                }
-
-            }
-            //server.SendToClient(data + "\r\n");
-            hoverCounter = 0;
-
-            isGestureValid = false;
-
-            trRander.RemoveTrail();
+            OnTrigerExit.Invoke();
         }
         //TO DO CHANGE HAND COLOR
 
     }
 
-    public void OnPointerHover()
-    {
-        if (Triggering)
-        {
-            GameObject trailPoint = new GameObject();
-
-
-            float x = keyboardColliderGO.transform.InverseTransformPoint(trailPoint.transform.position).x;
-            float y = keyboardColliderGO.transform.InverseTransformPoint(trailPoint.transform.position).y;
-
-            trailPoint.transform.position = new Vector3(x, y, trRander.Drawing_Surface.z);
-            trRander.AddPoint(trailPoint);
-
-
-            x = (float)(x * server.coef_x + server.keyboard_x / 2.0);
-            y = (float)(-y * server.coef_y + server.screen_y - (server.keyboard_y / 2.0));
-            //UnityEngine.Debug.Log("SEND X:" + x + " Y:" + y);
-
-            if (trRander.trailPoints.Count == 1 && server.IsConnected && isGestureValid && !isInputEnd)
-            {
-                server.SendToClient($"d;{(int)(x)};{(int)(y)};\r\n");
-
-
-                if (entryProcessing.LastTagDown.Equals("Key"))
-                {
-                    measuringMetrics.StartGesture();
-                }
-            }
-            else if (++hoverCounter % 1 == 0 && server.IsConnected && isGestureValid && !isInputEnd)
-                server.SendToClient($"{(int)(x)};{(int)(y)};\r\n");
-        }
-    }
 
     // Start is called before the first frame update
     void Start()
     {
-        OnPointerHover();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (Go != null)
+        {
+            float x = transform.InverseTransformPoint(Go.gameObject.transform.position).x;
+            float y = transform.InverseTransformPoint(Go.gameObject.transform.position).y;
+            startPos = transform.TransformPoint(new Vector3(x, y, trRander.Drawing_Surface.z));
+        }
     }
 
     private void Awake()
@@ -113,5 +80,6 @@ public class ColiderPointer : MonoBehaviour
         server = FindObjectOfType<Server>();
         measuringMetrics = FindObjectOfType<MeasuringMetrics>();
         entryProcessing = FindObjectOfType<EntryProcessing>();
+        FakePointer = GameObject.Find("Fake Pointer");
     }
 }

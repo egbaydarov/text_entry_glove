@@ -388,22 +388,4 @@ public class EntryProcessing : MonoBehaviour
         icons.SetActive(false);
     }
 
-
-    public void OnPointerEnter(GameObject obj, PointerEventData pointerData)
-    {
-        if (obj.name.Equals("CanvasInputField") || obj.name.Equals("NextSentence") || obj.CompareTag("Prediction"))
-        {
-
-        }
-    }
-
-    public void OnPointerExit(GameObject obj, PointerEventData pointerData)
-    {
-        //Debug.Log($"HIGHLIGHT TAG {obj.tag} NAME: {obj.name}");
-        if (obj.name.Equals("CanvasInputField") || obj.name.Equals("NextSentence") || obj.CompareTag("Prediction"))
-        {
-
-        }
-    }
-
 }

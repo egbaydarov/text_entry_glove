@@ -1,6 +1,4 @@
 ﻿using LeapMotionGesture;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PinchWithReticle : MonoBehaviour

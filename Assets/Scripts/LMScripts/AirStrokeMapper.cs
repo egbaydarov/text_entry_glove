@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 namespace LeapMotionGesture
 {
@@ -94,11 +95,30 @@ namespace LeapMotionGesture
                 transform.GetChild(i).gameObject.SetActive(false);
         }
 
+        ColiderPointer cp;
+
+        private void Awake()
+        {
+            cp = FindObjectOfType<ColiderPointer>();
+        }
 
         private void Update()
         {
             if (pinchIsOn)
             {
+                if (SceneManager.GetActiveScene().name.Equals("Articulatedhands_v2"))
+                {
+                    Vector2 projectedPoint1 = GetProjectionOnPlane();
+
+                    Vector2 delta1 = projectedPoint1 - prevProjectedPoint;
+                    follower.Translate(delta1.x, delta1.y, 0, follower.parent);
+
+                    prevProjectedPoint = projectedPoint1;
+
+                    //follower.localPosition = follower.transform.InverseTransformPoint(cp.startPos);
+                    return;
+                }
+
                 Vector2 projectedPoint = GetProjectionOnPlane();
 
                 Vector2 delta = projectedPoint - prevProjectedPoint;
@@ -106,6 +126,7 @@ namespace LeapMotionGesture
 
                 prevProjectedPoint = projectedPoint;
             }
+            
         }
 
         public void OnPinchBegan()

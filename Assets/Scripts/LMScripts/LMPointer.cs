@@ -215,6 +215,13 @@ public class LMPointer : GvrBasePointer
                 InverseTransformPoint(GetClosestRaycast(delay).gameObject.GetComponent<Transform>().position);
             //(LastPointerHoveredResult.gameObject.GetComponent<Transform>().position); // - centre
         }
+        else if (SceneManager.GetActiveScene().name.Equals("Articulatedhands_v2"))
+        {
+            local = FakePointer.transform.parent.InverseTransformPoint
+            //(LastPointerHoveredResult.gameObject.GetComponent<Transform>().position); // - centre
+            //(GetClosestRaycast(delay).gameObject.GetComponent<Transform>().position);
+            (FindObjectOfType<ColiderPointer>().startPos);
+        }
         else
         {
             local = FakePointer.transform.parent.InverseTransformPoint
@@ -224,9 +231,6 @@ public class LMPointer : GvrBasePointer
         }
 
         FakePointer.transform.localPosition = new Vector3(local.x, local.y, 0);
-
-
-
     }
 
     /// <inheritdoc/>
