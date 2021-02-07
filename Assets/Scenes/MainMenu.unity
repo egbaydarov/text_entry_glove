@@ -1201,17 +1201,17 @@ PrefabInstance:
     - target: {fileID: 114292754717913548, guid: dae2e2be31c98324eac460f702db97e9,
         type: 3}
       propertyPath: _deviceOffsetMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114292754717913548, guid: dae2e2be31c98324eac460f702db97e9,
         type: 3}
       propertyPath: _deviceOffsetYAxis
-      value: -0.04
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114292754717913548, guid: dae2e2be31c98324eac460f702db97e9,
         type: 3}
       propertyPath: _deviceTiltXAxis
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114473456793702560, guid: dae2e2be31c98324eac460f702db97e9,
         type: 3}
@@ -2249,7 +2249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f007d8982d2f140abaf3a79447db70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentScene: 0
+  currentScene: 4
 --- !u!1 &2026995027
 GameObject:
   m_ObjectHideFlags: 0

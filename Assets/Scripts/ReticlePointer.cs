@@ -16,15 +16,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using Leap;
 using LeapMotionGesture;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.EventSystems;
 
 
 
@@ -157,6 +153,10 @@ public class ReticlePointer : GvrBasePointer
     {
         SetPointerTarget(raycastResultResult.worldPosition, isInteractive);
         enterRaycastObj = raycastResultResult.gameObject;
+        if(raycastResultResult.gameObject.name.Equals("NextSentence") && Triggering)
+        {
+            entryProcessing.OnNextDown(raycastResultResult.gameObject, new PointerEventData(EventSystem.current));
+        }
     }
 
     /// <inheritdoc/>
@@ -209,7 +209,8 @@ public class ReticlePointer : GvrBasePointer
     /// <inheritdoc/>
     public override void OnPointerClickDown()
     {
-        isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction");
+        if (enterRaycastObj != null)
+            isGestureValid = enterRaycastObj.tag.Equals("Key") || enterRaycastObj.tag.Equals("Prediction");
     }
 
     /// <inheritdoc/>

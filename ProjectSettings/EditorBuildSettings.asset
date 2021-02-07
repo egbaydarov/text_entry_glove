@@ -71,4 +71,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Second experiment/TRAIN/ReticleGestureTR.unity
     guid: 11872dca1a2e71d40ab706d66c0871d3
+  - enabled: 1
+    path: Assets/Scenes/Second experiment/Articulatedhands_v2.unity
+    guid: 6ddb9d0ab4d8915449a7002a49b14e46
   m_configObjects: {}

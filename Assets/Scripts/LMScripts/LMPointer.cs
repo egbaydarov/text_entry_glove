@@ -176,7 +176,6 @@ public class LMPointer : GvrBasePointer
             float y = trLocal.InverseTransformPoint(trailPoint.transform.position).y;
             x = (float)(x * server.coef_x + server.keyboard_x / 2.0);
             y = (float)(-y * server.coef_y + server.screen_y - (server.keyboard_y / 2.0));
-            //UnityEngine.Debug.Log("SEND X:" + x + " Y:" + y);
 
             if (trRander.trailPoints.Count == 1 && server.IsConnected && isGestureValid && !isInputEnd)
             {
@@ -214,13 +213,6 @@ public class LMPointer : GvrBasePointer
                 parent.
                 InverseTransformPoint(GetClosestRaycast(delay).gameObject.GetComponent<Transform>().position);
             //(LastPointerHoveredResult.gameObject.GetComponent<Transform>().position); // - centre
-        }
-        else if (SceneManager.GetActiveScene().name.Equals("Articulatedhands_v2"))
-        {
-            local = FakePointer.transform.parent.InverseTransformPoint
-            //(LastPointerHoveredResult.gameObject.GetComponent<Transform>().position); // - centre
-            //(GetClosestRaycast(delay).gameObject.GetComponent<Transform>().position);
-            (FindObjectOfType<ColiderPointer>().startPos);
         }
         else
         {

@@ -40,11 +40,8 @@ public class TorsoReferencedContent : MonoBehaviour
         transform.position = Vector3.SlerpUnclamped(transform.position, posTo, posSpeed);
     }
 
-    public virtual void SingleUpdatePosition()
+    public virtual void SwitchEnabled()
     {
-        Vector3 posTo = camera.position + offset;
-        float posSpeed = POSITION_LERP_SPEED;
-        transform.position = Vector3.SlerpUnclamped(transform.position, posTo, 10000);
-
+        enabled = !enabled;
     }
 }

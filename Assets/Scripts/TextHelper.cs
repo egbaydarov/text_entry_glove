@@ -74,47 +74,45 @@ public class TextHelper : MonoBehaviour
                     Debug.Log("sentence re-entry");
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
                       entryProcessing.RestartInput());
-                    break;
+                    return;
                 case "regenerate":
                     Debug.Log("sentence re-generation");
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
                     entryProcessing.RegenerateSentences());
-                    break;
+                    return;
                 case "switchA":
                     Debug.Log("switch A");
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
                     switchABCD.switchA());
-                    break;
+                    return;
                 case "switchB":
                     Debug.Log("switch B");
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
                     switchABCD.switchB());
-                    break;
+                    return;
                 case "switchC":
                     Debug.Log("switch C");
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
                     switchABCD.switchC());
-                    break;
+                    return;
                 case "switchD":
                     Debug.Log("switch D");
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
                     switchABCD.switchD());
-                    break;
+                    return;
                 case "switchTrain":
                     Debug.Log("switch Train");
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
                     switchABCD.switchTrain());
-                    break;
+                    return;
                 case "TorsoReferencing":
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
-                    FindObjectOfType<TorsoReferencedContent>().SingleUpdatePosition());
-                    break;
+                    FindObjectOfType<TorsoReferencedContent>().SwitchEnabled());
+                    return;
                 default:
                     break;
             }
 
-        foreach (var i in data1)
-            Debug.Log(i);
         string clientMessage = data1.Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
         text = clientMessage.Trim('\r', '\n');
 
