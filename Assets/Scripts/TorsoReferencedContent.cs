@@ -14,6 +14,7 @@ public class TorsoReferencedContent : MonoBehaviour
     [SerializeField]
     protected float pitch = 0f;
 
+
     protected Vector3 offset;
 
     protected static readonly float POSITION_LERP_SPEED = 5f;
@@ -33,11 +34,17 @@ public class TorsoReferencedContent : MonoBehaviour
 
     protected virtual void Update()
     {
-
-
         Vector3 posTo = camera.position + offset;
 
         float posSpeed = Time.deltaTime * POSITION_LERP_SPEED;
         transform.position = Vector3.SlerpUnclamped(transform.position, posTo, posSpeed);
+    }
+
+    public virtual void SingleUpdatePosition()
+    {
+        Vector3 posTo = camera.position + offset;
+        float posSpeed = POSITION_LERP_SPEED;
+        transform.position = Vector3.SlerpUnclamped(transform.position, posTo, 10000);
+
     }
 }

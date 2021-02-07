@@ -21,6 +21,8 @@ public class SwitchABCD : MonoBehaviour
         1.972f / scale_coef,
         1.667f / scale_coef };
 
+    private float[] ScaleValues2 = { 0.221f, 0.251f, 0.283f, 0.315f, 0.350f };
+
     const float scale_coef = 1f;
 
     GameObject ScaledObject;
@@ -94,6 +96,10 @@ public class SwitchABCD : MonoBehaviour
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[0], ScaleValues1[0], 1);
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[0]);
                 break;
+            case SceneManagment.Scenes.ARTICULATED_HANDS:
+                ScaledObject.transform.localScale = new Vector3(ScaleValues2[0], ScaleValues2[0], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues2[0]);
+                break;
             default:
                 break;
         }
@@ -103,6 +109,7 @@ public class SwitchABCD : MonoBehaviour
     public void switchB()
     {
         CurrentMode = "B";
+        int i = 1;
         switch (sm.currentScene)
         {
             case SceneManagment.Scenes.IMAGE_PLANE_POINTING:
@@ -117,6 +124,10 @@ public class SwitchABCD : MonoBehaviour
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[1], ScaleValues1[1], 1);
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[1]);
                 break;
+            case SceneManagment.Scenes.ARTICULATED_HANDS:
+                ScaledObject.transform.localScale = new Vector3(ScaleValues2[i], ScaleValues2[i], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues2[i]);
+                break;
             default:
                 break;
         }
@@ -126,7 +137,7 @@ public class SwitchABCD : MonoBehaviour
     public void switchC()
     {
         CurrentMode = "C";
-
+        int i = 2;
         switch (sm.currentScene)
         {
             case SceneManagment.Scenes.IMAGE_PLANE_POINTING:
@@ -141,6 +152,10 @@ public class SwitchABCD : MonoBehaviour
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[2], ScaleValues1[2], 1);
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[2]);
                 break;
+            case SceneManagment.Scenes.ARTICULATED_HANDS:
+                ScaledObject.transform.localScale = new Vector3(ScaleValues2[i], ScaleValues2[i], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues2[i]);
+                break;
             default:
                 break;
         }
@@ -150,7 +165,7 @@ public class SwitchABCD : MonoBehaviour
     public void switchD()
     {
         CurrentMode = "D";
-
+        int i = 3;
         switch (sm.currentScene)
         {
             case SceneManagment.Scenes.IMAGE_PLANE_POINTING:
@@ -165,6 +180,10 @@ public class SwitchABCD : MonoBehaviour
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[3], ScaleValues1[3], 1);
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[3]);
                 break;
+            case SceneManagment.Scenes.ARTICULATED_HANDS:
+                ScaledObject.transform.localScale = new Vector3(ScaleValues2[i], ScaleValues2[i], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues2[i]);
+                break;
             default:
                 break;
         }
@@ -174,7 +193,7 @@ public class SwitchABCD : MonoBehaviour
     public void switchTrain()
     {
         CurrentMode = "Train";
-
+        int i = 4;
         switch (sm.currentScene)
         {
             case SceneManagment.Scenes.IMAGE_PLANE_POINTING:
@@ -188,6 +207,10 @@ public class SwitchABCD : MonoBehaviour
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[4], ScaleValues1[4], 1);
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[4]);
+                break;
+            case SceneManagment.Scenes.ARTICULATED_HANDS:
+                ScaledObject.transform.localScale = new Vector3(ScaleValues2[i], ScaleValues2[i], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues2[i]);
                 break;
             default:
                 break;

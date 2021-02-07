@@ -174,7 +174,7 @@ public class MeasuringMetrics : MonoBehaviour
             PlayerPrefs.SetInt("Respondent_ID", (int)Settings.id); // Идентификатор испытуемого
             PlayerPrefs.SetString("Test_InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
             PlayerPrefs.SetInt("Test_Attempt_number", _currentEntryProcessing.currentBlock); //Номер блока предложений
-            PlayerPrefs.SetInt("Test_Session_number", _currentEntryProcessing.currentSentence); //Номер попытки
+            PlayerPrefs.SetInt("Test_Session_number", 0); //Номер попытки
             Debug.Log("Session Saved.");
         }
     }

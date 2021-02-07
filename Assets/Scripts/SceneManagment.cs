@@ -65,6 +65,10 @@ public class SceneManagment : MonoBehaviour
                 SceneManager.LoadSceneAsync("ImagePlanePointing");
                 method_id = "IMAGE-PLANE_POINTING";
                 break;
+            case Scenes.ARTICULATED_HANDS:
+                SceneManager.LoadSceneAsync("Articulatedhands_v2");
+                method_id = "ARTICULATED_HANDS";
+                break;
         }
 
     }
@@ -100,6 +104,10 @@ public class SceneManagment : MonoBehaviour
                 SceneManager.LoadSceneAsync("ImagePlanePointing");
                 method_id = "IMAGE-PLANE_POINTING";
                 break;
+            case Scenes.ARTICULATED_HANDS:
+                SceneManager.LoadSceneAsync("Articulatedhands_v2");
+                method_id = "ARTICULATED_HANDS";
+                break;
         }
         PlayerPrefs.SetString("InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
     }
@@ -130,9 +138,14 @@ public class SceneManagment : MonoBehaviour
                 SceneManager.LoadSceneAsync("ImagePlanePointing");
                 method_id = "IMAGE-PLANE_POINTING";
                 break;
+            case Scenes.ARTICULATED_HANDS:
+                SceneManager.LoadSceneAsync("Articulatedhands_v2");
+                method_id = "ARTICULATED_HANDS";
+                break;
         }
         PlayerPrefs.SetString("InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
     }
+
 
     public void LoadMenu()
     {
@@ -162,6 +175,7 @@ public class SceneManagment : MonoBehaviour
         HEAD_GAZE_AND_COMMIT,
         OCULUS_QUEST,
         GESTURE_TYPE,
-        IMAGE_PLANE_POINTING
+        IMAGE_PLANE_POINTING,
+        ARTICULATED_HANDS
     }
 }

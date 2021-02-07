@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Leap.Unity;
-using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Valve.VR.InteractionSystem;
 
@@ -38,7 +38,7 @@ public class TextHelper : MonoBehaviour
     private void OnDisable()
     {
         server.OnMessageRecieved.RemoveListener(UpdateTextFieldAndPredictionsButtons);
-        
+
     }
 
 
@@ -104,6 +104,10 @@ public class TextHelper : MonoBehaviour
                     Debug.Log("switch Train");
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
                     switchABCD.switchTrain());
+                    break;
+                case "TorsoReferencing":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    FindObjectOfType<TorsoReferencedContent>().SingleUpdatePosition());
                     break;
                 default:
                     break;

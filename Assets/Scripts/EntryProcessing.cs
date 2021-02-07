@@ -253,6 +253,7 @@ public class EntryProcessing : MonoBehaviour
                     OnSentenceInputEnd.Invoke();
                     OnBlockInputEnd.Invoke();
                     OnInputEnd.Invoke();
+                    RegenerateSentences();
                 }
             }
             else
