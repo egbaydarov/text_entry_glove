@@ -25,7 +25,7 @@ namespace LeapMotionGesture
         [Min(1f)]
         [Tooltip("Used when the 'Calculate Dynamically' checkbox is not set")]
         [SerializeField]
-        private float fixedValue = 1f;
+        public float fixedValue = 1f;
 
         [SerializeField]
         private float originPointOffset = 0f;

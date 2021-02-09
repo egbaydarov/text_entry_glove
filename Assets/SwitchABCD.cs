@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using LeapMotionGesture;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,11 +24,15 @@ public class SwitchABCD : MonoBehaviour
 
     private float[] ScaleValues2 = { 0.221f, 0.251f, 0.283f, 0.315f, 0.350f };
 
+    private float[] ScaleValues3 = { 2f, 3f, 4f, 5f, 6f };
+
     const float scale_coef = 1f;
 
     GameObject ScaledObject;
     public static string CurrentMode = "A";
     TrailRender tr;
+
+    AirStrokeMapper airStrokeMapper; 
 
     Text TextAbove;
 
@@ -63,6 +68,7 @@ public class SwitchABCD : MonoBehaviour
 
         tr = FindObjectOfType<TrailRender>();
 
+        airStrokeMapper = FindObjectOfType<AirStrokeMapper>();
 
         GameObject KeyboardHolder = GameObject.Find("Keyboard Holder");
         KeyboardHolder.transform.localScale = new Vector3(scale_coef, scale_coef, 1);
@@ -81,6 +87,7 @@ public class SwitchABCD : MonoBehaviour
 
     public void switchA()
     {
+        int i = 0;
         CurrentMode = "A";
         switch (sm.currentScene)
         {
@@ -99,6 +106,10 @@ public class SwitchABCD : MonoBehaviour
             case SceneManagment.Scenes.ARTICULATED_HANDS:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues2[0], ScaleValues2[0], 1);
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues2[0]);
+                break;
+            case SceneManagment.Scenes.HEAD_GAZE_AND_COMMIT:
+                ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
+                airStrokeMapper.fixedValue = ScaleValues3[i];
                 break;
             default:
                 break;
@@ -128,6 +139,10 @@ public class SwitchABCD : MonoBehaviour
                 ScaledObject.transform.localScale = new Vector3(ScaleValues2[i], ScaleValues2[i], 1);
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues2[i]);
                 break;
+            case SceneManagment.Scenes.HEAD_GAZE_AND_COMMIT:
+                ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
+                airStrokeMapper.fixedValue = ScaleValues3[i];
+                break;
             default:
                 break;
         }
@@ -155,6 +170,10 @@ public class SwitchABCD : MonoBehaviour
             case SceneManagment.Scenes.ARTICULATED_HANDS:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues2[i], ScaleValues2[i], 1);
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues2[i]);
+                break;
+            case SceneManagment.Scenes.HEAD_GAZE_AND_COMMIT:
+                ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
+                airStrokeMapper.fixedValue = ScaleValues3[i];
                 break;
             default:
                 break;
@@ -184,6 +203,10 @@ public class SwitchABCD : MonoBehaviour
                 ScaledObject.transform.localScale = new Vector3(ScaleValues2[i], ScaleValues2[i], 1);
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues2[i]);
                 break;
+            case SceneManagment.Scenes.HEAD_GAZE_AND_COMMIT:
+                ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
+                airStrokeMapper.fixedValue = ScaleValues3[i];
+                break;
             default:
                 break;
         }
@@ -211,6 +234,10 @@ public class SwitchABCD : MonoBehaviour
             case SceneManagment.Scenes.ARTICULATED_HANDS:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues2[i], ScaleValues2[i], 1);
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues2[i]);
+                break;
+            case SceneManagment.Scenes.HEAD_GAZE_AND_COMMIT:
+                ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
+                airStrokeMapper.fixedValue = ScaleValues3[i];
                 break;
             default:
                 break;
