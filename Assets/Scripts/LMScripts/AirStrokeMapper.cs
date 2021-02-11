@@ -41,6 +41,7 @@ namespace LeapMotionGesture
         private Vector2 prevProjectedPoint;
         private float distanceToObj;
         private Transform mainCamera;
+        private Transform keyboardHolder;
 
         public UnityEvent onPinchOn;
         public UnityEvent onPinchOff;
@@ -60,6 +61,11 @@ namespace LeapMotionGesture
                 enabled = false;
                 return;
             }
+            var pdd = FindObjectOfType<PinchDetectorDelay>();
+            if (pdd != null && pdd.PinchHand == PinchDetectorDelay.HandMode.right)
+                followee = followeeRight;
+            else
+                followee = followeeLeft;
 
             if (follower == null)
             {
@@ -67,11 +73,7 @@ namespace LeapMotionGesture
                 enabled = false;
                 return;
             }
-            var pdd = FindObjectOfType<PinchDetectorDelay>();
-            if (pdd != null && pdd.PinchHand == PinchDetectorDelay.HandMode.right)
-                followee = followeeRight;
-            else
-                followee = followeeLeft;
+            keyboardHolder = follower.root;
 
 
             if (calculateDynamically)
@@ -122,7 +124,11 @@ namespace LeapMotionGesture
                 Vector2 projectedPoint = GetProjectionOnPlane();
 
                 Vector2 delta = projectedPoint - prevProjectedPoint;
-                follower.Translate(delta.x * GetMultiplicationFactor(), delta.y * GetMultiplicationFactor(), 0, follower.parent);
+                follower.Translate(
+                    delta.x * GetMultiplicationFactor() * keyboardHolder.localScale.x,
+                    delta.y * GetMultiplicationFactor() * keyboardHolder.localScale.y,
+                    0,
+                    follower.parent);
 
                 prevProjectedPoint = projectedPoint;
             }
@@ -151,7 +157,6 @@ namespace LeapMotionGesture
         private Vector2 GetProjectionOnPlane()
         {
             // Projecting a position of our followee to a plane which is at the origin. The plane is rotated as our GO
-
             Vector3 p = Vector3.ProjectOnPlane(followee.position, transform.forward);
 
             // Transforming a position of the projected point to local space of our GO, which makes its Z component equal to 0
