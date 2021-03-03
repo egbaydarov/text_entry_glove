@@ -24,13 +24,17 @@ public class SwitchABCD : MonoBehaviour
 
     private float[] ScaleValues2 = { 0.221f, 0.251f, 0.283f, 0.315f, 0.350f };
 
-    private float[] ScaleValues3 = { 2f, 3f, 4f, 5f, 6f };
+    private float[] ScaleValues3 = { 3f, 4f, 5f, 6f, 4.5f };
+
+    private Vector3[] ScaleValues4 = { new Vector3(0.15f, -0.3f, -0.25f), new Vector3(0.15f, -0.3f, 0f), new Vector3(0.15f, -0.3f, 0.25f), new Vector3(0.15f, -0.3f, 0.5f), new Vector3(0.15f, -0.3f, -0.5f) };
 
     const float scale_coef = 1f;
 
     GameObject ScaledObject;
     public static string CurrentMode = "A";
     TrailRender tr;
+
+    PointerHandler pointerHandler;
 
     AirStrokeMapper airStrokeMapper; 
 
@@ -73,6 +77,8 @@ public class SwitchABCD : MonoBehaviour
         GameObject KeyboardHolder = GameObject.Find("Keyboard Holder");
         KeyboardHolder.transform.localScale = new Vector3(scale_coef, scale_coef, 1);
 
+        pointerHandler = FindObjectOfType<PointerHandler>();
+
         if (go == null)
         {
             enabled = false;
@@ -111,6 +117,9 @@ public class SwitchABCD : MonoBehaviour
                 ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
                 airStrokeMapper.fixedValue = ScaleValues3[i];
                 break;
+            case SceneManagment.Scenes.OCULUS_QUEST:
+                pointerHandler.shoulderOffset = ScaleValues4[i];
+                break;
             default:
                 break;
         }
@@ -142,6 +151,9 @@ public class SwitchABCD : MonoBehaviour
             case SceneManagment.Scenes.HEAD_GAZE_AND_COMMIT:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
                 airStrokeMapper.fixedValue = ScaleValues3[i];
+                break;
+            case SceneManagment.Scenes.OCULUS_QUEST:
+                pointerHandler.shoulderOffset = ScaleValues4[i];
                 break;
             default:
                 break;
@@ -175,6 +187,9 @@ public class SwitchABCD : MonoBehaviour
                 ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
                 airStrokeMapper.fixedValue = ScaleValues3[i];
                 break;
+            case SceneManagment.Scenes.OCULUS_QUEST:
+                pointerHandler.shoulderOffset = ScaleValues4[i];
+                break;
             default:
                 break;
         }
@@ -207,6 +222,9 @@ public class SwitchABCD : MonoBehaviour
                 ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
                 airStrokeMapper.fixedValue = ScaleValues3[i];
                 break;
+            case SceneManagment.Scenes.OCULUS_QUEST:
+                pointerHandler.shoulderOffset = ScaleValues4[i];
+                break;
             default:
                 break;
         }
@@ -238,6 +256,9 @@ public class SwitchABCD : MonoBehaviour
             case SceneManagment.Scenes.HEAD_GAZE_AND_COMMIT:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
                 airStrokeMapper.fixedValue = ScaleValues3[i];
+                break;
+            case SceneManagment.Scenes.OCULUS_QUEST:
+                pointerHandler.shoulderOffset = ScaleValues4[i];
                 break;
             default:
                 break;

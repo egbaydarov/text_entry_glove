@@ -241,7 +241,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.02
+  m_Radius: 0.01
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &21984471
 Transform:
@@ -2425,7 +2425,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.02
+  m_Radius: 0.016
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &301781382
 MonoBehaviour:
@@ -2802,7 +2802,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.02
+  m_Radius: 0.01
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &347026291
 MonoBehaviour:
@@ -3512,7 +3512,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.02
+  m_Radius: 0.016
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &542518145
 MonoBehaviour:
@@ -3614,7 +3614,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.02
+  m_Radius: 0.016
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &599191848
 GameObject:
@@ -5003,7 +5003,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.02
+  m_Radius: 0.016
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &813130756
 MonoBehaviour:
@@ -5427,7 +5427,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.02
+  m_Radius: 0.016
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &854100187
 Transform:
@@ -5518,7 +5518,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.02
+  m_Radius: 0.016
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &854260072
 MonoBehaviour:
@@ -6992,7 +6992,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.02
+  m_Radius: 0.016
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1026883125
 GameObject:
@@ -7173,7 +7173,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.02
+  m_Radius: 0.016
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1045262154
 PrefabInstance:
@@ -9069,7 +9069,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.02
+  m_Radius: 0.016
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1357001821
 GameObject:

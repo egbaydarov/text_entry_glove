@@ -18,7 +18,7 @@ public class PointerHandler : MonoBehaviour
 
 
     [SerializeField]
-    Vector3 shoulderOffset = Vector3.zero;
+    public Vector3 shoulderOffset = Vector3.zero;
 
     [SerializeField]
     float damping = 1.0f;
