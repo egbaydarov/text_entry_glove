@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using ViveSR.anipal.Eye;
 using Debug = UnityEngine.Debug;
 
 public class EntryProcessing : MonoBehaviour
@@ -367,6 +368,8 @@ public class EntryProcessing : MonoBehaviour
         th = FindObjectOfType<TextHelper>();
         measuringMetrics = FindObjectOfType<MeasuringMetrics>();
         sceneManagment = FindObjectOfType<SceneManagment>();
+
+        SRanipal_Eye_Framework.Instance.StartFramework();
     }
     public void OnMenuClickedUp(GameObject obj, PointerEventData pointerData)
     {

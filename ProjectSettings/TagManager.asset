@@ -17,6 +17,7 @@ TagManager:
   - EyeMetrics
   - ImagePlaneThumb
   - tapTip
+  - EyeFramework
   layers:
   - Default
   - TransparentFX

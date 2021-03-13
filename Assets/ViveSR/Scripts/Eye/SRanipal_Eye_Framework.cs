@@ -63,6 +63,8 @@ namespace ViveSR
                     StopFramework();
                 }
 
+                
+
                 public void StartFramework()
                 {
                     if (!EnableEye) return;

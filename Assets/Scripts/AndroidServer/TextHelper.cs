@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Leap.Unity;
+using System;
 using System.Linq;
-using System.Text;
-using Leap.Unity;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Valve.VR.InteractionSystem;
+using ViveSR.anipal.Eye;
 
 public class TextHelper : MonoBehaviour
 {
@@ -108,6 +104,22 @@ public class TextHelper : MonoBehaviour
                 case "TorsoReferencing":
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
                     FindObjectOfType<TorsoReferencedContent>().SwitchEnabled());
+                    return;
+                case "RestartEye":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                        {
+                            SRanipal_Eye_Framework.Instance.EnableEye = true;
+                            SRanipal_Eye_Framework.Instance.StartFramework();
+                        }
+                    );
+                    return;
+                case "StopEye":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    {
+                        SRanipal_Eye_Framework.Instance.EnableEye = false;
+                        SRanipal_Eye_Framework.Instance.StopFramework();
+                    }
+                    );
                     return;
                 default:
                     break;

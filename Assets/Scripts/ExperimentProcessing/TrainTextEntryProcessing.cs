@@ -33,7 +33,6 @@ public class TrainTextEntryProcessing : MonoBehaviour
     Server server;
 
     GameObject go;
-    Shift shift;
 
     int currentSentence = -1;
 
