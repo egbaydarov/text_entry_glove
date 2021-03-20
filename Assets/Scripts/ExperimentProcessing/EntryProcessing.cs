@@ -8,7 +8,9 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using ViveSR.anipal.Eye;
+using System.Xml.Serialization;
 using Debug = UnityEngine.Debug;
+using System.IO;
 
 public class EntryProcessing : MonoBehaviour
 {
@@ -51,12 +53,12 @@ public class EntryProcessing : MonoBehaviour
     string[] data;
 
 
-    int BLOCKS_COUNT = 8;
+    public int BLOCKS_COUNT = 8;
     int TRAIN_BLOCKS_COUNT = 2;
-    int SENTENCE_COUNT = 8;
+    public int SENTENCE_COUNT = 8;
     int TRAIN_SENTENCE_COUNT = 8;
 
-    public int currentBlock;
+    public int currentBlock { get; set; }
     public int currentSentence { get; set; }
     public string currentSentenceText;
     public UnityEvent disablePinch;
@@ -95,8 +97,7 @@ public class EntryProcessing : MonoBehaviour
             }
         }
 
-        words = new List<string>(data);
-
+        words = new List<string>(data);      
 
         AssignListners();
     }
@@ -135,7 +136,7 @@ public class EntryProcessing : MonoBehaviour
             currentSentenceText = words[SentenceOrder[TRAIN_SENTENCE_COUNT * (currentBlock + BLOCKS_COUNT) + currentSentence]];
         }
 
-        
+
 
 
         if (ShoudSetToStart)
@@ -148,8 +149,14 @@ public class EntryProcessing : MonoBehaviour
         {
             OnSentenceInputEnd.AddListener(() =>
             {
-            Debug.Log("OnSentenceInputEnd: INVOKED");
-            ++currentSentence;
+                Debug.Log("OnSentenceInputEnd: INVOKED");
+                string m_Path = Application.dataPath + $"\\InputData_{Settings.id}.xml";
+                XmlSerializer serializer = new XmlSerializer(typeof(Respondent));
+                using (FileStream fs = new FileStream(m_Path, FileMode.OpenOrCreate))
+                {
+                    serializer.Serialize(fs, measuringMetrics.serialized_resp);
+                }
+                ++currentSentence;
             });
 
             OnBlockInputEnd.AddListener(() =>

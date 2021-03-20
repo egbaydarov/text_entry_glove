@@ -18,6 +18,7 @@ public class TrialData
     public string type_speed { get; set; }
     public string removing_time { get; set; }
     public string check_time { get; set; }
+    public string correction_time { get; set; }
     public string entry_time { get; set; }
     public string search_time { get; set; }
     public string average_distance { get; set; }
@@ -43,6 +44,7 @@ public class TrialData
         }
 
         form.Add("entry.1932861945", SwitchABCD.CurrentMode); // Mode
+        form.Add("entry.747081656", correction_time.Replace(".", ",")); // Mode
         form.Add("entry.507185938", Settings.id.ToString()); // Идентификатор испытуемого
         form.Add("entry.582005842", SceneManagment.method_id); // Идентификатор техники взаимодействия
         form.Add("entry.347604535", block_num); // Номер блока предложений

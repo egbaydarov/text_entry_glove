@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Xml.Serialization;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 public class MeasuringMetrics : MonoBehaviour
 {
+
+    public Respondent serialized_resp;
 
     [SerializeField]
     private string FORM_URL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSddGyMD2Db2wYOQC-Ix-lbYeeWJfT4t-gxE5TUgs9sYhSo5Sg/formResponse";
@@ -15,22 +19,36 @@ public class MeasuringMetrics : MonoBehaviour
     public Stopwatch full_time { get; set; } = new Stopwatch();
     public Stopwatch entry_time_sw { get; set; } = new Stopwatch();
     public Stopwatch timer { get; set; } = new Stopwatch();
+    public Stopwatch correction_timer { get; set; } = new Stopwatch();
 
     long _search_time;
     long _entry_time;
     long _remove_time;
     long _check_time;
+    long _correction_time;
     int _backspace_choose;
     int _prediction_choose;
     int _removed_count;
     public double AverageCameraIndexDistance;
 
+    bool correction_flag = false;
 
     GameObject Camera;
     [SerializeField]
     GameObject IndexTip;
 
     public List<double> distances = new List<double>();
+
+
+    public long correction_time
+    {
+        get => _correction_time;
+        set
+        {
+            correction_flag = false;
+            _correction_time = value;
+        }
+    }
 
     public int prediction_choose
     {
@@ -103,13 +121,27 @@ public class MeasuringMetrics : MonoBehaviour
 
     private string _prevValue = "";
 
-
     Server server;
 
     private void Start()
     {
         if (!SceneManagment.isNew)
             LoadPrefs();
+
+        string m_Path = Application.dataPath + $"\\{Settings.id}.xml";
+        if (File.Exists(m_Path))
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(Respondent));
+            using (StringReader reader = new StringReader(m_Path))
+            {
+                serialized_resp = (Respondent)serializer.Deserialize(reader);
+            }
+        }
+        else
+        {
+
+            serialized_resp = new Respondent(_currentEntryProcessing.BLOCKS_COUNT, _currentEntryProcessing.SENTENCE_COUNT);
+        }
     }
 
     private void Update()
@@ -121,9 +153,10 @@ public class MeasuringMetrics : MonoBehaviour
             if (distances.Count == 100)
             {
                 UpdateAverageDistance();
-                Debug.Log("1000 UPD");
             }
         }
+
+        addFrameToSerializer("NO");
     }
 
     public void UpdateAverageDistance()
@@ -270,6 +303,7 @@ public class MeasuringMetrics : MonoBehaviour
         {
             isRemoves = true;
             removed_count += _prevValue.Length - value.Length;
+            addFrameToSerializer("BACKSPACE");
         }
 
         _prevValue = value;
@@ -282,6 +316,7 @@ public class MeasuringMetrics : MonoBehaviour
 
         full_time.Restart();
         timer.Restart();
+        addFrameToSerializer("START_INPUT");
     }
 
 
@@ -299,6 +334,8 @@ public class MeasuringMetrics : MonoBehaviour
         timer.Start();
 
         entry_time_sw.Restart();
+
+        addFrameToSerializer("START_GESTURE");
     }
 
 
@@ -310,18 +347,31 @@ public class MeasuringMetrics : MonoBehaviour
         entry_time += entry_time_sw.ElapsedMilliseconds;
         entry_time_sw.Reset();
 
+        if (correction_flag)
+        {
+            correction_timer.Stop();
+            correction_time += correction_timer.ElapsedMilliseconds;
+            correction_timer.Reset();
+        }
+
         timer.Stop();
         if (!IsEyeLastEnterInput) //для исключения поиска первого во время заверешния росчерка
             control_time += timer.ElapsedMilliseconds;
         timer.Reset();
         timer.Start();
 
+        correction_timer.Restart();
+
+        //if (full_time.IsRunning)
         UpdateAverageDistance();
+        addFrameToSerializer("END_GESTURE");
     }
 
     public void DeleteWord()
     {
         ++backspace_choose;
+
+        correction_flag = true;
 
         timer.Stop();
         remove_time += timer.ElapsedMilliseconds;
@@ -333,6 +383,15 @@ public class MeasuringMetrics : MonoBehaviour
     public void ChoosePrediction()
     {
         ++prediction_choose;
+
+        if (correction_flag)
+        {
+            correction_timer.Stop();
+            correction_time += correction_timer.ElapsedMilliseconds;
+            correction_timer.Reset();
+        }
+
+        addFrameToSerializer("PREDICTION");
     }
 
     public void EndSentenceInput()
@@ -344,8 +403,8 @@ public class MeasuringMetrics : MonoBehaviour
             input_time += timer.ElapsedMilliseconds;
         else
             control_time += timer.ElapsedMilliseconds;
-
         timer.Reset();
+        addFrameToSerializer("END_INPUT");
     }
 
     public void OnInputEnter()
@@ -364,6 +423,10 @@ public class MeasuringMetrics : MonoBehaviour
         timer.Reset();
 
         timer.Start();
+
+        correction_timer.Restart();
+
+        addFrameToSerializer("EYE_ENTER_KEYBOARD");
     }
 
     public void OnControlEnter()
@@ -383,6 +446,7 @@ public class MeasuringMetrics : MonoBehaviour
         timer.Reset();
 
         timer.Start();
+        addFrameToSerializer("EYE_ENTER_CONTROL");
     }
 
     public void OnInputExit()
@@ -396,6 +460,7 @@ public class MeasuringMetrics : MonoBehaviour
         timer.Reset();
 
         timer.Start();
+        addFrameToSerializer("EYE_EXIT_KEYBOARD");
     }
 
     public void OnControlExit()
@@ -408,5 +473,28 @@ public class MeasuringMetrics : MonoBehaviour
         timer.Reset();
 
         timer.Start();
+        addFrameToSerializer("EYE_EXIT_CONTROL");
+    }
+
+    public void addFrameToSerializer(string _event)
+    {
+        if (!full_time.IsRunning)
+            return;
+
+            Frame frame = new Frame()
+        {
+            EyeOnKeyboard = inputFlag,
+            EyeOnPrediction = controlFlag,
+            NumBlock = _currentEntryProcessing.currentBlock,
+            NumAttempt = _currentEntryProcessing.currentSentence,
+            Id = (int)Settings.id,
+            TimeFromStart = full_time.ElapsedMilliseconds / 1000.0,
+            GestureExecuting = IsGestureExecuting,
+            Event = _event,
+        };
+
+        int block = _currentEntryProcessing.currentBlock;
+        int attempt = _currentEntryProcessing.currentSentence;
+        serialized_resp[block, attempt].Add(frame);
     }
 }

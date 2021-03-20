@@ -3987,7 +3987,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   sentences: {fileID: 4900000, guid: cc2edd29f68030b468a31515b1b431b4, type: 3}
-  currentBlock: 0
+  BLOCKS_COUNT: 8
+  SENTENCE_COUNT: 8
   currentSentenceText: 
   disablePinch:
     m_PersistentCalls:
@@ -4991,7 +4992,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &792330717
 Transform:
   m_ObjectHideFlags: 0
@@ -8509,7 +8510,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1498218644
 Transform:
   m_ObjectHideFlags: 0
@@ -10288,9 +10289,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c9a72ba14fd45749e42d3bfaf006a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  small: {fileID: 21300000, guid: 4cd9da8df2dee804eafc20ed9f35e378, type: 3}
-  capital: {fileID: 21300000, guid: c6fd34c71bbe74c42ab0aa61564c2512, type: 3}
-  constCapital: {fileID: 21300000, guid: 94f9980476a098e46a84fe6888b903f9, type: 3}
 --- !u!114 &1748981154
 MonoBehaviour:
   m_ObjectHideFlags: 0

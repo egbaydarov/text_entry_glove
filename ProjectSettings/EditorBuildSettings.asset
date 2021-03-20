@@ -42,19 +42,19 @@ EditorBuildSettings:
     path: Assets/Scenes/Trash/GazeCharacter.unity
     guid: a341788cc95af2240bcfb42d8c346311
   - enabled: 1
-    path: Assets/Scenes/Second experiment/GazeGesture.unity
+    path: Assets/Scenes/TextEntry/GazeGesture.unity
     guid: a6e4bb1ef16d65d409e6b44048a58e8b
   - enabled: 1
-    path: Assets/Scenes/Second experiment/OculusQuest_v2.unity
+    path: Assets/Scenes/TextEntry/OculusQuest_v2.unity
     guid: 8bbead873cf73894a8fc2458458c6a85
   - enabled: 1
-    path: Assets/Scenes/Second experiment/GestureType_v2.unity
+    path: Assets/Scenes/TextEntry/GestureType_v2.unity
     guid: 4d70b908270954243b99304275517701
   - enabled: 1
-    path: Assets/Scenes/Second experiment/ImagePlanePointing.unity
+    path: Assets/Scenes/TextEntry/ImagePlanePointing.unity
     guid: c2601242c72f00f4d956e1c5f133ff54
   - enabled: 1
-    path: Assets/Scenes/Second experiment/ReticleGesture.unity
+    path: Assets/Scenes/TextEntry/ReticleGesture.unity
     guid: a7084a8b60414724593ba68dacf01eff
   - enabled: 0
     path: Assets/Scenes/Second experiment/TRAIN/GazeGestureTR.unity
@@ -72,6 +72,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Second experiment/TRAIN/ReticleGestureTR.unity
     guid: 11872dca1a2e71d40ab706d66c0871d3
   - enabled: 1
-    path: Assets/Scenes/Second experiment/Articulatedhands_v2.unity
+    path: Assets/Scenes/TextEntry/Articulatedhands_v2.unity
     guid: 6ddb9d0ab4d8915449a7002a49b14e46
   m_configObjects: {}
