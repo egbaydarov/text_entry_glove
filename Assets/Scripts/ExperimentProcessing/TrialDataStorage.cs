@@ -103,7 +103,7 @@ public class TrialDataStorage : MonoBehaviour
             check_time = (_measuringMetrics.control_time / 1000f).ToString(),
             search_time = (_measuringMetrics.input_time / 1000f).ToString(),
             average_distance = _measuringMetrics.AverageCameraIndexDistance.ToString(),
-            correction_time = (_measuringMetrics.corretion_time / 1000f).ToString()
+            correction_time = (_measuringMetrics.correction_time / 1000f).ToString()
         };
 
 
