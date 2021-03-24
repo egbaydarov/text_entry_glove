@@ -1,6 +1,4 @@
 ﻿using LeapMotionGesture;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,7 +43,7 @@ public class SwitchABCD : MonoBehaviour
     {
         if (SceneManagment.isMain)
         {
-            switchA();
+            switchMain();
         }
         else
         {
@@ -107,7 +105,8 @@ public class SwitchABCD : MonoBehaviour
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[0]);
                 break;
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
-                ScaledObject.transform.localScale = new Vector3(ScaleValues1[0], ScaleValues1[0], 1);
+                airStrokeMapper.fixedValue = ScaleValues3[i];
+                ScaledObject.transform.localScale = new Vector3(ScaleValues1[2], ScaleValues1[2], 1);
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[0]);
                 break;
             case SceneManagment.Scenes.ARTICULATED_HANDS:
@@ -119,7 +118,7 @@ public class SwitchABCD : MonoBehaviour
                 {
                     ScaledObject.transform.localScale = new Vector3(ScaleValues[i], ScaleValues[i], 1);
                     tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[i]);
-                } 
+                }
                 else
                 {
                     ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
@@ -151,8 +150,9 @@ public class SwitchABCD : MonoBehaviour
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[1]);
                 break;
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
-                ScaledObject.transform.localScale = new Vector3(ScaleValues1[1], ScaleValues1[1], 1);
-                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[1]);
+                airStrokeMapper.fixedValue = ScaleValues3[i];
+                ScaledObject.transform.localScale = new Vector3(ScaleValues1[2], ScaleValues1[2], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[0]);
                 break;
             case SceneManagment.Scenes.ARTICULATED_HANDS:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues2[i], ScaleValues2[i], 1);
@@ -195,8 +195,9 @@ public class SwitchABCD : MonoBehaviour
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[2]);
                 break;
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
+                airStrokeMapper.fixedValue = ScaleValues3[i];
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[2], ScaleValues1[2], 1);
-                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[2]);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[0]);
                 break;
             case SceneManagment.Scenes.ARTICULATED_HANDS:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues2[i], ScaleValues2[i], 1);
@@ -239,8 +240,9 @@ public class SwitchABCD : MonoBehaviour
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[3]);
                 break;
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
-                ScaledObject.transform.localScale = new Vector3(ScaleValues1[3], ScaleValues1[3], 1);
-                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[3]);
+                airStrokeMapper.fixedValue = ScaleValues3[i];
+                ScaledObject.transform.localScale = new Vector3(ScaleValues1[2], ScaleValues1[2], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[0]);
                 break;
             case SceneManagment.Scenes.ARTICULATED_HANDS:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues2[i], ScaleValues2[i], 1);
@@ -271,36 +273,64 @@ public class SwitchABCD : MonoBehaviour
     public void switchTrain()
     {
         CurrentMode = "Train";
-        int i = 4;
+        int i = 1;
         switch (sm.currentScene)
         {
             case SceneManagment.Scenes.IMAGE_PLANE_POINTING:
-                ScaledObject.transform.localScale = new Vector3(ScaleValues[4], ScaleValues[4], 1);
-                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[4]);
+                ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[1]);
                 break;
             case SceneManagment.Scenes.GESTURE_TYPE:
-                ScaledObject.transform.localScale = new Vector3(ScaleValues[4], ScaleValues[4], 1);
-                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[4]);
+                ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[1]);
                 break;
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
-                ScaledObject.transform.localScale = new Vector3(ScaleValues1[4], ScaleValues1[4], 1);
-                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[4]);
+                ScaledObject.transform.localScale = new Vector3(ScaleValues1[2], ScaleValues1[2], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[2]);
                 break;
             case SceneManagment.Scenes.ARTICULATED_HANDS:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues2[i], ScaleValues2[i], 1);
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues2[i]);
                 break;
             case SceneManagment.Scenes.HEAD_GAZE_AND_COMMIT:
-                if (hgacflag)
-                {
-                    ScaledObject.transform.localScale = new Vector3(ScaleValues[i], ScaleValues[i], 1);
-                    tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[i]);
-                }
-                else
-                {
-                    ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
-                    airStrokeMapper.fixedValue = ScaleValues3[i];
-                }
+                ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
+                airStrokeMapper.fixedValue = ScaleValues3[2];
+                break;
+            case SceneManagment.Scenes.OCULUS_QUEST:
+                pointerHandler.shoulderOffset = ScaleValues4[i];
+                ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
+                break;
+            default:
+                break;
+        }
+        UpdateText();
+    }
+
+    public void switchMain()
+    {
+        CurrentMode = "Main";
+        int i = 1;
+        switch (sm.currentScene)
+        {
+            case SceneManagment.Scenes.IMAGE_PLANE_POINTING:
+                ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[1]);
+                break;
+            case SceneManagment.Scenes.GESTURE_TYPE:
+                ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[1]);
+                break;
+            case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
+                ScaledObject.transform.localScale = new Vector3(ScaleValues1[2], ScaleValues1[2], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[2]);
+                break;
+            case SceneManagment.Scenes.ARTICULATED_HANDS:
+                ScaledObject.transform.localScale = new Vector3(ScaleValues2[i], ScaleValues2[i], 1);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues2[i]);
+                break;
+            case SceneManagment.Scenes.HEAD_GAZE_AND_COMMIT:
+                ScaledObject.transform.localScale = new Vector3(ScaleValues[1], ScaleValues[1], 1);
+                airStrokeMapper.fixedValue = ScaleValues3[2];
                 break;
             case SceneManagment.Scenes.OCULUS_QUEST:
                 pointerHandler.shoulderOffset = ScaleValues4[i];

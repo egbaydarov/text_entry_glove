@@ -286,6 +286,7 @@ public class MeasuringMetrics : MonoBehaviour
         input_time = 0;
         remove_time = 0;
         control_time = 0;
+        correction_time = 0;
         AverageCameraIndexDistance = 0;
         distances.Clear();
 
@@ -343,16 +344,21 @@ public class MeasuringMetrics : MonoBehaviour
     {
         IsGestureExecuting = false;
 
-        entry_time_sw.Stop();
-        entry_time += entry_time_sw.ElapsedMilliseconds;
-        entry_time_sw.Reset();
 
+        //correction happens
         if (correction_flag)
         {
             correction_timer.Stop();
             correction_time += correction_timer.ElapsedMilliseconds;
             correction_timer.Reset();
+            timer.Restart();
+            entry_time_sw.Reset();
         }
+
+        entry_time_sw.Stop();
+        entry_time += entry_time_sw.ElapsedMilliseconds;
+        entry_time_sw.Reset();
+
 
         timer.Stop();
         if (!IsEyeLastEnterInput) //для исключения поиска первого во время заверешния росчерка
@@ -384,11 +390,14 @@ public class MeasuringMetrics : MonoBehaviour
     {
         ++prediction_choose;
 
+        //correction happens
         if (correction_flag)
         {
             correction_timer.Stop();
             correction_time += correction_timer.ElapsedMilliseconds;
             correction_timer.Reset();
+            timer.Restart();
+            entry_time_sw.Reset();
         }
 
         addFrameToSerializer("PREDICTION");
@@ -481,7 +490,7 @@ public class MeasuringMetrics : MonoBehaviour
         if (!full_time.IsRunning)
             return;
 
-            Frame frame = new Frame()
+        Frame frame = new Frame()
         {
             EyeOnKeyboard = inputFlag,
             EyeOnPrediction = controlFlag,
