@@ -4587,7 +4587,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   sentences: {fileID: 4900000, guid: cc2edd29f68030b468a31515b1b431b4, type: 3}
-  currentBlock: 0
+  BLOCKS_COUNT: 8
+  SENTENCE_COUNT: 8
   currentSentenceText: 
   disablePinch:
     m_PersistentCalls:

@@ -6,10 +6,8 @@ using UnityEngine.UI;
 
 public class SwitchABCD : MonoBehaviour
 {
-    // Start is called before the first frame update
 
     SceneManagment sm;
-
 
     bool hgacflag = true;
 

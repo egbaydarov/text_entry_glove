@@ -3984,7 +3984,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   sentences: {fileID: 4900000, guid: cc2edd29f68030b468a31515b1b431b4, type: 3}
-  currentBlock: 0
+  BLOCKS_COUNT: 8
+  SENTENCE_COUNT: 8
   currentSentenceText: 
   disablePinch:
     m_PersistentCalls:
@@ -8561,7 +8562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a7fe97f073039643a944fbc3b6c80d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LINE_WIDTH: 0.01
+  LINE_WIDTH: 0.013
   Drawing_Surface: {x: 0, y: 0.0025, z: -0.005}
 --- !u!120 &1527140372
 LineRenderer:

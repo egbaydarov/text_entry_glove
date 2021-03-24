@@ -150,12 +150,6 @@ public class EntryProcessing : MonoBehaviour
             OnSentenceInputEnd.AddListener(() =>
             {
                 Debug.Log("OnSentenceInputEnd: INVOKED");
-                string m_Path = Application.dataPath + $"\\InputData_{Settings.id}.xml";
-                XmlSerializer serializer = new XmlSerializer(typeof(Respondent));
-                using (FileStream fs = new FileStream(m_Path, FileMode.OpenOrCreate))
-                {
-                    serializer.Serialize(fs, measuringMetrics.serialized_resp);
-                }
                 ++currentSentence;
             });
 
@@ -170,6 +164,12 @@ public class EntryProcessing : MonoBehaviour
                 sentenceField.SetActive(false);
                 confirmButton.SetActive(false);
                 disablePinch.Invoke();
+                string m_Path = Application.dataPath + $"\\InputData_{Settings.id}.xml";
+                XmlSerializer serializer = new XmlSerializer(typeof(Respondent));
+                using (FileStream fs = new FileStream(m_Path, FileMode.OpenOrCreate))
+                {
+                    serializer.Serialize(fs, measuringMetrics.serialized_resp);
+                }
                 StartCoroutine(ShowMenuBittonAfterSeconds());
             });
 
