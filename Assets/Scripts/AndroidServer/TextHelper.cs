@@ -66,6 +66,24 @@ public class TextHelper : MonoBehaviour
         if (data1.Length > 0)
             switch (data1[0])
             {
+                case "sceneEG":
+                    FindObjectOfType<SceneManagment>().currentScene = SceneManagment.Scenes.EYE_GAZE_AND_COMMIT;
+                    break;
+                case "sceneHG":
+                    FindObjectOfType<SceneManagment>().currentScene = SceneManagment.Scenes.HEAD_GAZE_AND_COMMIT;
+                    break;
+                case "sceneOC":
+                    FindObjectOfType<SceneManagment>().currentScene = SceneManagment.Scenes.OCULUS_QUEST;
+                    break;
+                case "sceneAH":
+                    FindObjectOfType<SceneManagment>().currentScene = SceneManagment.Scenes.ARTICULATED_HANDS;
+                    break;
+                case "sceneGT":
+                    FindObjectOfType<SceneManagment>().currentScene = SceneManagment.Scenes.GESTURE_TYPE;
+                    break;
+                case "sceneIP":
+                    FindObjectOfType<SceneManagment>().currentScene = SceneManagment.Scenes.IMAGE_PLANE_POINTING;
+                    break;
                 case "restart":
                     Debug.Log("sentence re-entry");
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
@@ -108,6 +126,7 @@ public class TextHelper : MonoBehaviour
                 case "RestartEye":
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
                         {
+                            SRanipal_Eye_Framework.Instance.StopFramework();
                             SRanipal_Eye_Framework.Instance.EnableEye = true;
                             SRanipal_Eye_Framework.Instance.StartFramework();
                         }
@@ -116,8 +135,8 @@ public class TextHelper : MonoBehaviour
                 case "StopEye":
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
                     {
-                        SRanipal_Eye_Framework.Instance.EnableEye = false;
                         SRanipal_Eye_Framework.Instance.StopFramework();
+                        SRanipal_Eye_Framework.Instance.EnableEye = false;
                     }
                     );
                     return;

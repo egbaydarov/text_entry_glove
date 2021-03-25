@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using ViveSR.anipal.Eye;
 
 public class TrialDataStorage : MonoBehaviour
 {
@@ -103,10 +104,16 @@ public class TrialDataStorage : MonoBehaviour
             check_time = (_measuringMetrics.control_time / 1000f).ToString(),
             search_time = (_measuringMetrics.input_time / 1000f).ToString(),
             average_distance = _measuringMetrics.AverageCameraIndexDistance.ToString(),
-            correction_time = (_measuringMetrics.correction_time / 1000f).ToString()
+            correction_time = _measuringMetrics.isRemoves ? (_measuringMetrics.correction_time / 1000f).ToString() : "",
         };
 
-
+        if(SRanipal_Eye_Framework.Status != SRanipal_Eye_Framework.FrameworkStatus.WORKING)
+        {
+            _currentTrialData.search_time = "";
+            _currentTrialData.check_time = "";
+            _currentTrialData.correction_time = "";
+            _currentTrialData.removing_time = "";
+        }
     }
 
 
