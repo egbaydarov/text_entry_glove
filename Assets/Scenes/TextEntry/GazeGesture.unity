@@ -8974,7 +8974,8 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\u041F\u043E\u0436\u0430\u043B\u0443\u0439\u0441\u0442\u0430, \u043F\u043E\u0434\u043E\u0436\u0434\u0438\u0442\u0435
-    ..."
+    ...\n\nEG\nLM \u0432\u043D\u0438\u0437\u0443\n\u0421\u043B\u043E\u0432\u0430\u0440\u044C
+    \u0441\u0431\u0440\u043E\u0448\u0435\u043D\nEye-tracker \u043E\u0442\u043A\u0430\u043B\u0438\u0431\u0440\u043E\u0432\u0430\u043D"
 --- !u!222 &1443840242
 CanvasRenderer:
   m_ObjectHideFlags: 0

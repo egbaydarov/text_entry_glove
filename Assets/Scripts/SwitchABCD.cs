@@ -43,7 +43,7 @@ public class SwitchABCD : MonoBehaviour
     {
         if (SceneManagment.isMain)
         {
-            switchMain();
+            switchA();
         }
         else
         {
@@ -273,7 +273,7 @@ public class SwitchABCD : MonoBehaviour
     public void switchTrain()
     {
         CurrentMode = "Train";
-        int i = 4;
+        int i = 1;
         switch (sm.currentScene)
         {
             case SceneManagment.Scenes.IMAGE_PLANE_POINTING:
@@ -285,7 +285,7 @@ public class SwitchABCD : MonoBehaviour
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[1]);
                 break;
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
-                airStrokeMapper.fixedValue = ScaleValues3[i];
+                airStrokeMapper.fixedValue = ScaleValues3[4];
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[2], ScaleValues1[2], 1);
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[2]);
                 break;
@@ -322,6 +322,7 @@ public class SwitchABCD : MonoBehaviour
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues[1]);
                 break;
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
+                airStrokeMapper.fixedValue = ScaleValues3[2];
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[2], ScaleValues1[2], 1);
                 tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[2]);
                 break;

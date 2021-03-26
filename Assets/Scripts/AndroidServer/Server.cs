@@ -20,6 +20,8 @@ using Debug = UnityEngine.Debug;
 using UnityEngine.SceneManagement;
 using System.Diagnostics.Eventing.Reader;
 using System.Runtime.CompilerServices;
+using ViveSR.anipal.Eye;
+using Leap.Unity;
 
 public class ServerEvent<T> : UnityEvent<T>
 {
@@ -61,19 +63,137 @@ public class Server : MonoBehaviour
 
     //public Stopwatch gest_time = new Stopwatch();
 
-   // public Stopwatch move_time = new Stopwatch();
+    // public Stopwatch move_time = new Stopwatch();
 
     public ServerEvent<String> OnMessageRecieved = new ServerEvent<string>();
 
-   
-    
+    void LeapOffsetDefault()
+    {
+        UnityMainThreadDispatcher.Instance().Enqueue(() =>
+        {
+            FindObjectOfType<LeapXRServiceProvider>().deviceOffsetMode = LeapXRServiceProvider.DeviceOffsetMode.Default;
+        });
+    }
+
+    void LeapOffsetManual()
+    {
+        UnityMainThreadDispatcher.Instance().Enqueue(() =>
+        {
+            var obj = FindObjectOfType<LeapXRServiceProvider>();
+            obj.deviceOffsetMode = LeapXRServiceProvider.DeviceOffsetMode.ManualHeadOffset;
+            obj.deviceOffsetZAxis = 0.12f;
+            obj.deviceTiltXAxis = 20f;
+            obj.deviceOffsetYAxis = -0.04f;
+        });
+    }
+
+    void MessageReader(string data)
+    {
+        data = data.Trim('\r', '\n');
+        string[] data1 = data.Split('#');
+
+
+        if (data1.Length > 0)
+            switch (data1[0])
+            {
+                case "new_exp":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    {
+                        FindObjectOfType<SceneManagment>().StartExperiment();
+                    }
+                    );
+                    return;
+                case "continue_exp":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    {
+                        FindObjectOfType<SceneManagment>().ContinueExperiment();
+                    }
+                    );
+                    return;
+                case "exit":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    {
+                        FindObjectOfType<SceneManagment>().Exit();
+                    }
+                    );
+                    return;
+                case "training":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    {
+                        FindObjectOfType<SceneManagment>().Train();
+                    }
+                    );
+                    return;
+                case "sceneEG":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                        FindObjectOfType<SceneManagment>().currentScene = SceneManagment.Scenes.EYE_GAZE_AND_COMMIT
+                    );
+                    LeapOffsetManual();
+                    return;
+                case "sceneHG":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                        FindObjectOfType<SceneManagment>().currentScene = SceneManagment.Scenes.HEAD_GAZE_AND_COMMIT
+                    );
+                    LeapOffsetManual();
+                    return;
+                case "sceneOC":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                        FindObjectOfType<SceneManagment>().currentScene = SceneManagment.Scenes.OCULUS_QUEST
+                    );
+                    LeapOffsetManual();
+                    return;
+                case "sceneAH":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                        FindObjectOfType<SceneManagment>().currentScene = SceneManagment.Scenes.ARTICULATED_HANDS
+                    );
+                    LeapOffsetDefault();
+                    return;
+                case "sceneGT":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                        FindObjectOfType<SceneManagment>().currentScene = SceneManagment.Scenes.GESTURE_TYPE
+                    );
+                    LeapOffsetManual();
+                    return;
+                case "sceneIP":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                        FindObjectOfType<SceneManagment>().currentScene = SceneManagment.Scenes.IMAGE_PLANE_POINTING
+                    );
+                    LeapOffsetDefault();
+                    return;
+                case "TorsoReferencing":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    FindObjectOfType<TorsoReferencedContent>().SwitchEnabled());
+                    return;
+                case "RestartEye":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    {
+                        SRanipal_Eye_Framework.Instance.StopFramework();
+                        SRanipal_Eye_Framework.Instance.EnableEye = true;
+                        SRanipal_Eye_Framework.Instance.StartFramework();
+                    }
+                    );
+                    return;
+                case "StopEye":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    {
+                        SRanipal_Eye_Framework.Instance.StopFramework();
+                        SRanipal_Eye_Framework.Instance.EnableEye = false;
+                    }
+                    );
+                    return;
+                default:
+                    break;
+            }
+    }
+
+
     void Start()
     {
+        OnMessageRecieved.AddListener(MessageReader);
         NetworkSetup();
         isProcessing = true;
 
         FindClient();
-        
     }
 
     IPAddress FindBroadcastAdress()
@@ -213,7 +333,7 @@ public class Server : MonoBehaviour
                     {
                         Client = null;
                         FindClient();
-                        continue;
+                        break;
                     }
 
                     Debug.Log("Waiting for data from socket . . .");
@@ -275,6 +395,8 @@ public class Server : MonoBehaviour
     private void OnApplicationQuit()
     {
         isProcessing = false;
+        OnMessageRecieved.RemoveListener(MessageReader);
+
 
         if (Client != null && Client.Connected)
             Client.Close();

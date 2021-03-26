@@ -15,8 +15,16 @@ public class Overlay : MonoBehaviour
 
     Server server;
 
+    public bool hideOverlayFlag = true;
+
     void Start()
     {
+        EntryProcessing entryProc = FindObjectOfType<EntryProcessing>();
+
+        if (entryProc.currentBlock == 0)
+            hideOverlayFlag = false;
+
+
         if (reticlePointer == null)
         {
             Debug.LogError("Overlay: The 'reticlePointer' field cannot be left unassigned. Disabling the script");
@@ -46,9 +54,9 @@ public class Overlay : MonoBehaviour
 
     void Update()
     {
-        reticlePointer.SetActive(server.IsConnected);
-        LMPointer.SetActive(server.IsConnected);
-        children.SetActive(!server.IsConnected);
-        GetComponent<MeshRenderer>().enabled = !server.IsConnected;
+        reticlePointer.SetActive(!server.IsConnected || !hideOverlayFlag);
+        LMPointer.SetActive(!server.IsConnected || !hideOverlayFlag);
+        children.SetActive(!server.IsConnected || !hideOverlayFlag);
+        GetComponent<MeshRenderer>().enabled = !server.IsConnected || !hideOverlayFlag;
     }
 }
