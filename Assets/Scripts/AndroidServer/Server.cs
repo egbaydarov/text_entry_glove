@@ -99,7 +99,7 @@ public class Server : MonoBehaviour
                 case "new_exp":
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
                     {
-                        FindObjectOfType<SceneManagment>().StartExperiment();
+                        //FindObjectOfType<SceneManagment>().StartExperiment();
                     }
                     );
                     return;
@@ -159,27 +159,6 @@ public class Server : MonoBehaviour
                         FindObjectOfType<SceneManagment>().currentScene = SceneManagment.Scenes.IMAGE_PLANE_POINTING
                     );
                     LeapOffsetDefault();
-                    return;
-                case "TorsoReferencing":
-                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
-                    FindObjectOfType<TorsoReferencedContent>().SwitchEnabled());
-                    return;
-                case "RestartEye":
-                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
-                    {
-                        SRanipal_Eye_Framework.Instance.StopFramework();
-                        SRanipal_Eye_Framework.Instance.EnableEye = true;
-                        SRanipal_Eye_Framework.Instance.StartFramework();
-                    }
-                    );
-                    return;
-                case "StopEye":
-                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
-                    {
-                        SRanipal_Eye_Framework.Instance.StopFramework();
-                        SRanipal_Eye_Framework.Instance.EnableEye = false;
-                    }
-                    );
                     return;
                 default:
                     break;

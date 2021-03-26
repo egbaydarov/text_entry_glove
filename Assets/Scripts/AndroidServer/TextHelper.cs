@@ -99,11 +99,37 @@ public class TextHelper : MonoBehaviour
                 case "switchTrain":
                     Debug.Log("switch Train");
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
-                    switchABCD.switchTrain());
+                    {
+                        if (SceneManagment.isMain)
+                            switchABCD.switchMain();
+                        else
+                            switchABCD.switchTrain();
+                    });
                     return;
                 case "overlay":
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
                         FindObjectOfType<Overlay>().hideOverlayFlag = !FindObjectOfType<Overlay>().hideOverlayFlag
+                    );
+                    return;
+                case "TorsoReferencing":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    FindObjectOfType<TorsoReferencedContent>().SwitchEnabled());
+                    return;
+                case "RestartEye":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    {
+                        SRanipal_Eye_Framework.Instance.StopFramework();
+                        SRanipal_Eye_Framework.Instance.EnableEye = true;
+                        SRanipal_Eye_Framework.Instance.StartFramework();
+                    }
+                    );
+                    return;
+                case "StopEye":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    {
+                        SRanipal_Eye_Framework.Instance.StopFramework();
+                        SRanipal_Eye_Framework.Instance.EnableEye = false;
+                    }
                     );
                     return;
                 default:

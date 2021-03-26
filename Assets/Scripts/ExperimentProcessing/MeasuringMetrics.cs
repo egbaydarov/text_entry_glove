@@ -21,10 +21,15 @@ public class MeasuringMetrics : MonoBehaviour
     public Stopwatch timer { get; set; } = new Stopwatch();
     public Stopwatch correction_timer { get; set; } = new Stopwatch();
 
+    [SerializeField]
     long _search_time;
+    [SerializeField]
     long _entry_time;
+    [SerializeField]
     long _remove_time;
+    [SerializeField]
     long _check_time;
+    [SerializeField]
     long _correction_time;
     int _backspace_choose;
     int _prediction_choose;
@@ -116,7 +121,6 @@ public class MeasuringMetrics : MonoBehaviour
     volatile bool IsEyeLastExitInput = false;
     volatile bool controlFlag = false;
     volatile bool inputFlag = false;
-
 
 
     private string _prevValue = "";
@@ -327,7 +331,10 @@ public class MeasuringMetrics : MonoBehaviour
 
         timer.Stop();
         if (IsEyeLastEnterInput)
-            input_time += timer.ElapsedMilliseconds;
+        {
+            if (!correction_flag)
+                input_time += timer.ElapsedMilliseconds;
+        }
         else
             control_time += timer.ElapsedMilliseconds;
 
@@ -353,6 +360,8 @@ public class MeasuringMetrics : MonoBehaviour
             correction_timer.Reset();
             timer.Restart();
             entry_time_sw.Reset();
+
+            correction_flag = false;
         }
 
         entry_time_sw.Stop();
@@ -368,7 +377,6 @@ public class MeasuringMetrics : MonoBehaviour
 
         correction_timer.Restart();
 
-        //if (full_time.IsRunning)
         UpdateAverageDistance();
         addFrameToSerializer("END_GESTURE");
     }
@@ -398,6 +406,8 @@ public class MeasuringMetrics : MonoBehaviour
             correction_timer.Reset();
             timer.Restart();
             entry_time_sw.Reset();
+
+            correction_flag = false;
         }
 
         addFrameToSerializer("PREDICTION");

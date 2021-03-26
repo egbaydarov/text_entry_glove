@@ -537,8 +537,10 @@ PlayerSettings:
   ps4attribEyeToEyeDistanceSettingVR: 0
   ps4IncludedModules: []
   monoEnv: 
-  splashScreenBackgroundSourceLandscape: {fileID: 0}
-  splashScreenBackgroundSourcePortrait: {fileID: 0}
+  splashScreenBackgroundSourceLandscape: {fileID: 21300000, guid: 4cd9da8df2dee804eafc20ed9f35e378,
+    type: 3}
+  splashScreenBackgroundSourcePortrait: {fileID: 21300000, guid: 4cd9da8df2dee804eafc20ed9f35e378,
+    type: 3}
   blurSplashScreenBackground: 1
   spritePackerPolicy: 
   webGLMemorySize: 16

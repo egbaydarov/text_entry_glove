@@ -43,7 +43,7 @@ public class SwitchABCD : MonoBehaviour
     {
         if (SceneManagment.isMain)
         {
-            switchA();
+            switchMain();
         }
         else
         {
@@ -107,7 +107,7 @@ public class SwitchABCD : MonoBehaviour
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
                 airStrokeMapper.fixedValue = ScaleValues3[i];
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[2], ScaleValues1[2], 1);
-                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[0]);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[2]);
                 break;
             case SceneManagment.Scenes.ARTICULATED_HANDS:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues2[0], ScaleValues2[0], 1);
@@ -152,7 +152,7 @@ public class SwitchABCD : MonoBehaviour
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
                 airStrokeMapper.fixedValue = ScaleValues3[i];
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[2], ScaleValues1[2], 1);
-                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[0]);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[2]);
                 break;
             case SceneManagment.Scenes.ARTICULATED_HANDS:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues2[i], ScaleValues2[i], 1);
@@ -197,7 +197,7 @@ public class SwitchABCD : MonoBehaviour
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
                 airStrokeMapper.fixedValue = ScaleValues3[i];
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[2], ScaleValues1[2], 1);
-                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[0]);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[2]);
                 break;
             case SceneManagment.Scenes.ARTICULATED_HANDS:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues2[i], ScaleValues2[i], 1);
@@ -242,7 +242,7 @@ public class SwitchABCD : MonoBehaviour
             case SceneManagment.Scenes.EYE_GAZE_AND_COMMIT:
                 airStrokeMapper.fixedValue = ScaleValues3[i];
                 ScaledObject.transform.localScale = new Vector3(ScaleValues1[2], ScaleValues1[2], 1);
-                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[0]);
+                tr.setLineWidth(tr.LINE_WIDTH * ScaleValues1[2]);
                 break;
             case SceneManagment.Scenes.ARTICULATED_HANDS:
                 ScaledObject.transform.localScale = new Vector3(ScaleValues2[i], ScaleValues2[i], 1);
@@ -272,7 +272,7 @@ public class SwitchABCD : MonoBehaviour
 
     public void switchTrain()
     {
-        CurrentMode = "Train";
+        CurrentMode = "Training";
         int i = 1;
         switch (sm.currentScene)
         {
@@ -309,7 +309,7 @@ public class SwitchABCD : MonoBehaviour
 
     public void switchMain()
     {
-        CurrentMode = "Main";
+        CurrentMode = "Control";
         int i = 1;
         switch (sm.currentScene)
         {

@@ -54,8 +54,9 @@ public class Overlay : MonoBehaviour
 
     void Update()
     {
-        reticlePointer.SetActive(!server.IsConnected || !hideOverlayFlag);
-        LMPointer.SetActive(!server.IsConnected || !hideOverlayFlag);
+        reticlePointer.SetActive(server.IsConnected && hideOverlayFlag);
+        LMPointer.SetActive(server.IsConnected && hideOverlayFlag);
+
         children.SetActive(!server.IsConnected || !hideOverlayFlag);
         GetComponent<MeshRenderer>().enabled = !server.IsConnected || !hideOverlayFlag;
     }
