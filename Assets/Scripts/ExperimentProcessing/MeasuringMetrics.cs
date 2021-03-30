@@ -36,7 +36,7 @@ public class MeasuringMetrics : MonoBehaviour
     int _removed_count;
     public double AverageCameraIndexDistance;
 
-    bool correction_flag = false;
+    bool correction_flag;
 
     GameObject Camera;
     [SerializeField]
@@ -50,7 +50,6 @@ public class MeasuringMetrics : MonoBehaviour
         get => _correction_time;
         set
         {
-            correction_flag = false;
             _correction_time = value;
         }
     }
@@ -282,6 +281,7 @@ public class MeasuringMetrics : MonoBehaviour
     {
         full_time.Reset();
         entry_time_sw.Reset();
+        correction_timer.Reset();
         timer.Reset();
         prediction_choose = 0;
         backspace_choose = 0;
@@ -332,8 +332,7 @@ public class MeasuringMetrics : MonoBehaviour
         timer.Stop();
         if (IsEyeLastEnterInput)
         {
-            if (!correction_flag)
-                input_time += timer.ElapsedMilliseconds;
+            input_time += timer.ElapsedMilliseconds;
         }
         else
             control_time += timer.ElapsedMilliseconds;
@@ -358,8 +357,6 @@ public class MeasuringMetrics : MonoBehaviour
             correction_timer.Stop();
             correction_time += correction_timer.ElapsedMilliseconds;
             correction_timer.Reset();
-            timer.Restart();
-            entry_time_sw.Reset();
 
             correction_flag = false;
         }
@@ -399,16 +396,11 @@ public class MeasuringMetrics : MonoBehaviour
         ++prediction_choose;
 
         //correction happens
-        if (correction_flag)
-        {
-            correction_timer.Stop();
-            correction_time += correction_timer.ElapsedMilliseconds;
-            correction_timer.Reset();
-            timer.Restart();
-            entry_time_sw.Reset();
+        correction_timer.Stop();
+        correction_time += correction_timer.ElapsedMilliseconds;
+        correction_timer.Reset();
 
-            correction_flag = false;
-        }
+
 
         addFrameToSerializer("PREDICTION");
     }

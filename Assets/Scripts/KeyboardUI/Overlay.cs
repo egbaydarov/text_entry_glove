@@ -21,7 +21,7 @@ public class Overlay : MonoBehaviour
     {
         EntryProcessing entryProc = FindObjectOfType<EntryProcessing>();
 
-        if (entryProc.currentBlock == 0)
+        if (!SceneManagment.isMain)
             hideOverlayFlag = false;
 
 
