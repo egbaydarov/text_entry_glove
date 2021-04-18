@@ -77,9 +77,9 @@ public class TrialData
 
     public static int LevenshteinDistance(string string1, string string2)
     {
-        string1 = string1.ToLower();
+        string1 = string1.ToLower().Trim();
         string1 = string1.Replace("ё", "е");
-        string2 = string2.ToLower();
+        string2 = string2.ToLower().Trim();
         string2 = string2.Replace("ё", "е");
 
 
