@@ -105,6 +105,8 @@ public class TrialDataStorage : MonoBehaviour
             search_time = (_measuringMetrics.input_time / 1000f).ToString(),
             average_distance = _measuringMetrics.AverageCameraIndexDistance.ToString(),
             correction_time = _measuringMetrics.isRemoves ? (_measuringMetrics.correction_time / 1000f).ToString() : "",
+            yaw_accumulate = _measuringMetrics.yaw_accumulate,
+            pitch_accumulate = _measuringMetrics.pitch_accumulate,
         };
 
         if(SRanipal_Eye_Framework.Status != SRanipal_Eye_Framework.FrameworkStatus.WORKING)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
@@ -43,7 +44,10 @@ public class MeasuringMetrics : MonoBehaviour
     GameObject IndexTip;
 
     public List<double> distances = new List<double>();
+    public (float, float) lastXYRotation = (0, 0);
 
+    public float yaw_accumulate { get; set; }
+    public float pitch_accumulate { get; set; }
 
     public long correction_time
     {
@@ -131,6 +135,8 @@ public class MeasuringMetrics : MonoBehaviour
         if (!SceneManagment.isNew)
             LoadPrefs();
 
+        InvokeRepeating("UpdateXYAccumulatedRotation", 0f, 0.05f);
+
         string m_Path = Application.dataPath + $"\\{Settings.id}.xml";
         if (File.Exists(m_Path))
         {
@@ -160,6 +166,14 @@ public class MeasuringMetrics : MonoBehaviour
         }
 
         addFrameToSerializer("NO");
+    }
+
+    private void UpdateXYAccumulatedRotation()
+    {
+        var currentRot = Camera.transform.rotation;
+        yaw_accumulate += Math.Abs(currentRot.y - lastXYRotation.Item2);
+        pitch_accumulate += Math.Abs(currentRot.x - lastXYRotation.Item1);
+        lastXYRotation = (currentRot.x, currentRot.y);
     }
 
     public void UpdateAverageDistance()
@@ -293,6 +307,9 @@ public class MeasuringMetrics : MonoBehaviour
         correction_time = 0;
         AverageCameraIndexDistance = 0;
         distances.Clear();
+        lastXYRotation = (0, 0);
+        yaw_accumulate = 0;
+        pitch_accumulate = 0;
 
         isRemoves = false;
     }

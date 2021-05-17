@@ -22,6 +22,8 @@ public class TrialData
     public string entry_time { get; set; }
     public string search_time { get; set; }
     public string average_distance { get; set; }
+    public float yaw_accumulate { get; set; }
+    public float pitch_accumulate { get; set; }
 
 
 
@@ -67,7 +69,8 @@ public class TrialData
         form.Add("entry.647338142", removing_time.Replace(".", ","));  // Общее время удаления слова 
         form.Add("entry.1072504150", average_distance.Replace(".", ","));  // среднее расстояние
         form.Add("entry.1673523306", Math.Round(((float)resp_text.Length) * 12.0 / all_time, 2).ToString().Replace(".", ",")); // Скорость набора текста
-
+        form.Add("entry.1041719792", yaw_accumulate.ToString().Replace(".", ","));
+        form.Add("entry.2116604569", pitch_accumulate.ToString().Replace(".", ","));
         //form.Add("entry.1347030375", "");   // Примечание
 
 
