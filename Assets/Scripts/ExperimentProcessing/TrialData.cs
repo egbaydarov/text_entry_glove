@@ -80,14 +80,16 @@ public class TrialData
 
     public static int LevenshteinDistance(string string1, string string2)
     {
+        if (string1 == null) throw new ArgumentNullException("string1");
+        if (string2 == null || string2.Length == 0)
+            return string1.Length;
+
         string1 = string1.ToLower().Trim();
         string1 = string1.Replace("ё", "е");
         string2 = string2.ToLower().Trim();
         string2 = string2.Replace("ё", "е");
 
 
-        if (string1 == null) throw new ArgumentNullException("string1");
-        if (string2 == null) throw new ArgumentNullException("string2");
         int diff;
         int[,] m = new int[string1.Length + 1, string2.Length + 1];
 
