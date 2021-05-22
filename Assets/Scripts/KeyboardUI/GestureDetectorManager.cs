@@ -6,6 +6,7 @@ public class GestureDetectorManager : MonoBehaviour
 {
     // Start is called before the first frame update
 
+    
     public bool isEnabled { get; set; }
 
     [SerializeField]
@@ -33,6 +34,7 @@ public class GestureDetectorManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isEnabled = GetComponentInParent<Transform>().gameObject.activeInHierarchy;
         gd1.isTrigger = isEnabled;
         gd2.isTrigger = isEnabled;
         gd3.isTrigger = isEnabled;
