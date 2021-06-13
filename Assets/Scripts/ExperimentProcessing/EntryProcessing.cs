@@ -55,8 +55,8 @@ public class EntryProcessing : MonoBehaviour
 
     public int BLOCKS_COUNT = 8;
     int TRAIN_BLOCKS_COUNT = 2;
-    public int SENTENCE_COUNT = 8;
-    int TRAIN_SENTENCE_COUNT = 8;
+    public static int SENTENCE_COUNT = 8;
+    public static int TRAIN_SENTENCE_COUNT = 8;
 
     public int currentBlock { get; set; }
     public int currentSentence { get; set; }

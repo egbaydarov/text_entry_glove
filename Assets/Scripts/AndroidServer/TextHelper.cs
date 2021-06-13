@@ -132,6 +132,37 @@ public class TextHelper : MonoBehaviour
                     }
                     );
                     return;
+                case "sentences_max5":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                        {
+                            EntryProcessing.SENTENCE_COUNT = 5;
+                            EntryProcessing.TRAIN_SENTENCE_COUNT = 5;
+                            PlayerPrefs.SetInt("Test_Session_count", EntryProcessing.SENTENCE_COUNT); //Номер попыток
+                            PlayerPrefs.SetInt("Session_count", EntryProcessing.SENTENCE_COUNT); //Номер попыток
+                        }
+                    );
+                   
+
+                    return;
+                case "sentences_max8":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                        {
+                            EntryProcessing.SENTENCE_COUNT = 8;
+                            EntryProcessing.TRAIN_SENTENCE_COUNT = 8;
+                            PlayerPrefs.SetInt("Test_Session_count", EntryProcessing.SENTENCE_COUNT); //Номер попыток
+                            PlayerPrefs.SetInt("Session_count", EntryProcessing.SENTENCE_COUNT); //Номер попыток
+                        }
+                    );
+
+                    return;
+
+                case "load_menu":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                        {
+                            FindObjectOfType<SceneManagment>().LoadMenu();
+                        }
+                    );
+                    return;
                 default:
                     break;
             }

@@ -137,7 +137,7 @@ public class MeasuringMetrics : MonoBehaviour
 
         InvokeRepeating("UpdateXYAccumulatedRotation", 0f, 0.05f);
 
-        string m_Path = Application.dataPath + $"\\{Settings.id}.xml";
+        /*string m_Path = Application.dataPath + $"\\{Settings.id}.xml";
         if (File.Exists(m_Path))
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Respondent));
@@ -150,7 +150,7 @@ public class MeasuringMetrics : MonoBehaviour
         {
 
             serialized_resp = new Respondent(_currentEntryProcessing.BLOCKS_COUNT, _currentEntryProcessing.SENTENCE_COUNT);
-        }
+        }*/
     }
 
     private void Update()
@@ -165,7 +165,7 @@ public class MeasuringMetrics : MonoBehaviour
             }
         }
 
-        addFrameToSerializer("NO");
+        //addFrameToSerializer("NO");
     }
 
     private void UpdateXYAccumulatedRotation()
@@ -217,6 +217,7 @@ public class MeasuringMetrics : MonoBehaviour
             PlayerPrefs.SetString("InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
             PlayerPrefs.SetInt("Attempt_number", _currentEntryProcessing.currentBlock); //Номер блока предложений
             PlayerPrefs.SetInt("Session_number", _currentEntryProcessing.currentSentence); //Номер попытки
+            PlayerPrefs.SetInt("Session_count", EntryProcessing.SENTENCE_COUNT); //Номер попыток
             Debug.Log("Session Saved.");
         }
         else
@@ -225,6 +226,7 @@ public class MeasuringMetrics : MonoBehaviour
             PlayerPrefs.SetString("Test_InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
             PlayerPrefs.SetInt("Test_Attempt_number", _currentEntryProcessing.currentBlock); //Номер блока предложений
             PlayerPrefs.SetInt("Test_Session_number", 0); //Номер попытки
+            PlayerPrefs.SetInt("Test_Session_count", EntryProcessing.SENTENCE_COUNT); //Номер попыток
             Debug.Log("Session Saved.");
         }
     }
@@ -239,6 +241,8 @@ public class MeasuringMetrics : MonoBehaviour
                 SceneManagment.method_id = PlayerPrefs.GetString("InputMethod_ID");
                 _currentEntryProcessing.currentBlock = PlayerPrefs.GetInt("Attempt_number");
                 _currentEntryProcessing.currentSentence = PlayerPrefs.GetInt("Session_number");
+                EntryProcessing.TRAIN_SENTENCE_COUNT = PlayerPrefs.GetInt("Session_count");
+
 
                 Debug.Log(
                     $"Loaded: id {Settings.id}" +
@@ -259,6 +263,7 @@ public class MeasuringMetrics : MonoBehaviour
                 SceneManagment.method_id = PlayerPrefs.GetString("Test_InputMethod_ID");
                 _currentEntryProcessing.currentBlock = PlayerPrefs.GetInt("Test_Attempt_number") > 1 ? 0 : PlayerPrefs.GetInt("Test_Attempt_number");
                 _currentEntryProcessing.currentSentence = PlayerPrefs.GetInt("Test_Session_number");
+                EntryProcessing.TRAIN_SENTENCE_COUNT = PlayerPrefs.GetInt("Test_Session_count");
 
                 Debug.Log(
                     $"Loaded: id {Settings.id}" +
