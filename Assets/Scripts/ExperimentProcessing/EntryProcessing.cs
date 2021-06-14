@@ -8,9 +8,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using ViveSR.anipal.Eye;
-using System.Xml.Serialization;
 using Debug = UnityEngine.Debug;
-using System.IO;
 
 public class EntryProcessing : MonoBehaviour
 {
@@ -97,7 +95,7 @@ public class EntryProcessing : MonoBehaviour
             }
         }
 
-        words = new List<string>(data);      
+        words = new List<string>(data);
 
         AssignListners();
     }
@@ -165,15 +163,15 @@ public class EntryProcessing : MonoBehaviour
                 confirmButton.SetActive(false);
                 disablePinch.Invoke();
 
-                UnityMainThreadDispatcher.Instance().Enqueue(() =>
-                {
-                    string m_Path = Application.dataPath + $"\\InputData_{Settings.id}.xml";
-                    XmlSerializer serializer = new XmlSerializer(typeof(Respondent));
-                    using (FileStream fs = new FileStream(m_Path, FileMode.OpenOrCreate))
-                    {
-                        serializer.Serialize(fs, measuringMetrics.serialized_resp);
-                    }
-                });
+                //UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                //{
+                //    string m_Path = Application.dataPath + $"\\InputData_{Settings.id}.xml";
+                //    XmlSerializer serializer = new XmlSerializer(typeof(Respondent));
+                //    using (FileStream fs = new FileStream(m_Path, FileMode.OpenOrCreate))
+                //    {
+                //        serializer.Serialize(fs, measuringMetrics.serialized_resp);
+                //    }
+                //});
 
                 StartCoroutine(ShowMenuBittonAfterSeconds());
             });
@@ -380,6 +378,13 @@ public class EntryProcessing : MonoBehaviour
         th = FindObjectOfType<TextHelper>();
         measuringMetrics = FindObjectOfType<MeasuringMetrics>();
         sceneManagment = FindObjectOfType<SceneManagment>();
+
+        if (PlayerPrefs.HasKey("Session_count"))
+        {
+            SENTENCE_COUNT = PlayerPrefs.GetInt("Session_count");
+            TRAIN_SENTENCE_COUNT = PlayerPrefs.GetInt("Test_Session_count");
+        }
+
 
         SRanipal_Eye_Framework.Instance.StartFramework();
     }

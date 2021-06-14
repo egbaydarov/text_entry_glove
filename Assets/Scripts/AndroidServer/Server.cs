@@ -160,6 +160,31 @@ public class Server : MonoBehaviour
                     );
                     LeapOffsetDefault();
                     return;
+
+                case "sentences_max5":
+                    Debug.Log("Set 5 (Text HELPEr)");
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    {
+                        PlayerPrefs.SetInt("Test_Session_count", 5); //Номер попыток
+                        PlayerPrefs.SetInt("Session_count", 5); //Номер попыток
+                        EntryProcessing.SENTENCE_COUNT = 5;
+                        EntryProcessing.TRAIN_SENTENCE_COUNT = 5;
+                    }
+                    );
+
+
+                    return;
+                case "sentences_max8":
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    {
+                        PlayerPrefs.SetInt("Test_Session_count", 8); //Номер попыток
+                        PlayerPrefs.SetInt("Session_count", 8); //Номер попыток
+                        EntryProcessing.SENTENCE_COUNT = 8;
+                        EntryProcessing.TRAIN_SENTENCE_COUNT = 8;
+                    }
+                    );
+
+                    return;
                 default:
                     break;
             }

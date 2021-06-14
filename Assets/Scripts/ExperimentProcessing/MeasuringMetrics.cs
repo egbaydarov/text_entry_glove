@@ -217,7 +217,6 @@ public class MeasuringMetrics : MonoBehaviour
             PlayerPrefs.SetString("InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
             PlayerPrefs.SetInt("Attempt_number", _currentEntryProcessing.currentBlock); //Номер блока предложений
             PlayerPrefs.SetInt("Session_number", _currentEntryProcessing.currentSentence); //Номер попытки
-            PlayerPrefs.SetInt("Session_count", EntryProcessing.SENTENCE_COUNT); //Номер попыток
             Debug.Log("Session Saved.");
         }
         else
@@ -226,7 +225,6 @@ public class MeasuringMetrics : MonoBehaviour
             PlayerPrefs.SetString("Test_InputMethod_ID", SceneManagment.method_id); // Идентификатор техники взаимодействия
             PlayerPrefs.SetInt("Test_Attempt_number", _currentEntryProcessing.currentBlock); //Номер блока предложений
             PlayerPrefs.SetInt("Test_Session_number", 0); //Номер попытки
-            PlayerPrefs.SetInt("Test_Session_count", EntryProcessing.SENTENCE_COUNT); //Номер попыток
             Debug.Log("Session Saved.");
         }
     }
@@ -241,13 +239,13 @@ public class MeasuringMetrics : MonoBehaviour
                 SceneManagment.method_id = PlayerPrefs.GetString("InputMethod_ID");
                 _currentEntryProcessing.currentBlock = PlayerPrefs.GetInt("Attempt_number");
                 _currentEntryProcessing.currentSentence = PlayerPrefs.GetInt("Session_number");
-                EntryProcessing.TRAIN_SENTENCE_COUNT = PlayerPrefs.GetInt("Session_count");
 
 
                 Debug.Log(
                     $"Loaded: id {Settings.id}" +
                     $", method  {SceneManagment.method_id}" +
                     $", block {_currentEntryProcessing.currentBlock}" +
+                    $", SEntence count {EntryProcessing.SENTENCE_COUNT}" +
                     $", sentence {_currentEntryProcessing.currentSentence}");
             }
             else
@@ -263,12 +261,12 @@ public class MeasuringMetrics : MonoBehaviour
                 SceneManagment.method_id = PlayerPrefs.GetString("Test_InputMethod_ID");
                 _currentEntryProcessing.currentBlock = PlayerPrefs.GetInt("Test_Attempt_number") > 1 ? 0 : PlayerPrefs.GetInt("Test_Attempt_number");
                 _currentEntryProcessing.currentSentence = PlayerPrefs.GetInt("Test_Session_number");
-                EntryProcessing.TRAIN_SENTENCE_COUNT = PlayerPrefs.GetInt("Test_Session_count");
 
                 Debug.Log(
                     $"Loaded: id {Settings.id}" +
                     $", method  {SceneManagment.method_id}" +
                     $", block {_currentEntryProcessing.currentBlock}" +
+                    $", SEntence count {EntryProcessing.TRAIN_SENTENCE_COUNT}" +
                     $", sentence {_currentEntryProcessing.currentSentence}");
             }
             else
@@ -318,7 +316,6 @@ public class MeasuringMetrics : MonoBehaviour
 
         isRemoves = false;
     }
-
 
 
     public void OnCharacterRemoving(string value)
@@ -511,23 +508,23 @@ public class MeasuringMetrics : MonoBehaviour
 
     public void addFrameToSerializer(string _event)
     {
-        if (!full_time.IsRunning)
-            return;
+        //if (!full_time.IsRunning)
+        //    return;
 
-        Frame frame = new Frame()
-        {
-            EyeOnKeyboard = inputFlag,
-            EyeOnPrediction = controlFlag,
-            NumBlock = _currentEntryProcessing.currentBlock,
-            NumAttempt = _currentEntryProcessing.currentSentence,
-            Id = (int)Settings.id,
-            TimeFromStart = full_time.ElapsedMilliseconds / 1000.0,
-            GestureExecuting = IsGestureExecuting,
-            Event = _event,
-        };
+        //Frame frame = new Frame()
+        //{
+        //    EyeOnKeyboard = inputFlag,
+        //    EyeOnPrediction = controlFlag,
+        //    NumBlock = _currentEntryProcessing.currentBlock,
+        //    NumAttempt = _currentEntryProcessing.currentSentence,
+        //    Id = (int)Settings.id,
+        //    TimeFromStart = full_time.ElapsedMilliseconds / 1000.0,
+        //    GestureExecuting = IsGestureExecuting,
+        //    Event = _event,
+        //};
 
-        int block = _currentEntryProcessing.currentBlock;
-        int attempt = _currentEntryProcessing.currentSentence;
-        serialized_resp[block, attempt].Add(frame);
+        //int block = _currentEntryProcessing.currentBlock;
+        //int attempt = _currentEntryProcessing.currentSentence;
+        //serialized_resp[block, attempt].Add(frame);
     }
 }
