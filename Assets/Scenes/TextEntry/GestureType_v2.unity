@@ -3988,7 +3988,6 @@ MonoBehaviour:
       m_Calls: []
   sentences: {fileID: 4900000, guid: cc2edd29f68030b468a31515b1b431b4, type: 3}
   BLOCKS_COUNT: 8
-  SENTENCE_COUNT: 8
   currentSentenceText: 
   disablePinch:
     m_PersistentCalls:
@@ -11710,7 +11709,7 @@ MonoBehaviour:
   leftGDM: {fileID: 0}
   rightGDM: {fileID: 0}
   pointerRig: {fileID: 0}
-  PinchHand: 1
+  PinchHand: 0
   delay: 3
 --- !u!1 &1960845065
 GameObject:
